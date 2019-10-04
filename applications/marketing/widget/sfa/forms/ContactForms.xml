@@ -1,0 +1,667 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!--
+		Licensed to the Apache Software Foundation (ASF) under one or more
+		contributor license agreements. See the NOTICE file distributed with
+		this work for additional information regarding copyright ownership.
+		The ASF licenses this file to you under the Apache License, Version
+		2.0 (the "License"); you may not use this file except in compliance
+		with the License. You may obtain a copy of the License at
+		http://www.apache.org/licenses/LICENSE-2.0 Unless required by
+		applicable law or agreed to in writing, software distributed under the
+		License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+		CONDITIONS OF ANY KIND, either express or implied. See the License for
+		the specific language governing permissions and limitations under the
+		License.
+	-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+
+	<form name="FindContacts" target="${currentUrl}" type="single">
+		<field name="groupName">
+			<hidden />
+		</field>
+		<field name="partyId">
+			<hidden />
+		</field>
+		<field name="companyName" title="Company Name">
+			<text-find />
+		</field>
+		<field name="contactName" title="Contact Name">
+			<text-find />
+		</field>
+		<field name="submitButton" title="${uiLabelMap.CommonFind}"
+			widget-style="smallSubmit">
+			<submit button-type="button" />
+		</field>
+	</form>
+	<form name="ListContacts" paginate-target="${currentUrl}" type="list"
+		list-name="listIt" odd-row-style="alternate-row" header-row-style="header-row-2"
+		list-entry-name="listIt" default-table-style="basic-table hover-bar"
+		separate-columns="true">
+
+		<row-actions>
+			<entity-one entity-name="Person" value-field="from">
+				<field-map field-name="partyId" value="${listIt.partyIdFrom}" />
+			</entity-one>
+
+			<entity-one entity-name="Person" value-field="to">
+				<field-map field-name="partyId" value="${listIt.partyIdTo}" />
+			</entity-one>
+
+			<entity-and entity-name="PartyAndContactMech" list="telecomNumbers"
+				filter-by-date="true">
+				<field-map field-name="partyId" value="${listIt.partyIdTo}" />
+				<field-map field-name="contactMechTypeId" value="TELECOM_NUMBER" />
+			</entity-and>
+			<set field="telecomNumber" from-field="telecomNumbers[0]" type="Object" />
+
+			<entity-and entity-name="PartyAndContactMech" list="emailAddress"
+				filter-by-date="true">
+				<field-map field-name="partyId" value="${listIt.partyIdTo}" />
+				<field-map field-name="contactMechTypeId" value="EMAIL_ADDRESS" />
+			</entity-and>
+			<set field="emailAddress" from-field="emailAddress[0]" type="Object" />
+
+			<entity-and entity-name="PartyAndContactMech" list="postalAddress"
+				filter-by-date="true">
+				<field-map field-name="partyId" value="${listIt.partyIdTo}" />
+				<field-map field-name="contactMechTypeId" value="POSTAL_ADDRESS" />
+			</entity-and>
+			<set field="postalAddress" from-field="postalAddress[0]" type="Object" />
+
+		</row-actions>
+		<field name="contactName" title="Contact Name">
+			<hyperlink target="ContactProfile_SFAContact"
+				description="${to.firstName} ${to.lastName} [${listIt.partyIdTo}]">
+				<parameter param-name="partyId" value="${listIt.partyIdTo}" />
+			</hyperlink>
+		</field>
+		<field name="firstName" title="Company">
+			<hyperlink target="CompanyProfile_SFACompany"
+				description="${from.firstName} ${from.lastName} [${listIt.partyIdFrom}]">
+				<parameter param-name="partyId" value="${listIt.partyIdFrom}" />
+			</hyperlink>
+		</field>
+		<field name="oneInfoString" title="Email Address">
+			<display default-value="${emailAddress.infoString}" />
+		</field>
+		<field name="oneTnContactNumber" title="Phone Number">
+			<display default-value=" ${telecomNumber.tnContactNumber}" />
+		</field>
+		<field name="onePaCity" title="City">
+			<display default-value="${postalAddress.paCity}" />
+		</field>
+		<sort-order>
+			<sort-field name="partyId" />
+			<sort-field name="relatedCompany" />
+			<sort-field name="emailAddress" />
+			<sort-field name="telecomNumber" />
+			<sort-field name="city" />
+			<sort-field name="stateGeoId" />
+			<sort-field name="assignToMe" />
+		</sort-order>
+	</form>
+	<form name="ListMyContacts" extends="ListContacts">
+		<actions>
+			<set field="relatedCompanyRoleTypeIdTo" value="CONTACT" />
+			<set field="relatedCompanyRoleTypeIdFrom" value="ACCOUNT" />
+			<set field="relatedCompanyRelationshipTypeId" value="EMPLOYMENT" />
+			<set field="parameters.partyIdFrom" from-field="userLogin.partyId" />
+			<set field="parameters.roleTypeIdTo" value="CONTACT" />
+			<set field="parameters.partyStatusId" value="PARTY_DISABLED" />
+			<set field="parameters.partyStatusId_op" value="notEqual" />
+			<set field="parameters.partyRelationshipTypeId" value="EMPLOYMENT" />
+			<set field="fieldList"
+				value="${groovy:[&quot;partyIdFrom&quot;,&quot;partyId&quot;]}"
+				type="List" />
+			<service service-name="performFind" result-map="result"
+				result-map-list="listIt">
+				<field-map field-name="inputFields" from-field="parameters" />
+				<field-map field-name="entityName"
+					value="PartyRelationshipAndContactMechDetail" />
+				<field-map field-name="orderBy" value="partyId" />
+				<field-map field-name="distinct" value="Y" />
+				<field-map field-name="fieldList" from-field="fieldList" />
+				<field-map field-name="viewIndex" from-field="viewIndex" />
+				<field-map field-name="viewSize" from-field="viewSize" />
+			</service>
+		</actions>
+		<!-- <field name="assignToMe"><hidden/></field> -->
+		<!-- <field name="relatedCompany"></field> -->
+	</form>
+	<form name="NewContact" type="upload" target="createContact"
+		header-row-style="header-row" default-table-style="basic-table">
+		<actions>
+			<entity-one entity-name="Person" value-field="personGv">
+				<field-map field-name="partyId" value="${parameters.partyId}" />
+			</entity-one>
+
+		</actions>
+		<field name="companyInformation" title="Contact Information"
+			title-area-style="group-label" position="1">
+			<display />
+		</field>
+		<field name="salutation">
+			<text size="4" maxlength="10" default-value="${personGv.salutation}" />
+		</field>
+		<field name="firstName" tooltip="${uiLabelMap.CommonRequired}"
+			widget-style="required" position="1">
+			<text default-value="${personGv.firstName}" />
+		</field>
+		<field name="lastName" widget-style="required" position="2">
+			<text default-value="${personGv.lastName}" />
+		</field>
+		<field name="middleName" position="1">
+			<text default-value="${personGv.middleName}" />
+		</field>
+
+		<field name="personalTitle" position="2">
+			<text default-value="${personGv.personalTitle}" />
+		</field>
+
+		<field name="roleName" title="Role" position="1">
+			<drop-down allow-empty="true">
+				<entity-options entity-name="Enumeration"
+					description="${description}" key-field-name="enumId">
+					<entity-constraint name="enumTypeId" operator="equals"
+						value="ROLE_NAME" />
+					<entity-order-by field-name="sequenceId" />
+				</entity-options>
+			</drop-down>
+		</field>
+
+		<field name="occupation" title="Position" position="2">
+			<drop-down allow-empty="true" current-description="${personGv.occupation}">
+				<entity-options entity-name="Enumeration"
+					description="${description}" key-field-name="enumId">
+					<entity-constraint name="enumTypeId" operator="equals"
+						value="POSITION_DD" />
+					<entity-order-by field-name="sequenceId" />
+				</entity-options>
+			</drop-down>
+		</field>
+		<field name="leadPartyId" field-name="partyId" title="Lead Name">
+			<drop-down allow-multiple="false" allow-empty="true">
+				<entity-options entity-name="PartyRoleAndPartyDetail"
+					description="${firstName} ${middleName} ${lastName} ${groupName}(${partyId})">
+					<entity-constraint name="roleTypeId" operator="equals"
+						value="PROSPECT_LEAD" />
+				</entity-options>
+			</drop-down>
+		</field>
+		<!--
+			<field name="address1" title="${uiLabelMap.CommonAddress1}"
+			tooltip="${uiLabelMap.CommonRequired}" widget-style="required"><text
+			size="50" maxlength="60"/></field>
+		-->
+		<!--
+			<field name="address2" title="${uiLabelMap.CommonAddress2}"><text
+			size="50" maxlength="60"/></field>
+		-->
+		<!--
+			<field name="city" title="${uiLabelMap.CommonCity}"><text size="30"
+			maxlength="60"/></field>
+		-->
+		<!--
+			<field name="stateProvinceGeoId" title="${uiLabelMap.CommonState}"
+			tooltip="${uiLabelMap.CommonRequired}"
+			widget-style="required"><drop-down allow-empty="false"/></field>
+		-->
+		<!--
+			<field name="postalCode" title="${uiLabelMap.CommonZipPostalCode}"
+			tooltip="${uiLabelMap.CommonRequired}" widget-style="required"><text
+			size="10" maxlength="30"/></field>
+		-->
+		<!--
+			<field name="countryGeoId" title="${uiLabelMap.CommonCountry}"
+			tooltip="${uiLabelMap.CommonRequired}" widget-style="required">
+		-->
+		<!-- <drop-down no-current-selected-key="${defaultCountryGeoId}"> -->
+		<!--
+			<entity-options entity-name="Geo" key-field-name="geoId"
+			description="${geoId}: ${geoName}">
+		-->
+		<!-- <entity-constraint name="geoTypeId" value="COUNTRY"/> -->
+		<!-- <entity-order-by field-name="geoId"/> -->
+		<!-- </entity-options> -->
+		<!-- </drop-down> -->
+		<!-- </field> -->
+		<field name="phoneTitle" title="Contact Details"
+			title-area-style="group-label">
+			<display />
+		</field>
+		<field name="contactNumber" title="Office Phone" position="1">
+			<text />
+		</field>
+		<field name="homePhone" position="2">
+			<text />
+		</field>
+		<field name="deskPhone" position="1">
+			<text />
+		</field>
+		<field name="mobilePhone" position="2">
+			<text />
+		</field>
+		<field name="emailAddress" title="E-Mail Address" position="1">
+			<text size="50" maxlength="60" />
+		</field>
+		<field name="callOpt" title="Do not call" position="2">
+			<check />
+		</field>
+		<field name="emailOpt" title="Do not email" position="1">
+			<check />
+		</field>
+
+		<field name="shippingAddress" title="Head Office"
+			title-area-style="group-label" position="1">
+			<display />
+		</field>
+		<field name="billingAddress" title="Branch Office"
+			title-area-style="group-label" position="2">
+			<display />
+		</field>
+		<field name="_checkBox" title="Same as head office" position="3"
+			event="onclick" id-name="_checkBox"
+			action="javascript: 
+
+           var address1 =   document.getElementById('address1').value;
+           var address2 =   document.getElementById('address2').value;
+           var city =   document.getElementById('city').value;
+           var countryGeoId =   document.getElementById('countryGeoId').value;
+           var stateProvinceGeoId =   document.getElementById('stateProvinceGeoId').value;
+           var   postalCode =   document.getElementById('postalCode').value;
+           
+           if(document.getElementById('_checkBox').checked){
+           document.getElementById('b_address1').value = address1;
+           document.getElementById('b_address2').value = address2;
+           document.getElementById('b_city').value = city;
+           document.getElementById('b_countryGeoId').value = countryGeoId;
+           document.getElementById('b_stateProvinceGeoId').value = stateProvinceGeoId;
+           document.getElementById('b_postalCode').value = postalCode;           
+           }
+           if(!document.getElementById('_checkBox').checked){
+           document.getElementById('b_address1').value = '';
+           document.getElementById('b_address2').value =  '' ;
+           document.getElementById('b_city').value =  '' ;
+           document.getElementById('b_countryGeoId').value = '';
+           document.getElementById('b_stateProvinceGeoId').value = '';
+           document.getElementById('b_postalCode').value = '';           
+           }
+            ">
+			<check />
+
+		</field>
+		<field name="address1" title="${uiLabelMap.CommonAddress1}"
+			id-name="address1" tooltip="${uiLabelMap.CommonRequired}"
+			widget-style="required" position="1">
+			<text size="50" maxlength="60" />
+		</field>
+		<field name="b_address1" title="${uiLabelMap.CommonAddress1}"
+			id-name="b_address1" widget-style="required" position="2">
+			<text size="50" maxlength="60" />
+		</field>
+		<field name="address2" title="${uiLabelMap.CommonAddress2}"
+			id-name="address2" position="1">
+			<text size="50" maxlength="60" />
+		</field>
+		<field name="b_address2" title="${uiLabelMap.CommonAddress2}"
+			id-name="b_address2" position="2">
+			<text size="50" maxlength="60" />
+		</field>
+		<field name="city" id-name="city" widget-style="required"
+			position="1">
+			<text size="30" maxlength="60" />
+		</field>
+		<field name="b_city" title="City" id-name="b_city" widget-style="required"
+			position="2">
+			<text size="30" maxlength="60" />
+		</field>
+		<field name="countryGeoId" title="${uiLabelMap.CommonCountry}"
+			id-name="countryGeoId" position="1" tooltip="${uiLabelMap.CommonRequired}"
+			widget-style="required">
+			<drop-down no-current-selected-key="${defaultCountryGeoId}">
+				<entity-options entity-name="Geo" key-field-name="geoId"
+					description="${geoId}: ${geoName}">
+					<entity-constraint name="geoTypeId" value="COUNTRY" />
+					<entity-order-by field-name="geoId" />
+				</entity-options>
+			</drop-down>
+		</field>
+		<field name="b_countryGeoId" title="${uiLabelMap.CommonCountry}"
+			id-name="b_countryGeoId" position="2" widget-style="required">
+			<drop-down no-current-selected-key="${defaultCountryGeoId}">
+				<entity-options entity-name="Geo" key-field-name="geoId"
+					description="${geoId}: ${geoName}">
+					<entity-constraint name="geoTypeId" value="COUNTRY" />
+					<entity-order-by field-name="geoId" />
+				</entity-options>
+			</drop-down>
+		</field>
+
+		<field name="stateProvinceGeoId" title="${uiLabelMap.CommonState}"
+			id-name="stateProvinceGeoId" widget-style="required" position="1">
+			<drop-down allow-empty="false">
+			</drop-down>
+		</field>
+
+		<field name="stateProvinceGeoId" title="${uiLabelMap.CommonState}"
+			id-name="stateProvinceGeoId" widget-style="required" position="1">
+
+			<drop-down allow-empty="false">
+				<entity-options entity-name="Geo" key-field-name="geoId"
+					description="${uiLabelMap.CommonState}: [${geoId}] ${geoName}">
+					<entity-constraint name="geoTypeId" value="STATE" />
+					<entity-order-by field-name="geoId" />
+				</entity-options>
+			</drop-down>
+		</field>
+		<field name="b_stateProvinceGeoId" title="${uiLabelMap.CommonState}"
+			id-name="b_stateProvinceGeoId" position="2" widget-style="required">
+			<drop-down allow-empty="false">
+
+				<entity-options entity-name="Geo" key-field-name="geoId"
+					description="${uiLabelMap.CommonState}: [${geoId}] ${geoName}">
+					<entity-constraint name="geoTypeId" value="STATE" />
+					<entity-order-by field-name="geoId" />
+				</entity-options>
+			</drop-down>
+		</field>
+
+		<field name="postalCode" title="${uiLabelMap.CommonZipPostalCode}"
+			id-name="postalCode" tooltip="${uiLabelMap.CommonRequired}"
+			widget-style="required" position="1">
+			<text size="10" maxlength="30" />
+		</field>
+		<field name="b_postalCode" title="${uiLabelMap.CommonZipPostalCode}"
+			id-name="b_postalCode" widget-style="required" position="2">
+			<text size="10" maxlength="30" />
+		</field>
+
+		<field name="addInfo" title="Additional Information"
+			title-area-style="group-label">
+			<display />
+		</field>
+		<field name="assistantName" position="1">
+			<text default-value="${personGv.assistantName}" />
+		</field>
+		<field name="assistantPhone" position="2">
+			<text default-value="${personGv.assistantPhone}" />
+		</field>
+		<field name="assistantAddress" position="1">
+			<text default-value="${personGv.assistantAddress}" />
+		</field>
+		<field name="comments" position="2">
+			<text default-value="${personGv.comments}" />
+		</field>
+		<!--
+			<field name="extension" title="${uiLabelMap.PartyContactExt}"
+			position="2"><text size="6" maxlength="10"/></field> <field
+			name="countryGeoId" title="${uiLabelMap.CommonCountry}"
+			tooltip="${uiLabelMap.CommonRequired}" widget-style="required"
+			position="2"> <drop-down allow-empty="false"
+			no-current-selected-key="${defaultCountryGeoId}"> <entity-options
+			entity-name="Geo" key-field-name="geoId" description="${geoId}:
+			${geoName}"> <entity-constraint name="geoTypeId" value="COUNTRY"/>
+			<entity-order-by field-name="geoId"/> </entity-options> </drop-down>
+			</field> <field name="stateProvinceGeoId"
+			title="${uiLabelMap.CommonState}"
+			tooltip="${uiLabelMap.CommonRequired}" widget-style="required"
+			position="2"> <drop-down allow-empty="true"> <entity-options
+			entity-name="Geo" key-field-name="geoId" description="${geoId} -
+			${geoName}"> <entity-constraint name="geoTypeId" operator="in"
+			value="STATE,PROVINCE"/> <entity-order-by field-name="geoId"/>
+			</entity-options> </drop-down> </field>
+		-->
+		<field name="dataSourceId" title="Contact Source">
+			<drop-down allow-empty="true">
+				<entity-options entity-name="DataSource"
+					key-field-name="dataSourceId" description="${description}">
+					<entity-constraint name="dataSourceTypeId"
+						operator="equals" value="LEAD_SOURCE" />
+					<entity-order-by field-name="description" />
+				</entity-options>
+			</drop-down>
+		</field>
+		<field name="documentId">
+			<file />
+		</field>
+		<field name="companyId">
+			<hidden value="${parameters.companyId}" />
+		</field>
+		<field name="submitButton" title="${uiLabelMap.CommonCreate}"
+			widget-style="smallSubmit">
+			<submit button-type="button" />
+		</field>
+	</form>
+
+	<form name="listIndividualContact" paginate-target="${currentUrl}"
+		type="list" list-name="listIt" odd-row-style="alternate-row"
+		header-row-style="header-row-2" default-table-style="basic-table hover-bar"
+		separate-columns="true">
+		<actions>
+
+			<set field="parameters.partyRelationshipTypeId" value="CONTACT_REL" />
+			<set field="parameters.partyRelationshipTypeId_op" value="equals" />
+			<set field="parameters.partyIdFrom" value="${parameters.partyId}" />
+			<set field="parameters.partyIdFrom_op" value="equals" />
+
+			<service service-name="performFind" result-map="result"
+				result-map-list="listIt">
+				<field-map field-name="inputFields" from-field="parameters" />
+				<field-map field-name="entityName" value="PartyRelationship" />
+				<field-map field-name="noConditionFind" value="Y" />
+			</service>
+		</actions>
+		<row-actions>
+			<entity-one entity-name="Party" value-field="party">
+				<field-map field-name="partyId" value="${partyIdTo}" />
+			</entity-one>
+			<set field="partyName"
+				value="${groovy:org.ofbiz.party.party.PartyHelper.getPartyName(party, true)}" />
+
+			<entity-and entity-name="PartyAndContactMech" list="emailAddress"
+				filter-by-date="true">
+				<field-map field-name="partyId" value="${party.partyId}" />
+				<field-map field-name="contactMechTypeId" value="EMAIL_ADDRESS" />
+			</entity-and>
+			<set field="emailAddresses" from-field="emailAddress[0]" type="Object" />
+			<entity-and entity-name="PartyAndContactMech" list="telecomNumbers"
+				filter-by-date="true">
+				<field-map field-name="partyId" value="${party.partyId}" />
+				<field-map field-name="contactMechTypeId" value="TELECOM_NUMBER" />
+			</entity-and>
+			<set field="telecomNumber" from-field="telecomNumbers[0]" type="Object" />
+
+			<entity-one entity-name="StatusItem" value-field="statusItem">
+				<field-map field-name="${party.statusId}" />
+			</entity-one>
+			<entity-one entity-name="Person" value-field="personGV">
+				<field-map value="${party.partyId}" field-name="partyId" />
+			</entity-one>
+			<set field="emailAddress" />
+		</row-actions>
+
+		<field name="firsName" title="Name">
+			<display description="${personGV.firstName}" />
+		</field>
+		<field name="occupation" title="Position">
+			<display description="${PersonGV.occupation}" />
+		</field>
+		<field name="phoneNumber">
+			<display
+				description="${telecomNumber.tnCountryCode} ${telecomNumber.tnAreaCode} ${telecomNumber.tnContactNumber} ${telecomNumber.tnAskForName}" />
+		</field>
+		<field name="emailAddress">
+			<display description="${emailAddresses.infoString}" />
+		</field>
+
+
+
+	</form>
+	<form name="MergeContacts" type="single" target="MergeContacts">
+		<actions>
+			<set field="roleTypeId" value="CONTACT" />
+			<set field="partyTypeId" value="PERSON" />
+			<set field="lookupFlag" value="Y" />
+			<service service-name="findParty" auto-field-map="true" />
+		</actions>
+		<field name="partyIdTo" title="To Contact" position="1">
+			<drop-down allow-empty="false">
+				<list-options list-name="partyList" key-name="contact.partyId"
+					list-entry-name="contact" description=" ${contact.partyId}" />
+			</drop-down>
+		</field>
+		<field name="partyIdFrom" title="From Contact" position="2">
+			<drop-down allow-empty="false">
+				<list-options list-name="partyList" key-name="contact.partyId"
+					list-entry-name="contact" description=" ${contact.partyId}" />
+			</drop-down>
+		</field>
+		<field name="submitButton" position="3"
+			title="${uiLabelMap.SfaMergeContacts}" widget-style="buttontext"
+			tooltip-style="button-text">
+			<submit button-type="text-link" />
+		</field>
+	</form>
+
+	<form name="NewContactFromVCard" type="upload" target="createContactFromVCard"
+		header-row-style="header-row" default-table-style="basic-table">
+		<field name="infile" title="${uiLabelMap.SfaUploadVCard}">
+			<file />
+		</field>
+		<field name="serviceName">
+			<hidden value="createContact" />
+		</field>
+		<field name="submitButton" title="${uiLabelMap.CommonUpload}"
+			widget-style="smallSubmit">
+			<submit button-type="button" />
+		</field>
+	</form>
+
+	<form name="QuickAddContact" type="single" target="createContact">
+		<field name="firstName" title="Contact Name*" widget-style="required">
+			<text size="15" />
+		</field>
+		<field name="leadPartyId" field-name="partyId" title="Lead Name">
+			<drop-down allow-multiple="false" allow-empty="true">
+				<entity-options entity-name="PartyRoleAndPartyDetail"
+					description="${firstName} ${middleName} ${lastName} ${groupName}(${partyId})">
+					<entity-constraint name="roleTypeId" operator="equals"
+						value="PROSPECT_LEAD" />
+					<entity-constraint name="statusId" operator="not-equals"
+						value="SFA_CLOSED" />
+				</entity-options>
+			</drop-down>
+		</field>
+		<field name="emailAddress">
+			<text />
+		</field>
+		<field name="contactNumber" title="Contact Phone">
+			<text />
+		</field>
+		<field name="roleName" title="Role" position="1">
+			<drop-down allow-empty="true">
+				<entity-options entity-name="Enumeration"
+					description="${description}" key-field-name="enumId">
+					<entity-constraint name="enumTypeId" operator="equals"
+						value="ROLE_NAME" />
+					<entity-order-by field-name="sequenceId" />
+				</entity-options>
+			</drop-down>
+		</field>
+		<field name="quickAdd">
+			<hidden value="Y" />
+		</field>
+		<field name="submitButton">
+			<submit />
+		</field>
+	</form>
+
+	<!-- Change mod for assigned contacts to a company -->
+
+
+
+	<form name="ListAssignedContacts" paginate-target="${currentUrl}"
+		type="list" list-name="listIt">
+		<actions>
+
+			<set field="parameters.partyRelationshipTypeId" value="CONTACT_REL" />
+			<set field="parameters.partyRelationshipTypeId_op" value="equals" />
+			<set field="parameters.partyIdFrom" value="${parameters.partyId}" />
+			<set field="parameters.partyIdFrom_op" value="equals" />
+
+			<service service-name="performFind" result-map="result"
+				result-map-list="listIt">
+				<field-map field-name="inputFields" from-field="parameters" />
+				<field-map field-name="entityName" value="PartyRelationship" />
+				<field-map field-name="noConditionFind" value="Y" />
+			</service>
+		</actions>
+		<row-actions>
+			<entity-one entity-name="Party" value-field="party">
+				<field-map field-name="partyId" value="${partyIdTo}" />
+			</entity-one>
+			<set field="partyName"
+				value="${groovy:org.ofbiz.party.party.PartyHelper.getPartyName(party, true)}" />
+
+			<entity-and entity-name="PartyAndContactMech" list="emailAddresses"
+				filter-by-date="true">
+				<field-map field-name="partyId" value="${partyIdTo}" />
+				<field-map field-name="contactMechTypeId" value="EMAIL_ADDRESS" />
+			</entity-and>
+			<entity-and entity-name="PartyAndContactMech" list="telecomNumbers"
+				filter-by-date="true">
+				<field-map field-name="partyId" value="${partyIdTo}" />
+				<field-map field-name="contactMechTypeId" value="TELECOM_NUMBER" />
+			</entity-and>
+			<set field="telecomNumber" from-field="telecomNumbers[0]" type="Object" />
+			<entity-and entity-name="PartyAndContactMech" list="postalAddresses"
+				filter-by-date="true">
+				<field-map field-name="partyId" value="${partyIdTo}" />
+				<field-map field-name="contactMechTypeId" value="POSTAL_ADDRESS" />
+			</entity-and>
+			<set field="postalAddress" from-field="postalAddresses[0]" type="Object" />
+			<entity-and entity-name="PartyRelationship" list="existRelationships"
+				filter-by-date="true">
+				<field-map field-name="roleTypeIdTo" />
+				<field-map field-name="partyRelationshipTypeId" />
+				<field-map field-name="partyIdFrom" from-field="userLogin.partyId" />
+				<field-map field-name="partyIdTo" from-field="partyId" />
+			</entity-and>
+			<set field="stateGeoId" from-field="postalAddress.paStateProvinceGeoId" />
+			<entity-and entity-name="PartyRelationship" list="relatedCompanies"
+				filter-by-date="true">
+				<field-map field-name="partyIdTo" from-field="partyId" />
+				<field-map field-name="roleTypeIdFrom" from-field="relatedCompanyRoleTypeIdFrom" />
+				<field-map field-name="roleTypeIdTo" from-field="relatedCompanyRoleTypeIdTo" />
+				<field-map field-name="partyRelationshipTypeId"
+					from-field="relatedCompanyRelationshipTypeId" />
+			</entity-and>
+			<set field="relatedCompanyPartyId" from-field="relatedCompanies[0].partyIdFrom"
+				type="Object" />
+			<set field="existRelationship" from-field="existRelationships[0]" />
+
+			<entity-one entity-name="StatusItem" value-field="statusItem">
+				<field-map field-name="${party.statusId}" />
+			</entity-one>
+		</row-actions>
+
+		<field name="partyIdTo" title="Contact Party">
+			<hyperlink target="viewprofile" description="${partyName} [${partyIdTo}]"
+				target-type="inter-app">
+				<parameter param-name="partyId" value="${partyIdTo}" />
+			</hyperlink>
+		</field>
+		<field name="postalAddress1" title="City">
+			<display default-value="${postalAddress.paCity}" />
+		</field>
+
+		<field name="telecomNumber" title="${uiLabelMap.contactNumber}">
+			<display
+				description="${telecomNumber.tnCountryCode}-${telecomNumber.tnAreaCode}-${telecomNumber.tnContactNumber}-${telecomNumber.tnAskForName}" />
+		</field>
+
+	</form>
+
+</forms>

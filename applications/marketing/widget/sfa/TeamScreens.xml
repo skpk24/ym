@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!--
+		Licensed to the Apache Software Foundation (ASF) under one or more
+		contributor license agreements. See the NOTICE file distributed with
+		this work for additional information regarding copyright ownership.
+		The ASF licenses this file to you under the Apache License, Version
+		2.0 (the "License"); you may not use this file except in compliance
+		with the License. You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0 Unless required by
+		applicable law or agreed to in writing, software distributed under the
+		License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+		CONDITIONS OF ANY KIND, either express or implied. See the License for
+		the specific language governing permissions and limitations under the
+		License.
+	-->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+	<screen name="FindTeam">
+		<section>
+			<actions>
+				<set field="secondaryMenuName" value="SfaMainTabBar" global="true" />
+				<set field="secondaryMenuLocation" value="component://marketing/widget/sfa/SfaMenus.xml"
+					global="true" />
+				<!--
+					<set field="titleProperty" value="Marketing Find Team"/>
+				-->
+				<set field="currentUrl" value="FindLeads" />
+				<set field="headerItem" value="sfa" />
+				<set field="groupName" from-field="parameters.groupName" />
+				<set field="tabButtonItem1" value="FindTeam" />
+				<set field="tabButtonItem" value="Teams" />
+			</actions>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<!--
+						<decorator-section name="left-column"> <include-screen
+						name="leftbar"
+						location="component://marketing/widget/sfa/CommonScreens.xml"/>
+						</decorator-section>
+					-->
+					<decorator-section name="body">
+						<section>
+							<widgets>
+								<include-menu name="TeamSubTabBar"
+									location="component://marketing/widget/sfa/SfaMenus.xml" />
+								<container style="no-clear">
+									<!--
+										<decorator-screen name="FindScreenDecorator"
+										location="component://common/widget/CommonScreens.xml">
+									-->
+									<!--
+										<decorator-section name="search-options">
+									-->
+									<screenlet title="Search Options" id="Find"
+										collapsible="true">
+										<include-form name="FindTeam"
+											location="component://marketing/widget/sfa/forms/TeamForms.xml" />
+									</screenlet>
+									<screenlet title="Search Results" id="FindTeams"
+										collapsible="true">
+										<include-form name="ListTeam"
+											location="component://marketing/widget/sfa/forms/TeamForms.xml" />
+									</screenlet>
+									<!--                                         </decorator-section> -->
+									<!--
+										</decorator-screen>
+									-->
+								</container>
+							</widgets>
+						</section>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+
+
+	<screen name="CreateTeam">
+		<section>
+			<actions>
+				<set field="secondaryMenuName" value="SfaMainTabBar" global="true" />
+				<set field="secondaryMenuLocation" value="component://marketing/widget/sfa/SfaMenus.xml"
+					global="true" />
+				<set field="titleProperty" value="Marketing Find Team" />
+				<set field="currentUrl" value="FindLeads" />
+				<set field="headerItem" value="sfa" />
+				<set field="tabButtonItem1" value="CreateTeam" />
+				<set field="tabButtonItem" value="Teams" />
+				<set field="groupName" from-field="parameters.groupName" />
+				<script
+					location="component://marketing/webapp/marketing/WEB-INF/actions/TeamPermissions.groovy" />
+
+				<set field="viewScreen" value="${viewScreen}" />
+				<set field="bestCost" value="${bestCost}" />
+
+				<entity-condition list="userlist" entity-name="UserLogin">
+					<condition-expr field-name="userLoginId" value="admin"
+						operator="equals" />
+				</entity-condition>
+
+			</actions>
+
+
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<!--
+						<decorator-section name="left-column"> <include-screen
+						name="leftbar"
+						location="component://marketing/widget/sfa/CommonScreens.xml"/>
+						</decorator-section>
+					-->
+					<decorator-section name="body">
+						<section>
+							<widgets>
+								<include-menu name="TeamSubTabBar"
+									location="component://marketing/widget/sfa/SfaMenus.xml" />
+								<container style="no-clear">
+
+									<section>
+										<condition>
+											<not>
+												<if-empty field="viewScreen" />
+											</not>
+										</condition>
+										<widgets>
+											<include-form name="CreateTeam"
+												location="component://marketing/widget/sfa/forms/TeamForms.xml" />
+										</widgets>
+										<fail-widgets>
+											<label style="h1">Not allowed to use this functionality
+											</label>
+										</fail-widgets>
+									</section>
+								</container>
+							</widgets>
+						</section>
+					</decorator-section>
+				</decorator-screen>
+
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="CreateTeamMember">
+		<section>
+			<actions>
+				<set field="secondaryMenuName" value="SfaMainTabBar" global="true" />
+				<set field="secondaryMenuLocation" value="component://marketing/widget/sfa/SfaMenus.xml"
+					global="true" />
+				<set field="titleProperty" value="Marketing Find Team" />
+				<set field="currentUrl" value="FindLeads" />
+				<set field="headerItem" value="sfa" />
+				<set field="tabButtonItem1" value="CreateTeamMember" />
+				<set field="tabButtonItem" value="Teams" />
+				<script
+					location="component://marketing/webapp/marketing/WEB-INF/actions/TeamPermissions.groovy" />
+
+				<set field="viewScreen" value="${viewScreen}" />
+				<set field="bestCost" value="${bestCost}" />
+
+			</actions>
+
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<!--
+						<decorator-section name="left-column"> <include-screen
+						name="leftbar"
+						location="component://marketing/widget/sfa/CommonScreens.xml"/>
+						</decorator-section>
+					-->
+					<decorator-section name="body">
+						<section>
+							<widgets>
+								<include-menu name="TeamSubTabBar"
+									location="component://marketing/widget/sfa/SfaMenus.xml" />
+								<container style="no-clear">
+
+									<section>
+										<condition>
+											<not>
+												<if-empty field="viewScreen" />
+											</not>
+										</condition>
+										<widgets>
+											<include-form name="CreateTeamMember"
+												location="component://marketing/widget/sfa/forms/TeamForms.xml" />
+										</widgets>
+										<fail-widgets>
+											<label style="h1">Not allowed to use this functionality
+											</label>
+										</fail-widgets>
+									</section>
+								</container>
+							</widgets>
+						</section>
+					</decorator-section>
+				</decorator-screen>
+
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="ListTeamMember">
+		<section>
+			<actions>
+				<set field="secondaryMenuName" value="SfaMainTabBar" global="true" />
+				<set field="secondaryMenuLocation" value="component://marketing/widget/sfa/SfaMenus.xml"
+					global="true" />
+				<set field="titleProperty" value="Team Member" />
+				<set field="currentUrl" value="FindLeads" />
+				<set field="headerItem" value="sfa" />
+				<set field="groupName" from-field="parameters.groupName" />
+				<set field="tabButtonItem1" value="CreateTeamMember" />
+				<set field="tabButtonItem" value="Teams" />
+
+			</actions>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<!--
+						<decorator-section name="left-column"> <include-screen
+						name="leftbar"
+						location="component://marketing/widget/sfa/CommonScreens.xml"/>
+						</decorator-section>
+					-->
+					<decorator-section name="body">
+						<section>
+							<widgets>
+								<include-menu name="TeamSubTabBar"
+									location="component://marketing/widget/sfa/SfaMenus.xml" />
+								<container style="no-clear">
+									<decorator-screen name="FindScreenDecorator"
+										location="component://common/widget/CommonScreens.xml">
+										<decorator-section name="search-options">
+											<include-form name="ListTeamMember"
+												location="component://marketing/widget/sfa/forms/TeamForms.xml" />
+										</decorator-section>
+									</decorator-screen>
+								</container>
+							</widgets>
+						</section>
+					</decorator-section>
+				</decorator-screen>
+
+			</widgets>
+		</section>
+	</screen>
+	<screen name="FindTeamMembers">
+		<section>
+			<actions>
+				<set field="secondaryMenuName" value="SfaMainTabBar" global="true" />
+				<set field="secondaryMenuLocation" value="component://marketing/widget/sfa/SfaMenus.xml"
+					global="true" />
+				<set field="titleProperty" value="Marketing Find Team" />
+				<set field="currentUrl" value="FindTeamMembers" />
+				<set field="headerItem" value="sfa" />
+				<set field="tabButtonItem1" value="FindTeamMembers" />
+				<set field="tabButtonItem" value="Teams" />
+			</actions>
+
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<!--
+						<decorator-section name="left-column"> <include-screen
+						name="leftbar"
+						location="component://marketing/widget/sfa/CommonScreens.xml"/>
+						</decorator-section>
+					-->
+					<decorator-section name="body">
+						<section>
+							<widgets>
+								<include-menu name="TeamSubTabBar"
+									location="component://marketing/widget/sfa/SfaMenus.xml" />
+								<container style="no-clear">
+
+									<screenlet title="Search Options" id="Find"
+										collapsible="true">
+										<include-form name="FindTeamMember"
+											location="component://marketing/widget/sfa/forms/TeamForms.xml" />
+									</screenlet>
+									<screenlet title="Search Results" id="FindTeams"
+										collapsible="true">
+										<include-form name="ListTeamMember"
+											location="component://marketing/widget/sfa/forms/TeamForms.xml" />
+									</screenlet>
+								</container>
+							</widgets>
+						</section>
+					</decorator-section>
+				</decorator-screen>
+
+			</widgets>
+		</section>
+	</screen>
+	<screen name="CreateLeadTargets">
+		<section>
+			<actions>
+				<set field="secondaryMenuName" value="SfaMainTabBar" global="true" />
+				<set field="secondaryMenuLocation" value="component://marketing/widget/sfa/SfaMenus.xml"
+					global="true" />
+				<set field="titleProperty" value="Marketing Find Team" />
+				<set field="currentUrl" value="CreateLeadTargets" />
+				<set field="headerItem" value="sfa" />
+				<set field="tabButtonItem1" value="CreateLeadTargets" />
+				<set field="tabButtonItem" value="Teams" />
+			</actions>
+
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<!--
+						<decorator-section name="left-column"> <include-screen
+						name="leftbar"
+						location="component://marketing/widget/sfa/CommonScreens.xml"/>
+						</decorator-section>
+					-->
+					<decorator-section name="body">
+						<section>
+							<widgets>
+								<include-menu name="targetSubTabBar"
+									location="component://marketing/widget/sfa/SfaMenus.xml" />
+								<container style="no-clear">
+
+									<screenlet title="Search Options" id="Find"
+										collapsible="true">
+										<include-form name="CreateCompanyTarget"
+											location="component://marketing/widget/sfa/forms/TeamForms.xml" />
+									</screenlet>
+									<screenlet title="Search Results" id="FindTeams"
+										collapsible="true">
+										<include-form name="ListTeamTargets"
+											location="component://marketing/widget/sfa/forms/TeamForms.xml" />
+									</screenlet>
+								</container>
+							</widgets>
+						</section>
+					</decorator-section>
+				</decorator-screen>
+
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="TargetReports">
+		<section>
+			<actions>
+				<set field="secondaryMenuName" value="SfaMainTabBar" global="true" />
+				<set field="secondaryMenuLocation" value="component://marketing/widget/sfa/SfaMenus.xml"
+					global="true" />
+				<set field="titleProperty" value="Marketing Find Team" />
+				<set field="currentUrl" value="CreateLeadTargets" />
+				<set field="headerItem" value="sfa" />
+				<set field="tabButtonItem1" value="TargetReports" />
+				<set field="tabButtonItem" value="Teams" />
+				<set field="bestCost" from-field="${bestCost}" />
+				<script
+					location="component://marketing/webapp/marketing/WEB-INF/actions/TargetReports.groovy" />
+				<set field="reportNameForm" value="${reportNameForm}" />
+				<set field="listSize" value="${listSize}"/>
+			</actions>
+
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<section>
+							<widgets>
+								<container style="no-clear">
+									<include-menu name="targetSubTabBar"
+										location="component://marketing/widget/sfa/SfaMenus.xml" />
+
+									<screenlet collapsible="true" initially-collapsed="false"
+										id="LeadForms" title="Report Options">
+										<include-form name="TargetReports"
+											location="component:///marketing/widget/sfa/forms/TeamForms.xml" />
+									</screenlet>
+									<section>
+										<condition>
+											<not>
+											 <and>
+												<if-empty field="reportNameForm" />
+												<if-empty field="listSize"/>
+												</and>
+											</not>
+										</condition>
+										<widgets>
+											<screenlet collapsible="true" initially-collapsed="false"
+												id="ListLeads" title="${reportNameScreen}">
+												<link target="${reportExcel}" target-window="_blank"
+													link-type="anchor" prefix="" text="Export">
+													<image src="/images/sfa/reports/report_excel.png" id="feedIcon"
+														height="12px" />
+												</link>
+												<include-form name="${reportNameForm}"
+													location="component:///marketing/widget/sfa/forms/TeamForms.xml" />
+											</screenlet>
+										</widgets>
+									</section>
+								</container>
+							</widgets>
+						</section>
+					</decorator-section>
+		</decorator-screen>
+
+			</widgets>
+		</section>
+	</screen>
+
+</screens>
+    

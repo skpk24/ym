@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <SecurityPermission description="View operations in the RestfulComponent Component." permissionId="RESTFULCOMPONENT_VIEW"/>
+    <SecurityPermission description="Create operations in the RestfulComponent Component." permissionId="RESTFULCOMPONENT_CREATE"/>
+    <SecurityPermission description="Update operations in the RestfulComponent Component." permissionId="RESTFULCOMPONENT_UPDATE"/>
+    <SecurityPermission description="Delete operations in the RestfulComponent Component." permissionId="RESTFULCOMPONENT_DELETE"/>
+    <SecurityPermission description="ALL operations in the RestfulComponent Component." permissionId="RESTFULCOMPONENT_ADMIN"/>
+    <SecurityGroupPermission groupId="FULLADMIN" permissionId="RESTFULCOMPONENT_ADMIN"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="RESTFULCOMPONENT_CREATE"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="RESTFULCOMPONENT_DELETE"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="RESTFULCOMPONENT_UPDATE"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="RESTFULCOMPONENT_VIEW"/>
+    <SecurityGroupPermission groupId="VIEWADMIN" permissionId="RESTFULCOMPONENT_VIEW"/>
+    <SecurityGroupPermission groupId="BIZADMIN" permissionId="RESTFULCOMPONENT_ADMIN"/>
+</entity-engine-xml>

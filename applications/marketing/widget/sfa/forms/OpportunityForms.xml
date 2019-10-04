@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!--
+		Licensed to the Apache Software Foundation (ASF) under one or more
+		contributor license agreements. See the NOTICE file distributed with
+		this work for additional information regarding copyright ownership.
+		The ASF licenses this file to you under the Apache License, Version
+		2.0 (the "License"); you may not use this file except in compliance
+		with the License. You may obtain a copy of the License at
+		http://www.apache.org/licenses/LICENSE-2.0 Unless required by
+		applicable law or agreed to in writing, software distributed under the
+		License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+		CONDITIONS OF ANY KIND, either express or implied. See the License for
+		the specific language governing permissions and limitations under the
+		License.
+	-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+
+	<form name="FindSalesOpportunity" type="single" target="FindSalesOpportunity"
+		header-row-style="header-row" default-table-style="basic-table">
+		<field name="salesOpportunityId">
+			<hidden />
+		</field>
+		<field name="opportunityName" title="Opportunity Name">
+			<text-find size="25" />
+		</field>
+		<field name="companyName" title="Lead Name" >
+			<text-find size="25" />
+		</field>
+		<field name="searchButton" title="${uiLabelMap.CommonFind}"
+			widget-style="smallSubmit">
+			<submit />
+		</field>
+	</form>
+
+	<form name="ListSalesOpportunity" type="list" list-name="listIt"
+		list-entry-name="listIt" paginate-target="FindSalesOpportunity"
+		view-size="20" odd-row-style="alternate-row" default-table-style="basic-table hover-bar"
+		separate-columns="true" header-row-style="header-row-2">
+		<actions>
+			<set field="parameters.noConditionFind" value="Y" />
+			<script
+				location="component://marketing/webapp/sfa/WEB-INF/action/opportunity/OpportunityList.groovy" />
+		</actions>
+		<row-actions>
+
+			<entity-one entity-name="SalesOpportunity" value-field="salesOpp">
+				<field-map field-name="salesOpportunityId" value="${listIt.salesOpportunityId}" />
+			</entity-one>
+			
+			<entity-one entity-name="Person" value-field="person">
+				<field-map field-name="partyId" value="${salesOpp.leadPartyId}" />
+			</entity-one>
+			
+			<entity-one entity-name="StatusItem" value-field="status">
+				<field-map field-name="statusId" value="${salesOpp.statusId}" />
+			</entity-one>
+
+		</row-actions>
+		<field name="salesOpportunityId">
+			<hidden value="${salesOpp.salesOpportunityId}" />
+		</field>
+		<field name="opportunityName" title="${uiLabelMap.SfaOpportunityName}">
+			<hyperlink target="EditSalesOpportunity"
+				description="${salesOpp.opportunityName}[${salesOpp.salesOpportunityId}]">
+				<parameter param-name="salesOpportunityId" value="${salesOpp.salesOpportunityId}" />
+			</hyperlink>
+		</field>
+		<field name="companyName" title="Lead Name">
+			<display description="${person.firstName}" />
+		</field>
+		<field name="companyType" title="Project Name">
+			<display description="${salesOpp.projectName}" />
+		</field>
+		<!-- <field name="nextStep"><display/></field> -->
+		<field name="estimatedAmount" title="${uiLabelMap.SfaEstimatedAmount}">
+			<display description="${salesOpp.estimatedAmount}" />
+		</field>
+		<field name="estimatedProbability" title="Probability(%)">
+			<display description="${salesOpp.estimatedProbability}" />
+		</field>
+		<field name="opportunityStageId" title="Opportunity Stage">
+			<display description="${status.description}" />
+		</field>
+		<field name="editButton" title="${uiLabelMap.CommonEdit}"
+			widget-style="buttontext">
+			<hyperlink target="EditSalesOpportunity" description="${uiLabelMap.CommonEdit}">
+				<parameter param-name="salesOpportunityId" value="${salesOpp.salesOpportunityId}"/>
+			</hyperlink>
+		</field>
+	</form>
+
+	<form name="EditSalesOpportunity" type="upload" target="updateSalesOpportunity"
+		default-map-name="salesOpportunity" header-row-style="header-row"
+		default-table-style="basic-table">
+		<actions>
+			<script
+				location="component://marketing/webapp/sfa/WEB-INF/action/GetParties.groovy" />
+		</actions>
+		<row-actions>
+
+			<entity-one entity-name="Person" value-field="person">
+				<field-map field-name="partyId" value="${contact.partyId}" />
+			</entity-one>
+		</row-actions>
+		
+		<alt-target use-when="salesOpportunityId==null" target="createSalesOpportunity" />
+		<field name="salesOpportunityId" >
+			<hidden value="${parameters.salesOpportunityId}"/>
+		</field>
+		<field name="opportunityName" title="${uiLabelMap.SfaOpportunityName}">
+			<text size="30" />
+		</field>
+		<field name="projectName">
+			<text />
+		</field>
+
+		<field name="accountPartyId" title="Assign Sales Lead">
+			<drop-down allow-empty="false">
+				<list-options list-name="partyList" key-name="contact.partyId"
+					list-entry-name="contact"
+					description="${groovy:org.ofbiz.party.party.PartyHelper.getPartyName(delegator, contact.partyId, false);}  [${contact.partyId}]" />
+			</drop-down>
+		</field>
+		<field name="leadPartyId" field-name="partyId" title="Lead Name">
+			<drop-down allow-multiple="false" allow-empty="true">
+				<entity-options entity-name="PartyRoleAndPartyDetail"
+					description="${firstName} ${middleName} ${lastName} ${groupName}(${partyId})">
+					<entity-constraint name="roleTypeId" operator="equals"
+						value="PROSPECT_LEAD" />
+					<entity-constraint name="statusId" operator="not-equals"
+						value="SFA_CLOSED" />
+				</entity-options>
+			</drop-down>
+		</field>
+		<field name="companySize" title="Lead Size">
+			<drop-down>
+				<entity-options key-field-name="enumId" description="${description}"
+					entity-name="Enumeration">
+					<entity-constraint name="enumTypeId" operator="equals"
+						value="CMPNY_SIZE" />
+					<entity-order-by field-name="sequenceId" />
+				</entity-options>
+			</drop-down>
+		</field>
+		<field name="businessLine" title="Line Of Business">
+			<drop-down>
+				<entity-options key-field-name="enumId" description="${description}"
+					entity-name="Enumeration">
+					<entity-constraint name="enumTypeId" operator="equals"
+						value="LINE_OF_BIZ" />
+					<entity-order-by field-name="sequenceId" />
+				</entity-options>
+			</drop-down>
+		</field>
+		<field name="statusId">
+			<drop-down>
+				<entity-options description="${description}"
+					entity-name="StatusItem" key-field-name="statusId">
+					<entity-constraint name="statusTypeId" operator="equals"
+						value="SFA_ERP_LEAD_STATUS" />
+					<entity-order-by field-name="sequenceId" />
+				</entity-options>
+			</drop-down>
+		</field>
+
+		<field name="currencyUomId">
+			<drop-down allow-empty="true"
+				no-current-selected-key="${defaultOrganizationPartyCurrencyUomId}">
+				<entity-options key-field-name="uomId"
+					description="${description} - ${abbreviation}" entity-name="Uom">
+					<entity-constraint name="uomTypeId" operator="equals"
+						value="CURRENCY_MEASURE" />
+					<entity-order-by field-name="description" />
+				</entity-options>
+			</drop-down>
+		</field>
+
+		<field name="estimatedAmount" title="${uiLabelMap.SfaEstimatedAmount}">
+			<text size="25" />
+		</field>
+		<field name="estimatedCloseDate" title="${uiLabelMap.SfaCloseDate}"
+			widget-style="required">
+			<date-time />
+		</field>
+		<field name="documentId" title="Document">
+			<file size="30" />
+		</field>
+		<field name="description" title="${uiLabelMap.MarketingSegmentGroupDescription}">
+			<textarea default-value="${communicationEvent.content}" />
+		</field>
+		<field name="submitButton" title="${uiLabelMap.CommonCreate}"
+			use-when="salesOpportunity==null">
+			<submit button-type="button" />
+		</field>
+		<field name="submitButton" title="${uiLabelMap.CommonUpdate}"
+			use-when="salesOpportunity!=null">
+			<submit button-type="button" />
+		</field>
+	</form>
+
+	<form name="ViewSalesOpportunity" type="single" default-map-name="salesOpportunity"
+		header-row-style="header-row" default-table-style="basic-table">
+		<field name="salesOpportunityId">
+			<hidden />
+		</field>
+		<field name="opportunityName" position="1"
+			title="${uiLabelMap.SfaOpportunityName}">
+			<display />
+		</field>
+
+		<field name="projectName">
+			<display />
+		</field>
+
+		<field name="accountPartyId" position="1" title="Sales Head"
+			map-name="accountParty" field-name="partyId">
+			<display-entity description="${firstName} ${lastName} ${groupName} [${partyId}]"
+				entity-name="PartyNameView" />
+		</field>
+		<field name="leadPartyId" position="1" title="Company" map-name="leadParty"
+			field-name="partyId">
+			<display-entity description="${firstName} ${lastName} ${groupName} [${partyId}]"
+				entity-name="PartyNameView" />
+		</field>
+
+		<field name="companySize">
+			<display />
+		</field>
+		<field name="businessLine">
+			<display />
+		</field>
+		<field name="statusId">
+			<display />
+		</field>
+		<field name="currencyUomId">
+			<display />
+		</field>
+		<field name="estimatedAmount" position="1"
+			title="${uiLabelMap.SfaEstimatedAmount} ${currencyUomId}">
+			<display />
+		</field>
+
+		<field name="estimatedCloseDate" title="${uiLabelMap.SfaCloseDate}">
+			<display />
+		</field>
+
+		<field name="description" position="1"
+			title="${uiLabelMap.MarketingSegmentGroupDescription}">
+			<display />
+		</field>
+	</form>
+	<form name="QuickAddOpportunity" type="single" target="quickAddOpportunity">
+		<field name="opportunityName" title="${uiLabelMap.SfaOpportunityName}">
+			<text size="30" />
+		</field>
+		<field name="projectName">
+			<text />
+		</field>
+		<field name="leadPartyId" title="${uiLabelMap.SfaLead}">
+			<lookup target-form-name="LookupLeads" />
+		</field>
+		<field name="estimatedAmount" title="${uiLabelMap.SfaEstimatedAmount}">
+			<text />
+		</field>
+		<field name="quickAdd">
+			<hidden value="Y" />
+		</field>
+		<field name="submitButton">
+			<submit />
+		</field>
+	</form>
+</forms>

@@ -1,0 +1,143 @@
+/*
+ * Copyright (c) 2006 - 2007 Open Source Strategies, Inc.
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the Honest Public License.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Honest Public License for more details.
+ * 
+ * You should have received a copy of the Honest Public License
+ * along with this program; if not, write to Funambol,
+ * 643 Bair Island Road, Suite 305 - Redwood City, CA 94063, USA
+ */
+ 
+import org.ofbiz.base.util.*;
+import org.ofbiz.base.util.string.*;
+import org.ofbiz.entity.*;
+import org.ofbiz.entity.condition.*;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.sql.*;
+
+andExprs = new ArrayList();
+mainCond = null;
+
+Timestamp test;
+int date = UtilDateTime.nowTimestamp().getDate();
+SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+fromDate=request.getParameter("fromDate");
+thruDate=request.getParameter("thruDate");
+productId=request.getParameter("productId");
+if(productId != null && productId.length() > 0){
+	andExprs.add(new EntityExpr("productId", EntityOperator.EQUALS, productId));
+}else{
+	andExprs.add(new EntityExpr("productId", EntityOperator.NOT_EQUAL, null));
+}
+if (fromDate != null && fromDate.length() > 8) {            
+    fromDate = fromDate.trim();
+    if (fromDate.length() < 14) fromDate = fromDate + " " + "00:00:00.000";
+    andExprs.add(new EntityExpr("createdDate", EntityOperator.GREATER_THAN_EQUAL_TO, fromDate));    
+}
+if (thruDate != null && thruDate.length() > 8) {
+    thruDate = thruDate.trim();
+    if (thruDate.length() < 14) thruDate = thruDate + " " + "23:59:59.999";
+    andExprs.add(new EntityExpr("createdDate", EntityOperator.LESS_THAN_EQUAL_TO, thruDate));
+}
+andExprs.add(new EntityExpr("isVirtual", EntityOperator.EQUALS, "Y"));
+mainCond = new EntityConditionList(andExprs, EntityOperator.AND);
+ImportedProductList = delegator.findByCondition("Product", mainCond, null, null);
+
+List variantProductExportList = new ArrayList();
+if(ImportedProductList != null){
+	Iterator i = ImportedProductList.iterator();
+    while (i.hasNext()) {
+        GenericValue product = (GenericValue)i.next();
+        productId = product.getString("productId");
+        
+        variantProductList = delegator.findByCondition("ProductAssoc", new EntityExpr("productId", EntityOperator.EQUALS, productId), null, null);
+        if(variantProductList != null){
+			Iterator it = variantProductList.iterator();
+		    while (it.hasNext()) {
+		        GenericValue variantProduct = (GenericValue)it.next();
+		        prodId = variantProduct.getString("productIdTo");
+		        
+		        productList = delegator.findByPrimaryKey("Product", UtilMisc.toMap("productId", prodId));
+				        
+		        Map report = new HashMap();
+		        report.put("productId", productList.get("productId"));
+		        report.put("productName", productList.get("productName"));
+		        
+				smallImageUrl = productList.get("smallImageUrl");
+				if(smallImageUrl != null){
+					start = 0;
+					end=smallImageUrl.lastIndexOf(smallImageUrl);
+					while(end >= 0){
+			        	end = smallImageUrl.indexOf('/', start);
+			      		smallImageName = (end>0) ? smallImageUrl.substring(start,end): smallImageUrl.substring(start);  
+			        	start = end + 1;
+			        }
+			        report.put("smallImageUrl", smallImageName);
+		        }
+		        
+		        largeImageUrl = productList.get("largeImageUrl");
+		        if(largeImageUrl != null){
+			        start = 0;
+					end=largeImageUrl.lastIndexOf(largeImageUrl);
+					while(end >= 0){
+			        	end = largeImageUrl.indexOf('/', start);
+			      		largeImageName = (end>0) ? largeImageUrl.substring(start,end): largeImageUrl.substring(start);  
+			        	start = end + 1;
+			        }
+			        report.put("largeImageUrl", largeImageName);
+		        }
+		        
+				detailImageUrl = productList.get("detailImageUrl");
+				if(detailImageUrl != null){
+					start = 0;
+					end=detailImageUrl.lastIndexOf(detailImageUrl);
+					while(end >= 0){
+			        	end = detailImageUrl.indexOf('/', start);
+			      		detailImageName = (end>0) ? detailImageUrl.substring(start,end): detailImageUrl.substring(start);  
+			        	start = end + 1;
+			        }
+			        report.put("detailImageUrl", detailImageName);
+		        }
+		        
+		        productPriceList = delegator.findByCondition("ProductPrice", new EntityExpr("productId", EntityOperator.EQUALS, prodId),null, null);
+		        if(productPriceList != null){
+		        	Iterator itr = productPriceList.iterator();
+				    while (itr.hasNext()) {
+				        GenericValue productPrice = (GenericValue)itr.next();
+				        productPriceTypeId = productPrice.getString("productPriceTypeId");
+				        if(productPriceTypeId != null && productPriceTypeId.equals("DEFAULT_PRICE")){
+				        	report.put("defaultPrice", productPrice.get("price"));
+				        }
+				        if(productPriceTypeId != null && productPriceTypeId.equals("LIST_PRICE")){
+				        	report.put("listPrice", productPrice.get("price"));
+				        }
+				        if(productPriceTypeId != null && productPriceTypeId.equals("SPECIAL_PROMO_PRICE")){
+				        	report.put("promotionalPrice", productPrice.get("price"));
+				        }
+				        if(productPriceTypeId != null && productPriceTypeId.equals("WHOLESALE_PRICE")){
+				        	report.put("wholesalePrice", productPrice.get("price"));
+				        }
+				    }    
+		        	
+		        }
+		        
+		        variantProductExportList.add(report);
+		    }
+	    }
+	}        
+}
+
+context.put("variantProductExportList", variantProductExportList);
+listSize = 0;
+if(variantProductExportList != null){
+	listSize = variantProductExportList.size();
+}
+context.put("listSize", listSize);	

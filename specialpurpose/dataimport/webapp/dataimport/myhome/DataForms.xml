@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information 
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="http://www.ofbiz.org/dtds/widget-form.xsd">
+    <form name="ExportVariantProductForm" type="list" list-name="variantProductExportList" paginate-size-field="listSize"> 
+        <field name="productId" title="Product Id"><display/></field>
+        <field name="separator0" title=","><display description=","/></field>
+        <field name="quot0" title="&quot;"><display description="&quot;"/></field>
+        <field name="smallImageUrl " title="Small Image"><display/></field>
+        <field name="quot1" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator1" title=","><display description=","/></field>
+        <field name="quot2" title="&quot;"><display description="&quot;"/></field>
+        <field name="largeImageUrl" title="Large Image"><display/></field>
+        <field name="quot3" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator2" title=","><display description=","/></field>
+        <field name="quot4" title="&quot;"><display description="&quot;"/></field>
+        <field name="detailImageUrl" title="Detail Image"><display/></field>
+        <field name="quot5" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator3" title=","><display description=","/></field>
+        <field name="quot6" title="&quot;"><display description="&quot;"/></field>
+        <field name="defaultPrice" title="Default Price"><display/></field>
+        <field name="quot7" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator4" title=","><display description=","/></field>
+        <field name="quot8" title="&quot;"><display description="&quot;"/></field>
+		<field name="listPrice" title="List Price"><display/></field>
+        <field name="quot9" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator5" title=","><display description=","/></field>
+        <field name="quot10" title="&quot;"><display description="&quot;"/></field>
+		<field name="promotionalPrice" title="Promotional Price"><display/></field>
+        <field name="quot11" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator6" title=","><display description=","/></field>
+        <field name="quot12" title="&quot;"><display description="&quot;"/></field>
+		<field name="wholesalePrice" title="Wholesale Price"><display/></field>
+        <field name="quot13" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator7" title=","><display description=","/></field>
+        <field name="quot14" title="&quot;"><display description="&quot;"/></field>
+		<field name="productName" title="Product Name"><display/></field>
+        <field name="quot15" title="&quot;"><display description="&quot;"/></field>
+    </form>
+	
+	<form name="ExportCatalogReportForm" type="list" list-name="importedCatalogList" paginate-size-field="listSize"> 
+        <field name="exportCatalogSeqId" title="Export Catalog Seq Id"><display/></field>
+        <field name="separator0" title=","><display description=","/></field>
+        <field name="quot0" title="&quot;"><display description="&quot;"/></field>
+        <field name="prodCatalogId" title="Product Catalog Id"><display/></field>
+        <field name="quot1" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator1" title=","><display description=","/></field>
+        <field name="quot2" title="&quot;"><display description="&quot;"/></field>
+        <field name="useQuickAdd " title="Use Quick Add"><display/></field>
+        <field name="quot3" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator2" title=","><display description=","/></field>
+        <field name="quot4" title="&quot;"><display description="&quot;"/></field>
+        <field name="productStoreId" title="Product Store Id"><display/></field>
+        <field name="quot5" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator3" title=","><display description=","/></field>
+        <field name="quot6" title="&quot;"><display description="&quot;"/></field>
+        <field name="catalogName" title="Catalog Name"><display/></field>
+        <field name="quot7" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator4" title=","><display description=","/></field>
+        <field name="quot8" title="&quot;"><display description="&quot;"/></field>
+        <field name="processedTimestamp" title="Processed Time"><display/></field>
+        <field name="quot9" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator5" title=","><display description=","/></field>
+        <field name="quot10" title="&quot;"><display description="&quot;"/></field>
+        <field name="message" title="Message"><display/></field>
+        <field name="quot11" title="&quot;"><display description="&quot;"/></field>
+    </form>
+	
+	<form name="ExportCategoryReportForm" type="list" list-name="importedCategoryList" paginate-size-field="listSize"> 
+        <field name="exportCategorySeqId" title="Export Category Seq Id"><display/></field>
+        <field name="separator0" title=","><display description=","/></field>
+        <field name="quot0" title="&quot;"><display description="&quot;"/></field>
+        <field name="productCategoryId" title="Product Category Id"><display/></field>
+        <field name="quot1" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator1" title=","><display description=","/></field>
+        <field name="quot2" title="&quot;"><display description="&quot;"/></field>
+        <field name="primaryParentCategoryId" title="Primary Parent Category Id"><display/></field>
+        <field name="quot3" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator2" title=","><display description=","/></field>
+        <field name="quot4" title="&quot;"><display description="&quot;"/></field>
+        <field name="categoryName" title="Category Name"><display/></field>
+        <field name="quot5" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator3" title=","><display description=","/></field>
+        <field name="quot6" title="&quot;"><display description="&quot;"/></field>
+        <field name="description" title="Description"><display/></field>
+        <field name="quot7" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator4" title=","><display description=","/></field>
+        <field name="quot8" title="&quot;"><display description="&quot;"/></field>
+        <field name="longDescription" title="Long Description"><display/></field>
+        <field name="quot9" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator5" title=","><display description=","/></field>
+        <field name="quot10" title="&quot;"><display description="&quot;"/></field>
+        <field name="categoryImageUrl" title="Category Image Url"><display/></field>
+        <field name="quot11" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator6" title=","><display description=","/></field>
+        <field name="quot12" title="&quot;"><display description="&quot;"/></field>
+        <field name="linkOneImageUrl" title="LinkOne Image Url"><display/></field>
+        <field name="quot13" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator7" title=","><display description=","/></field>
+        <field name="quot14" title="&quot;"><display description="&quot;"/></field>
+        <field name="prodCatalogId" title="Product Catalog Id"><display/></field>
+        <field name="quot15" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator8" title=","><display description=","/></field>
+        <field name="quot16" title="&quot;"><display description="&quot;"/></field>
+        <field name="prodCatalogCategoryTypeId" title="Product Catalog Category Type Id"><display/></field>
+        <field name="quot17" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator9" title=","><display description=","/></field>
+        <field name="quot18" title="&quot;"><display description="&quot;"/></field>
+        <field name="rollUpCategoryId" title="RollUp Category Id"><display/></field>
+        <field name="quot19" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator10" title=","><display description=","/></field>
+        <field name="quot20" title="&quot;"><display description="&quot;"/></field>
+        <field name="productCategoryTypeId" title="Product Category Type Id"><display/></field>
+        <field name="quot21" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator11" title=","><display description=","/></field>
+        <field name="quot22" title="&quot;"><display description="&quot;"/></field>
+        <field name="processedTimestamp" title="Processed Time"><display/></field>
+        <field name="quot23" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator12" title=","><display description=","/></field>
+        <field name="quot24" title="&quot;"><display description="&quot;"/></field>
+        <field name="message" title="Message"><display/></field>
+        <field name="quot25" title="&quot;"><display description="&quot;"/></field>
+    </form>
+	
+	<form name="ExportFeatureReportForm" type="list" list-name="importedFeatureList" paginate-size-field="listSize"> 
+        <field name="exportFeatureCategorySeqId" title="Export Feature Category Seq Id"><display/></field>
+        <field name="separator0" title=","><display description=","/></field>
+        <field name="quot0" title="&quot;"><display description="&quot;"/></field>
+        <field name="productFeatureCategoryId" title="Product Feature Category Id"><display/></field>
+        <field name="quot1" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator1" title=","><display description=","/></field>
+        <field name="quot2" title="&quot;"><display description="&quot;"/></field>
+        <field name="productFeatureCategoryDescription " title="Product Feature Category Description"><display/></field>
+        <field name="quot3" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator2" title=","><display description=","/></field>
+        <field name="quot4" title="&quot;"><display description="&quot;"/></field>
+        <field name="productFeatureTypeId" title="Product Feature Type Id"><display/></field>
+        <field name="quot5" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator3" title=","><display description=","/></field>
+        <field name="quot6" title="&quot;"><display description="&quot;"/></field>
+        <field name="productFeatureDescription" title="Product Feature Description"><display/></field>
+        <field name="quot7" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator4" title=","><display description=","/></field>
+        <field name="quot8" title="&quot;"><display description="&quot;"/></field>
+        <field name="processedTimestamp" title="Processed Time"><display/></field>
+        <field name="quot9" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator5" title=","><display description=","/></field>
+        <field name="quot10" title="&quot;"><display description="&quot;"/></field>
+        <field name="message" title="Message"><display/></field>
+        <field name="quot11" title="&quot;"><display description="&quot;"/></field>
+    </form>
+	
+	<form name="ExportProductReportForm" type="list" list-name="importedProductList" paginate-size-field="listSize"> 
+        <field name="exportProductSeqId" title="Export Product Seq Id"><display/></field>
+        <field name="separator0" title=","><display description=","/></field>
+        <field name="quot0" title="&quot;"><display description="&quot;"/></field>
+        <field name="productId" title="Product Id"><display/></field>
+        <field name="quot1" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator1" title=","><display description=","/></field>
+        <field name="quot2" title="&quot;"><display description="&quot;"/></field>
+		<field name="skuId" title="SKU Id"><display/></field>
+        <field name="quot3" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator2" title=","><display description=","/></field>
+        <field name="quot4" title="&quot;"><display description="&quot;"/></field>
+        <field name="productTypeId " title="Product Type Id"><display/></field>
+        <field name="quot5" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator3" title=","><display description=","/></field>
+        <field name="quot6" title="&quot;"><display description="&quot;"/></field>
+        <field name="internalName" title="Internal Name"><display/></field>
+        <field name="quot7" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator4" title=","><display description=","/></field>
+        <field name="quot8" title="&quot;"><display description="&quot;"/></field>
+        <field name="brandName" title="Brand Name"><display/></field>
+        <field name="quot9" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator5" title=","><display description=","/></field>
+        <field name="quot10" title="&quot;"><display description="&quot;"/></field>
+		<field name="seasonName" title="Season Name"><display/></field>
+        <field name="quot11" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator6" title=","><display description=","/></field>
+        <field name="quot12" title="&quot;"><display description="&quot;"/></field>
+        <field name="productName" title="Product Name"><display/></field>
+        <field name="quot13" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator7" title=","><display description=","/></field>
+        <field name="quot14" title="&quot;"><display description="&quot;"/></field>
+        <field name="description" title="Description"><display/></field>
+		<field name="quot15" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator8" title=","><display description=","/></field>
+        <field name="quot16" title="&quot;"><display description="&quot;"/></field>
+        <field name="longDescription" title="Long Description"><display/></field>
+		<field name="quot17" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator9" title=","><display description=","/></field>
+        <field name="quot18" title="&quot;"><display description="&quot;"/></field>
+        <field name="smallImageUrl" title="Small Image Url"><display/></field>
+        <field name="quot19" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator10" title=","><display description=","/></field>
+        <field name="quot20" title="&quot;"><display description="&quot;"/></field>
+        <field name="largeImageUrl" title="Large Image Url"><display/></field>
+        <field name="quot21" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator11" title=","><display description=","/></field>
+        <field name="quot22" title="&quot;"><display description="&quot;"/></field>
+        <field name="detailImageUrl" title="Detail Image Url"><display/></field>
+        <field name="quot23" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator12" title=","><display description=","/></field>
+        <field name="quot24" title="&quot;"><display description="&quot;"/></field>
+        <field name="firstImageUrl" title="First Image Url"><display/></field>
+        <field name="quot25" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator13" title=","><display description=","/></field>
+        <field name="quot26" title="&quot;"><display description="&quot;"/></field>
+        <field name="secondImageUrl" title="Second Image Url"><display/></field>
+        <field name="quot27" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator14" title=","><display description=","/></field>
+        <field name="quot28" title="&quot;"><display description="&quot;"/></field>
+        <field name="thirdImageUrl" title="Third Image Url"><display/></field>
+        <field name="quot29" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator15" title=","><display description=","/></field>
+        <field name="quot30" title="&quot;"><display description="&quot;"/></field>
+		<field name="fourthImageUrl" title="Fourth Image Url"><display/></field>
+        <field name="quot31" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator16" title=","><display description=","/></field>
+        <field name="quot32" title="&quot;"><display description="&quot;"/></field>
+		<field name="fifthImageUrl" title="Fifth Image Url"><display/></field>
+        <field name="quot33" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator17" title=","><display description=","/></field>
+        <field name="quot34" title="&quot;"><display description="&quot;"/></field>
+        <field name="sixthImageUrl" title="Sixth Image Url"><display/></field>
+        <field name="quot35" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator18" title=","><display description=","/></field>
+        <field name="quot36" title="&quot;"><display description="&quot;"/></field>
+        <field name="seventhImageUrl" title="Seventh Image Url"><display/></field>
+        <field name="quot37" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator19" title=","><display description=","/></field>
+        <field name="quot38" title="&quot;"><display description="&quot;"/></field>
+        <field name="eightImageUrl" title="Eight Image Url"><display/></field>
+        <field name="quot39" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator20" title=","><display description=","/></field>
+        <field name="quot40" title="&quot;"><display description="&quot;"/></field>
+        <field name="ninethImageUrl" title="Nineth Image Url"><display/></field>
+        <field name="quot41" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator21" title=","><display description=","/></field>
+        <field name="quot42" title="&quot;"><display description="&quot;"/></field>
+		<field name="tenthImageUrl" title="Tenth Image Url"><display/></field>
+        <field name="quot43" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator22" title=","><display description=","/></field>
+        <field name="quot44" title="&quot;"><display description="&quot;"/></field>
+		<field name="costPrice" title="Cost Price"><display/></field>
+        <field name="quot45" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator23" title=","><display description=","/></field>
+        <field name="quot46" title="&quot;"><display description="&quot;"/></field>
+		<field name="defaultPrice" title="Default Price"><display/></field>
+        <field name="quot47" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator24" title=","><display description=","/></field>
+        <field name="quot48" title="&quot;"><display description="&quot;"/></field>
+		<field name="listPrice" title="List Price"><display/></field>
+        <field name="quot49" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator25" title=","><display description=","/></field>
+        <field name="quot50" title="&quot;"><display description="&quot;"/></field>
+		<field name="promotionalPrice" title="Promotional Price"><display/></field>
+        <field name="quot51" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator26" title=","><display description=","/></field>
+        <field name="quot52" title="&quot;"><display description="&quot;"/></field>
+		<field name="wholesalePrice" title="Wholesale Price"><display/></field>
+        <field name="quot53" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator27" title=","><display description=","/></field>
+        <field name="quot54" title="&quot;"><display description="&quot;"/></field>
+		<field name="categoryOne" title="Category One"><display/></field>
+        <field name="quot55" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator28" title=","><display description=","/></field>
+        <field name="quot56" title="&quot;"><display description="&quot;"/></field>
+		<field name="categoryTwo" title="Category Two"><display/></field>
+        <field name="quot57" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator29" title=","><display description=","/></field>
+        <field name="quot58" title="&quot;"><display description="&quot;"/></field>
+		<field name="productFeatureCategoryId" title="Product Feature Category Id"><display/></field>
+		<field name="quot59" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator30" title=","><display description=","/></field>
+        <field name="quot60" title="&quot;"><display description="&quot;"/></field>
+		<field name="productFeature" title="Product Feature"><display/></field>
+		<field name="quot61" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator31" title=","><display description=","/></field>
+        <field name="quot62" title="&quot;"><display description="&quot;"/></field>
+		<field name="isVirtual" title="isVirtual"><display/></field>
+        <field name="quot63" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator32" title=","><display description=","/></field>
+        <field name="quot64" title="&quot;"><display description="&quot;"/></field>
+		<field name="isVariant" title="isVariant"><display/></field>
+        <field name="quot65" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator33" title=","><display description=","/></field>
+        <field name="quot66" title="&quot;"><display description="&quot;"/></field>
+        <field name="processedTimestamp" title="Processed Time"><display/></field>
+        <field name="quot67" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator34" title=","><display description=","/></field>
+        <field name="quot68" title="&quot;"><display description="&quot;"/></field>
+        <field name="message" title="Message"><display/></field>
+        <field name="quot69" title="&quot;"><display description="&quot;"/></field>
+    </form>
+	
+	<form name="ExportVariantProductReportForm" type="list" list-name="importedVariantProductList" paginate-size-field="listSize"> 
+        <field name="exportVariantProdSeqId" title="Export Variant Product Seq Id"><display/></field>
+        <field name="separator0" title=","><display description=","/></field>
+        <field name="quot0" title="&quot;"><display description="&quot;"/></field>
+        <field name="productId" title="Product Id"><display/></field>
+        <field name="quot1" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator1" title=","><display description=","/></field>
+        <field name="quot2" title="&quot;"><display description="&quot;"/></field>
+        <field name="productName " title="Product Name"><display/></field>
+        <field name="quot3" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator2" title=","><display description=","/></field>
+        <field name="quot4" title="&quot;"><display description="&quot;"/></field>
+        <field name="smallImageUrl" title="Small Image Url"><display/></field>
+        <field name="quot5" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator3" title=","><display description=","/></field>
+        <field name="quot6" title="&quot;"><display description="&quot;"/></field>
+        <field name="largeImageUrl" title="Large Image Url"><display/></field>
+        <field name="quot7" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator4" title=","><display description=","/></field>
+        <field name="quot8" title="&quot;"><display description="&quot;"/></field>
+        <field name="detailImageUrl" title="Detail Image Url"><display/></field>
+        <field name="quot9" title="&quot;"><display description="&quot;"/></field>
+		
+		<field name="separator5" title=","><display description=","/></field>
+        <field name="quot10" title="&quot;"><display description="&quot;"/></field>
+		<field name="defaultPrice" title="Default Price"><display/></field>
+        <field name="quot11" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator6" title=","><display description=","/></field>
+        <field name="quot12" title="&quot;"><display description="&quot;"/></field>
+		<field name="listPrice" title="List Price"><display/></field>
+        <field name="quot13" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator7" title=","><display description=","/></field>
+        <field name="quot14" title="&quot;"><display description="&quot;"/></field>
+		<field name="promotionalPrice" title="Promotional Price"><display/></field>
+        <field name="quot15" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator8" title=","><display description=","/></field>
+        <field name="quot16" title="&quot;"><display description="&quot;"/></field>
+		<field name="wholesalePrice" title="Wholesale Price"><display/></field>
+        <field name="quot17" title="&quot;"><display description="&quot;"/></field>
+		
+		<field name="separator9" title=","><display description=","/></field>
+        <field name="quot18" title="&quot;"><display description="&quot;"/></field>
+        <field name="processedTimestamp" title="Processed Time"><display/></field>
+        <field name="quot19" title="&quot;"><display description="&quot;"/></field>
+		<field name="separator10" title=","><display description=","/></field>
+        <field name="quot20" title="&quot;"><display description="&quot;"/></field>
+        <field name="message" title="Message"><display/></field>
+        <field name="quot21" title="&quot;"><display description="&quot;"/></field>
+    </form>
+</forms>

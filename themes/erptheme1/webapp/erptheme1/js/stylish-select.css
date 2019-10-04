@@ -1,0 +1,55 @@
+ul.newList {
+	margin:0; 
+	padding:0; 
+	text-align:left; 
+	list-style:none; 
+	color:#000; 
+	width:152px; 
+	background:#fff; 
+	position:absolute;  
+	border:1px solid #ccc; 
+	top:22px; left:0; 
+	z-index:9999;
+	
+	}
+.newListSelected {
+	width:188px; 
+	color:#000; 
+	height:20px; 
+	padding:0px 0 0px 8px; 
+	background:url(/theme1/select-bg-main.jpg) no-repeat;
+	text-align:left;
+	}
+.newListSelected span {
+	width:153px; display:block;}
+ul.newList li  {
+	width:147px; 
+	display:block; 
+	background:#eeeeee!important;
+	}
+ul.newList li a {
+	padding:3px 8px;
+	display: block; 
+	text-align:left; 
+	color:#333333;
+	}
+ul.newList li a:focus {
+	-moz-outline-style: none;
+	}
+.selectedTxt {
+	height:20px;
+	display:block;
+	 padding:0 0px 0 0;
+	 color:#000000 !important;
+	 }
+.newListSelected {
+	padding-top:5px;
+	}
+.hiLite {background:#01aef0!important; color:#fff!important;}
+.hiLite a {background:#01aef0!important; color:#fff!important;}
+.newListHover {background:#ccc!important; color:#000!important; cursor:default;}
+.newListSelHover, .newListSelFocus { cursor:default;}
+.newListOptionTitle {font-weight:bold;}
+.newListOptionTitle ul {margin:3px 0 0;}
+.newListOptionTitle li {font-weight:normal; border-left:1px solid #ccc;}
+

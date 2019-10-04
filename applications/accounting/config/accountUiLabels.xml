@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <property key="accountApplication">
+        <value xml:lang="en">account Application</value>
+    </property>
+    <property key="accountCompanyName">
+        <value xml:lang="en">OFBiz: account</value>
+    </property>
+    <property key="accountCompanySubtitle">
+        <value xml:lang="en">Part of the Open For Business Family of Open Source Software</value>
+    </property>
+    <property key="accountViewPermissionError">
+        <value xml:lang="en">You are not allowed to view this page.</value>
+    </property>
+    <property key="accountPayable">
+        <value xml:lang="en">Account Payable</value>
+    </property>
+    <property key="accountReceivable">
+        <value xml:lang="en">Account Receivable</value>
+    </property>
+    <property key="PageTitleCreateAgreement">
+        <value xml:lang="en">Create Agreement</value>
+    </property>
+    <property key="AccountingAgreementRules">
+        <value xml:lang="en">Agreement Rules</value>
+    </property>
+    
+    <property key="AccountingAgreementRules">
+        <value xml:lang="en">Agreement Rules</value>
+    </property>
+    <property key="paymentReciepts">
+        <value xml:lang="en">Receipts</value>
+    </property>
+    <property key="receaveNew">
+        <value xml:lang="en">Receive New</value>
+    </property>
+    <property key="receavePayment">
+        <value xml:lang="en">Receive Payment</value>
+    </property>
+    <property key="makeNew">
+        <value xml:lang="en">Make New</value>
+    </property>
+    
+</resource>

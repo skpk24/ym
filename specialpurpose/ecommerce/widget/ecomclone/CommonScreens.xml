@@ -1,0 +1,1173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+	license agreements. See the NOTICE file distributed with this work for additional 
+	information regarding copyright ownership. The ASF licenses this file to 
+	you under the Apache License, Version 2.0 (the "License"); you may not use 
+	this file except in compliance with the License. You may obtain a copy of 
+	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+	by applicable law or agreed to in writing, software distributed under the 
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. See the License for the specific 
+	language governing permissions and limitations under the License. -->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+	<screen name="main-decorator">
+		<section>
+			<actions>
+				<!-- base/top/specific map first, then more common map added for shared 
+					labels -->
+				<property-map resource="EcommerceUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<property-map resource="ContentUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<property-map resource="CommonUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<property-map resource="ProductUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<property-map resource="AccountingUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<property-map resource="PartyUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<property-map resource="OrderUiLabels" map-name="uiLabelMap"
+					global="true" />
+
+				<set field="MainColumnStyle" value="nocolumns" global="true" />
+
+				<!-- The default (global) shortcut icon -->
+				<set field="layoutSettings.shortcutIcon" value="/images/ofbiz.ico"
+					global="true" />
+					
+				<!-- The default (main) java scripts -->
+				<!-- NOTE: this should be included on each screen that uses it to avoid 
+					including it in all screens: -->
+					
+				
+				<set field="layoutSettings.javaScripts[]" value="/images/selectall.js"
+					global="true" />
+				<set field="initialLocaleComplete" type="String"
+					value="${groovy:parameters?.userLogin?.lastLocale}" default-value="${groovy:locale.toString()}" />
+				<set field="layoutSettings.javaScripts[+0]"
+					value="${groovy: org.ofbiz.common.JsLanguageFilesMapping.dateTime.getFilePath(initialLocaleComplete)}"
+					global="true" />
+			
+			 
+				<!--set field="layoutSettings.javaScripts[+0]"
+					value="/images/jquery/plugins/datetimepicker/jquery-ui-timepicker-addon-0.9.6.js"
+					global="true" />
+				<set field="layoutSettings.javaScripts[+0]" value="/images/jquery/ui/js/jquery-ui.js"
+					global="true" />-->
+			
+				<!--set field="layoutSettings.javaScripts[+0]"
+					value="/images/jquery/plugins/validate/jquery.validate.min.js"
+					global="true" /-->
+				<set field="layoutSettings.javaScripts[+0]" value="/images/jquery/jquery-1.8.3.js"
+					global="true" />
+					 <!--set field="layoutSettings.javaScripts[+0]" value="/images/prototype.js" global="true"/>
+				 <set field="layoutSettings.javaScripts[]" value="/images/calendar_date_select.js" global="true"/-->
+				<script
+					location="component://ecommerce/widget/ecomclone/EcommerceSetup.groovy" />
+
+				<!-- Get the store VisualTheme -->
+				<set field="visualThemeId" from-field="productStore.visualThemeId"
+					default-value="EC_DEFAULT" />
+				<service service-name="getVisualThemeResources">
+					<field-map field-name="visualThemeId" />
+					<field-map field-name="themeResources" from-field="layoutSettings" />
+				</service>
+				<set field="layoutSettings" from-field="themeResources"
+					default-value="${layoutSettings}" global="true" />
+				<set field="headerTemplateLocation" from-field="layoutSettings.VT_HDR_TMPLT_LOC[0]"
+					default-value="component://ecommerce/webapp/ecomclone/includes/header.ftl" />
+				<set field="footerTemplateLocation" from-field="layoutSettings.VT_FTR_TMPLT_LOC[0]"
+					default-value="component://ecommerce/webapp/ecomclone/includes/footer.ftl" />
+			</actions>
+			<widgets>
+				<section>
+					<condition>
+						<not>
+							<if-empty field="globalContext.productStore"/>
+						</not>
+					</condition>
+					<widgets>
+						<platform-specific>
+							<html>
+								<html-template
+									location="component://ecommerce/webapp/ecomclone/includes/headerHead.ftl" />
+							</html>
+						</platform-specific>
+						<platform-specific>
+							<html>
+								<html-template
+									location="component://common/webcommon/includes/openhtmlbody.ftl" />
+							</html>
+						</platform-specific>
+						<container id="outer-layout">
+						<!-- render header -->
+						<container id="header">
+							<platform-specific>
+								<html>
+									<html-template location="${headerTemplateLocation}" />
+								</html>
+							</platform-specific>
+						</container>
+<!-- 						<section> -->
+<!-- 							<condition> -->
+<!-- 								<if-compare field="catalogIds" value="OFFICESTATIO" operator="equals"/> -->
+<!-- 							</condition> -->
+<!-- 							<widgets> -->
+<!-- 								<include-screen name="topdeepcategoryoffice" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml" /> -->
+<!-- 							</widgets> -->
+<!-- 							<fail-widgets> -->
+<!-- 								<include-screen name="topdeepcategory" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml"/> -->
+<!-- 							</fail-widgets> -->
+<!-- 						</section> -->
+						<container id="ecom-mainarea">
+							<!-- by default will render left-bar only if left/rightbarScreenName 
+								value not empty -->
+							<container id="div1" style="left">
+								<include-screen name="${leftbarScreenName}"
+									location="${leftbarScreenLocation}" />
+							</container>
+							 <container id="div2" style="right"><include-screen name="${rightbarScreenName}" 
+								location="${rightbarScreenLocation}"/></container> 
+
+							<container id="div3" style="${MainColumnStyle}">
+								<!-- render messages -->
+								<platform-specific>
+									<html>
+										<html-template
+											location="component://common/webcommon/includes/messages.ftl" />
+									</html>
+								</platform-specific>
+								<decorator-section-include name="body" />
+							</container>
+
+							<container id="div4" style="endcolumns" />
+						</container>
+						</container>
+						<!-- render footer -->
+						<container id="footer">
+							<platform-specific>
+								<html>
+									<html-template location="${footerTemplateLocation}" />
+								</html>
+							</platform-specific>
+						</container>
+						<platform-specific>
+							<html>
+								<html-template
+									location="component://common/webcommon/includes/closehtmlbody.ftl" />
+							</html>
+						</platform-specific>
+					</widgets>
+					<fail-widgets>
+						<label
+							text="A Product Store has not been defined for this ecommerce site.  A Product Store can be created using the ofbizsetup wizard." />
+					</fail-widgets>
+				</section>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="home-decorator">
+		<section>
+			<actions>
+				<!-- base/top/specific map first, then more common map added for shared 
+					labels -->
+				<property-map resource="EcommerceUiLabels" map-name="uiLabelMap" global="true" />
+				<property-map resource="ContentUiLabels" map-name="uiLabelMap" global="true" />
+				<property-map resource="CommonUiLabels" map-name="uiLabelMap" global="true" />
+				<property-map resource="ProductUiLabels" map-name="uiLabelMap" global="true" />
+				<property-map resource="AccountingUiLabels" map-name="uiLabelMap" global="true" />
+				<property-map resource="PartyUiLabels" map-name="uiLabelMap" global="true" />
+				<property-map resource="OrderUiLabels" map-name="uiLabelMap" global="true" />
+
+				<set field="MainColumnStyle" value="nocolumns" global="true" />
+
+				<!-- The default (global) shortcut icon -->
+				<set field="layoutSettings.shortcutIcon" value="/images/ofbiz.ico"
+					global="true" />
+
+				<!-- The default (main) java scripts -->
+				<!-- NOTE: this should be included on each screen that uses it to avoid 
+					including it in all screens: -->
+				<!--set field="layoutSettings.javaScripts[]" value="/images/selectall.js"
+					global="true" /-->
+				<set field="initialLocaleComplete" type="String"
+					value="${groovy:parameters?.userLogin?.lastLocale}" default-value="${groovy:locale.toString()}" />
+				<set field="layoutSettings.javaScripts[+0]"
+					value="${groovy: org.ofbiz.common.JsLanguageFilesMapping.dateTime.getFilePath(initialLocaleComplete)}"
+					global="true" />
+
+				<!--set field="layoutSettings.javaScripts[+0]"
+					value="/images/jquery/plugins/datetimepicker/jquery-ui-timepicker-addon-0.9.6.js"
+					global="true" />
+				<set field="layoutSettings.javaScripts[+0]" value="/images/jquery/ui/js/jquery-ui-1.8.13.custom.min.js"
+					global="true" />
+				<set field="layoutSettings.javaScripts[+0]"
+					value="/images/jquery/ui/development-bundle/ui/jquery.ui.datepicker.js"
+					global="true" />
+				<set field="layoutSettings.javaScripts[+0]"
+					value="/images/jquery/plugins/validate/jquery.validate.min.js"
+					global="true" /-->
+				<set field="layoutSettings.javaScripts[+0]" value="/images/jquery/jquery-1.5.2.min.js"
+					global="true" />
+
+				<script
+					location="component://ecommerce/widget/ecomclone/EcommerceSetup.groovy" />
+
+				<!-- Get the store VisualTheme -->
+				<set field="visualThemeId" from-field="productStore.visualThemeId"
+					default-value="EC_DEFAULT" />
+				<service service-name="getVisualThemeResources">
+					<field-map field-name="visualThemeId" />
+					<field-map field-name="themeResources" from-field="layoutSettings" />
+				</service>
+				<set field="layoutSettings" from-field="themeResources"
+					default-value="${layoutSettings}" global="true" />
+				<set field="headerTemplateLocation" from-field="layoutSettings.VT_HDR_TMPLT_LOC[0]"
+					default-value="component://ecommerce/webapp/ecomclone/includes/header.ftl" />
+				<set field="footerTemplateLocation" from-field="layoutSettings.VT_FTR_TMPLT_LOC[0]"
+					default-value="component://ecommerce/webapp/ecomclone/includes/footer.ftl" />
+                <script location="component://ecommerce/webapp/ecomclone/WEB-INF/actions/catalog/listRecipesProduct.groovy"/>
+					
+			</actions>
+			<widgets>
+				<section>
+					<condition>
+						<not>
+							<if-empty field="globalContext.productStore" />
+						</not>
+					</condition>
+					<widgets>
+						<platform-specific>
+							<html>
+								<html-template
+									location="component://ecommerce/webapp/ecomclone/includes/headerHead.ftl" />
+							</html>
+						</platform-specific>
+						<platform-specific>
+							<html>
+								<html-template
+									location="component://common/webcommon/includes/openhtmlbody.ftl" />
+							</html>
+						</platform-specific>
+						<!-- render header -->
+						<container id="outer-layout">
+						<container id="header">
+							<platform-specific>
+								<html>
+									<html-template location="${headerTemplateLocation}" />
+								</html>
+							</platform-specific>
+						</container>
+						<container id="div4" style="left">
+<!-- 							<section> -->
+<!-- 							<condition> -->
+<!-- 								<if-compare field="catalogIds" value="OFFICESTATIO" operator="equals"/> -->
+<!-- 							</condition> -->
+<!-- 							<widgets> -->
+<!-- 								<include-screen name="topdeepcategoryoffice" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml" /> -->
+<!-- 							</widgets> -->
+							<!-- <fail-widgets>
+								<include-screen name="sidedeepcategory" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml"/>
+							</fail-widgets> -->
+<!-- 						</section> -->
+					</container>
+						<container id="ecom-mainarea">
+							<!-- by default will render left-bar only if left/rightbarScreenName 
+								value not empty -->
+								<container id="main_banner_container">
+									<include-screen name="mainpromotext"/>
+								</container>
+							<container id="div1" style="left">
+		<!-- 							<section> -->
+		<!-- 							<condition> -->
+		<!-- 								<if-compare field="catalogIds" value="OFFICESTATIO" operator="not-equals"/> -->
+		<!-- 							</condition> -->
+		<!-- 							<widgets> -->
+		<!-- 								<include-screen name="sidedeepcategory" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml"/> -->
+		<!-- 							</widgets> -->
+		<!-- 							</section> -->
+							<include-screen name="${leftbarScreenName}" 
+								location="${leftbarScreenLocation}"/></container>
+							<!-- <container id="div2" style="right"><include-screen name="${rightbarScreenName}" 
+								location="${rightbarScreenLocation}"/></container> -->
+
+							<container id="div3" style="rightMain">
+								<!-- render messages -->
+								<platform-specific>
+									<html>
+										<html-template
+											location="component://common/webcommon/includes/messages.ftl" />
+									</html>
+								</platform-specific>
+								<decorator-section-include name="body" />
+							</container>
+
+							<container id="div4" style="endcolumns" />
+							<container style="endcolumns1">
+							<sub-content content-id="WebStoreCONTENT" map-key="HOME" />
+								<platform-specific>
+									<html>
+											<html-template location="component://ecommerce/webapp/ecomclone/catalog/homePageTestominial.ftl" />
+									</html>
+								</platform-specific>
+							</container>
+						</container>
+						</container>
+						<!-- render footer -->
+						<container id="footer">
+							<platform-specific>
+								<html>
+									<html-template location="${footerTemplateLocation}" />
+								</html>
+							</platform-specific>
+						</container>
+						<platform-specific>
+							<html>
+								<html-template
+									location="component://common/webcommon/includes/closehtmlbody.ftl" />
+							</html>
+						</platform-specific>
+					</widgets>
+					<fail-widgets>
+						<label
+							text="A Product Store has not been defined for this ecommerce site.  A Product Store can be created using the ofbizsetup wizard." />
+					</fail-widgets>
+				</section>
+			</widgets>
+		</section>
+	</screen>
+    <screen name="mainpromotext">
+        <section>
+            <actions>
+            	<property-map resource="ProductUiLabels" map-name="uiLabelMap" global="true"/>
+             	<property-map resource="EcommerceUiLabels" map-name="uiLabelMap" global="true"/>
+                <property-map resource="CommonUiLabels" map-name="uiLabelMap" global="true"/>
+                <!-- <set field="leftbarScreenName" value="leftbar"/>
+                <set field="rightbarScreenName" value="rightbar"/> -->
+                <set field="MainColumnStyle" value="center"/>
+
+                <set field="titleProperty" value="PageTitleMainPage"/>
+<!--                 <script location="component://ecommerce/webapp/ecomclone/WEB-INF/actions/cart/ShowPromoText.groovy"/> -->
+            </actions>
+            <widgets>
+				<platform-specific>
+					<html>
+						<html-template location="component://ecommerce/webapp/ecomclone/cart/mainpromotext.ftl"/>
+					</html>
+				</platform-specific>
+            </widgets>
+        </section>
+    </screen>
+	<!-- Side Columns -->
+	<!-- <screen name="leftbar"> <section> <actions> <set field="condition" 
+		value="Position Two(Left Bar)"/> <script location="component://ecommerce/webapp/ecomclone/WEB-INF/actions/banner/userBanner.groovy"/> 
+		</actions> <widgets> <container style="left"> <section> <condition> <if-compare 
+		field="visualThemeId" value="MULTIFLEX" operator="equals"></if-compare> </condition> 
+		<widgets> include-screen name="choosecatalog" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml"/> 
+		<include-screen name="keywordsearchbox" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml"/ 
+		<include-screen name="sidedeepcategory" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml"/> 
+		<section> <condition> <if-empty field="productId"/> </condition> <widgets> 
+		include-screen name="ProductSearchFilter" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml"/ 
+		nclude-screen name="keywordsearchbox" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml"/ 
+		include-screen name="minireorderprods" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml"/ 
+		<include-screen name="subcat" location="component://ecommerce/widget/ecomclone/ContentScreens.xml"/> 
+		<include-screen name="compareproductslist" location="component://ecommerce/widget/ecomclone/CartScreens.xml"/> 
+		<include-screen name="compareproductslist" location="component://order/widget/ordermgr/OrderEntryCatalogScreens.xml"/> 
+		<include-screen name="pricerange" location="component://ecommerce/widget/ecomclone/ContentScreens.xml"/> 
+		<include-screen name="FeatureAttributes" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml"/> 
+		<include-screen name="polls" location="component://ecommerce/widget/ecomclone/ContentScreens.xml"/> 
+		</widgets> </section> include-screen name="signupforcontactlist" location="component://ecommerce/widget/ecomclone/EmailContactListScreens.xml"/ 
+		<platform-specific> <html> <html-template location="component://ecommerce/webapp/ecomclone/catalog/banner.ftl"/> 
+		<html-template location="component://ecommerce/webapp/ecomclone/catalog/userBanner.ftl"/> 
+		</html> </platform-specific> include-screen name="forums" location="component://ecommerce/widget/ecomclone/ForumScreens.xml"/> 
+		<include-screen name="content_categories" location="component://ecommerce/widget/ecomclone/ContentScreens.xml"/> 
+		<include-screen name="blogs" location="component://ecommerce/widget/ecomclone/blog/BlogScreens.xml"/ 
+		</widgets> <fail-widgets> <include-screen name="choosecatalog" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml"/> 
+		<include-screen name="sidedeepcategory" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml"/> 
+		<include-screen name="keywordsearchbox" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml"/> 
+		<section> <condition> <if-empty field="productId"/> </condition> <widgets> 
+		include-screen name="ProductSearchFilter" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml"/ 
+		nclude-screen name="keywordsearchbox" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml"/ 
+		include-screen name="minireorderprods" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml"/ 
+		<include-screen name="compareproductslist" location="component://ecommerce/widget/ecomclone/CartScreens.xml"/> 
+		<include-screen name="minipoll" location="component://ecommerce/widget/ContentScreens.xml"/> 
+		include-screen name="forums" location="component://ecommerce/widget/ecomclone/ForumScreens.xml"/> 
+		<include-screen name="content_categories" location="component://ecommerce/widget/ecomclone/ContentScreens.xml"/> 
+		<include-screen name="blogs" location="component://ecommerce/widget/ecomclone/blog/BlogScreens.xml"/ 
+		</widgets> </section> <include-screen name="signupforcontactlist" location="component://ecommerce/widget/ecomclone/EmailContactListScreens.xml"/> 
+		<include-screen name="minipoll" location="component://ecommerce/widget/ContentScreens.xml"/> 
+		include-screen name="forums" location="component://ecommerce/widget/ecomclone/ForumScreens.xml"/> 
+		<include-screen name="content_categories" location="component://ecommerce/widget/ecomclone/ContentScreens.xml"/> 
+		<include-screen name="blogs" location="component://ecommerce/widget/ecomclone/blog/BlogScreens.xml"/ 
+		</fail-widgets> </section> </container> </widgets> </section> </screen> -->
+	<screen name="rightcatbar">
+		<section>
+			<widgets>
+				<!-- <include-screen name="choosecatalog" location="component://ecommerce/widget/CatalogScreens.xml"/> 
+					<include-screen name="keywordsearchbox" location="component://ecommerce/widget/CatalogScreens.xml"/> -->
+				<!-- <include-screen name="minicart" location="component://ecommerce/widget/ecomclone/CartScreens.xml" /> -->
+				<include-screen name="searchCategoryFilter" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml" />
+			
+				<!-- <include-screen name="KeywordFilterScreen" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml" /> -->
+				<!-- <include-screen name="sidedeepcategory" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml" /> -->
+				<!--include-screen name="subcat" location="component://ecommerce/widget/ecomclone/ContentScreens.xml" /-->
+				
+				
+				<!-- <include-screen name="compareproductslist" location="component://order/widget/ordermgr/OrderEntryCatalogScreens.xml"/> -->
+				<!-- <include-screen name="minipoll" location="component://ecommerce/widget/ContentScreens.xml"/> -->
+
+				<!-- <include-screen name="LayeredNavBar" location="component://ecommerce/widget/CatalogScreens.xml"/> 
+					<include-screen name="minireorderprods" location="component://ecommerce/widget/CatalogScreens.xml"/> 
+					<include-screen name="signupforcontactlist" location="component://ecommerce/widget/EmailContactListScreens.xml"/> 
+					<include-screen name="minipoll" location="component://ecommerce/widget/ContentScreens.xml"/> 
+					<include-screen name="forums" location="component://ecommerce/widget/ForumScreens.xml"/> 
+					<include-screen name="content_categories" location="component://ecommerce/widget/ContentScreens.xml"/> 
+					<include-screen name="blogs" location="component://ecommerce/widget/blog/BlogScreens.xml"/> -->
+			</widgets>
+		</section>
+	</screen>
+	<screen name="searchRightBar">
+		<section>
+			<widgets>
+				<!-- <include-screen name="minicart" location="component://ecommerce/widget/ecomclone/CartScreens.xml" /> -->
+				<include-screen name="searchFilter" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml" />
+			</widgets>
+		</section>
+	</screen>
+	<screen name="leftbar">
+		<section>
+			<actions>
+				<set field="bannerPosition" value="LEFT" />
+				<script location="component://product/webapp/catalog/bannermanagement/useBanner.groovy" />
+				<!--<set field="condition" value="Position Two(Left Bar)" />
+				<script location="component://ecommerce/webapp/ecomclone/WEB-INF/actions/banner/userBanner.groovy" />
+				<entity-and list="websitecontent" entity-name="WebSiteContent">
+					<field-map field-name="webSiteId" from-field="webSiteId" />
+					<field-map field-name="webSiteContentTypeId" value="DEFAULT_PAGE" />
+					<order-by field-name="-fromDate" />
+				</entity-and>-->
+			</actions>
+			<widgets>
+				<!-- <include-screen name="choosecatalog" location="component://ecommerce/widget/CatalogScreens.xml"/> 
+					<include-screen name="keywordsearchbox" location="component://ecommerce/widget/CatalogScreens.xml"/> -->
+				<!-- <section>
+							<condition>
+								<if-compare field="catalogName" value="officestationary" operator="equals"/>
+							</condition>
+							<widgets>
+								<include-screen name="officedeepcategory" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml" />
+							</widgets>
+							<fail-widgets>
+								<include-screen name="sidedeepcategory" location="component://ecommerce/widget/ecomclone/CatalogScreens.xml" />
+							</fail-widgets>
+						</section> -->
+				<!--include-screen name="subcat" location="component://ecommerce/widget/ecomclone/ContentScreens.xml" /-->
+				
+				<platform-specific><html><html-template location="component://ecommerce/webapp/ecomclone/catalog/userBanner.ftl"/> </html></platform-specific>
+				
+				<!-- <include-screen name="compareproductslist" location="component://order/widget/ordermgr/OrderEntryCatalogScreens.xml"/> -->
+				<!-- <include-screen name="minipoll" location="component://ecommerce/widget/ContentScreens.xml"/> -->
+
+				<!-- <include-screen name="LayeredNavBar" location="component://ecommerce/widget/CatalogScreens.xml"/> 
+					<include-screen name="minireorderprods" location="component://ecommerce/widget/CatalogScreens.xml"/> 
+					<include-screen name="signupforcontactlist" location="component://ecommerce/widget/EmailContactListScreens.xml"/> 
+					<include-screen name="minipoll" location="component://ecommerce/widget/ContentScreens.xml"/> 
+					<include-screen name="forums" location="component://ecommerce/widget/ForumScreens.xml"/> 
+					<include-screen name="content_categories" location="component://ecommerce/widget/ContentScreens.xml"/> 
+					<include-screen name="blogs" location="component://ecommerce/widget/blog/BlogScreens.xml"/> -->
+			</widgets>
+		</section>
+	</screen>
+	<screen name="quickShopLeftbar">
+		<section>
+			<widgets>
+				<platform-specific><html><html-template location="component://ecommerce/webapp/ecomclone/catalog/quickShopLeftbar.ftl"/> </html></platform-specific>
+			</widgets>
+		</section>
+	</screen>
+	<screen name="rightbar">
+		<section>
+			<actions>
+				<!--set field="condition" value="Position Three(Contact Us)" />
+				<script location="component://ecommerce/webapp/ecomclone/WEB-INF/actions/banner/userBanner.groovy" /-->
+				<set field="bannerPosition" value="RIGHT" />
+				<script location="component://product/webapp/catalog/bannermanagement/useBanner.groovy" />
+				<!-- <script location="component://ecommerce/webapp/ecomclone/WEB-INF/actions/recipe/displayRecipeWeek.groovy"/>
+				 -->
+				
+			</actions>
+			<widgets>
+				
+				<!--<include-screen name="minicart"
+					location="component://ecommerce/widget/CartScreens.xml" />
+				<include-screen name="compareproductslist"
+					location="component://order/widget/ordermgr/OrderEntryCatalogScreens.xml" />
+					<include-screen name="language" />
+				<include-screen name="minipromotext"
+					location="component://ecommerce/widget/CartScreens.xml" />
+				<include-screen name="miniassocprods"
+					location="component://ecommerce/widget/CatalogScreens.xml" />
+				<include-screen name="factoids"
+					location="component://ecommerce/widget/ContentScreens.xml" />
+				<include-screen name="minilastviewedcategories"
+					location="component://ecommerce/widget/CatalogScreens.xml" />
+				<include-screen name="minilastviewedproducts"
+					location="component://ecommerce/widget/CatalogScreens.xml" />
+				<include-screen name="minilastproductsearches"
+					location="component://ecommerce/widget/CatalogScreens.xml" />
+				<include-screen name="recentlyviewed"
+					location="component://ecommerce/widget/ContentScreens.xml" /-->
+				<!-- <include-screen name="loginright" location="component://ecommerce/widget/ecomclone/CommonScreens.xml" /> -->
+				<!-- <platform-specific><html><html-template location="component://ecommerce/webapp/ecomclone/recipes/displayRecipeWeek.ftl"/> </html></platform-specific>
+ --><platform-specific><html><html-template location="component://ecommerce/webapp/ecomclone/catalog/commonbottom.ftl"/> </html></platform-specific>
+				<platform-specific><html><html-template location="component://ecommerce/webapp/ecomclone/catalog/userBanner.ftl"/> </html></platform-specific>
+			</widgets>
+		</section>
+	</screen>
+
+	<!-- Common Decorators -->
+	<screen name="CommonEmptyDecorator">
+		<section>
+			<actions>
+				<set field="MainColumnStyle" value="center" />
+			</actions>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<decorator-section-include name="body" />
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+	<screen name="CommonLeftDecorator">
+		<section>
+			<actions>
+				<set field="leftbarScreenName" value="leftbar" />
+				<set field="MainColumnStyle" value="center" />
+			</actions>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<decorator-section-include name="body" />
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+	<screen name="CommonRightDecorator">
+		<section>
+			<actions>
+				<!-- <set field="rightbarScreenName" value="rightbar"/> -->
+				<set field="MainColumnStyle" value="center" />
+			</actions>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<decorator-section-include name="body" />
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+	<screen name="CommonLeftRightDecorator">
+		<section>
+			<actions>
+				<set field="leftbarScreenName" value="leftbar" />
+				<!-- <set field="rightbarScreenName" value="rightbar"/> -->
+				<set field="MainColumnStyle" value="center" />
+			</actions>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<decorator-section-include name="body" />
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+
+	<!-- forum decorator? -->
+	<screen name="commonForumDecorator">
+		<section>
+			<actions>
+				<set field="leftbarScreenName" value="leftbar" />
+				<!-- <set field="rightbarScreenName" value="rightbar"/> -->
+				<set field="MainColumnStyle" value="center" />
+			</actions>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<label style="head1" text="${uiLabelMap.${titleProperty}}"></label>
+						<decorator-section-include name="body" />
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="CommonBlog">
+		<section>
+			<actions>
+				<set field="currentMenuItemName" from-field="currentMenuItemName"
+					default-value="all" from-scope="user" />
+				<set field="leftbarScreenName" value="leftbar" />
+				<!-- <set field="rightbarScreenName" value="rightbar"/> -->
+				<set field="MainColumnStyle" value="center" />
+			</actions>
+			<widgets>
+				<decorator-screen name="main-decorator">
+					<decorator-section name="body">
+						<container style="blogs">
+							<include-screen name="CommonBlogTitle"
+								location="component://ecommerce/widget/blog/BlogScreens.xml" />
+							<decorator-section-include name="body" />
+						</container>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="CommonPopUpDecorator">
+		<section>
+			<actions>
+				<!-- base/top/specific map first, then more common map added for shared 
+					labels -->
+				<property-map resource="EcommerceUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<property-map resource="ContentUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<property-map resource="CommonUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<property-map resource="ProductUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<property-map resource="AccountingUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<property-map resource="PartyUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<property-map resource="OrderUiLabels" map-name="uiLabelMap"
+					global="true" />
+
+				<set field="MainColumnStyle" value="nocolumns" global="true" />
+
+				<!-- The default (global) shortcut icon -->
+				<set field="layoutSettings.shortcutIcon" value="/images/ofbiz.ico"
+					global="true" />
+
+				<!-- The default (main) java scripts -->
+				<!-- NOTE: this should be included on each screen that uses it to avoid 
+					including it in all screens: -->
+				<set field="layoutSettings.javaScripts[]" value="/images/selectall.js"
+					global="true" />
+
+				<set field="layoutSettings.javaScripts[+0]"
+					value="/images/jquery/plugins/validate/jquery.validate.min.js"
+					global="true" />
+				<set field="layoutSettings.javaScripts[+0]" value="/images/jquery/jquery-1.5.2.min.js"
+					global="true" />
+
+				<script location="component://ecommerce/widget/EcommerceSetup.groovy" />
+
+				<!-- Get the store VisualTheme -->
+				<set field="visualThemeId" from-field="productStore.visualThemeId"
+					default-value="EC_DEFAULT" />
+				<service service-name="getVisualThemeResources">
+					<field-map field-name="visualThemeId" />
+					<field-map field-name="themeResources" from-field="layoutSettings" />
+				</service>
+				<set field="layoutSettings" from-field="themeResources"
+					default-value="${layoutSettings}" global="true" />
+			</actions>
+			<widgets>
+				<platform-specific>
+					<html>
+						<html-template
+							location="component://ecommerce/webapp/ecomclone/includes/headerHead.ftl" />
+					</html>
+				</platform-specific>
+				<platform-specific>
+					<html>
+						<html-template
+							location="component://common/webcommon/includes/openhtmlbody.ftl" />
+					</html>
+				</platform-specific>
+				<platform-specific>
+					<html>
+						<html-template
+							location="component://common/webcommon/includes/messages.ftl" />
+					</html>
+				</platform-specific>
+
+				<decorator-section-include name="body" />
+
+				<platform-specific>
+					<html>
+						<html-template
+							location="component://common/webcommon/includes/closehtmlbody.ftl" />
+					</html>
+				</platform-specific>
+			</widgets>
+		</section>
+	</screen>
+
+	<!-- Column Included Screens -->
+	<screen name="language">
+		<section>
+			<widgets>
+				<platform-specific>
+					<html>
+						<html-template
+							location="component://ecommerce/webapp/ecomclone/includes/language.ftl" />
+					</html>
+				</platform-specific>
+			</widgets>
+		</section>
+	</screen>
+
+	<!-- Top Level Screens -->
+
+	<screen name="importOrders">
+		<section>
+			<actions>
+				<script
+					location="component://ecommerce/script/org/ofbiz/ecommerce/order/addToCart.groovy" />
+			</actions>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<platform-specific>
+							<html>
+								<html-template location="component://ecommerce/webapp/ecomclone/main.ftl" />
+							</html>
+						</platform-specific>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="home">
+		<section>
+			<actions>
+				 <set field="leftbarScreenName" value="leftbar" />
+				 <set field="MainColumnStyle" value=""/>
+				<set field="titleProperty" value="Online Grocery Shopping | Online Grocery Shopping India | Youfarm | Youmart" />
+				<set field="metaDescription" value="Online Grocery Store in Bangalore. Same day delivery. Buy fresh fruits &amp; vegetables, meat, home needs, personal care. Attractive offers. Call at 080 45458888 to place your order. Money back guarantee." />
+				<set field="metaKeywords" value="Online Grocery Shopping ,Online Grocery Shopping India,  Youfarm,  Youmart, Online Supermarket , Online Supermarket,  Groceries Online, Grocery Store Bangalore, Grocery Store Bangalore, grocery in Bangalore, Diapers, Diapers Online, Online Baby Store, Organic products,  Online Recipe" />
+				
+				<set field="headerItem" value="home" />
+				<set field="randomSurveyGroup" value="testSurveyGroup" />
+				<!-- <set field="condition" value="Position One(Home Page)" />
+				<script location="component://ecommerce/webapp/ecomclone/WEB-INF/actions/banner/userBanner.groovy" /> -->
+					
+				<set field="bannerPosition" value="HOME" />
+				<script location="component://product/webapp/catalog/bannermanagement/useBanner.groovy" />
+<!-- 				<script location="component://ecommerce/webapp/ecomclone/WEB-INF/actions/order/locationsearch.groovy" /> -->
+<!-- 				 <script location="component://order/webapp/ordermgr/WEB-INF/actions/entry/catalog/CategoryTopBrand.groovy"/> -->
+				  
+				<entity-and list="websitecontent" entity-name="WebSiteContent">
+					<field-map field-name="webSiteId" from-field="webSiteId" />
+					<field-map field-name="webSiteContentTypeId" value="DEFAULT_PAGE" />
+					<order-by field-name="-fromDate" />
+				</entity-and>
+				<!-- set field="layoutSettings.javaScripts[]" value="/multiflex/js/jquery-1.4.2.min.js"
+					global="true" /-->
+				<!--set field="layoutSettings.javaScripts[]" value="/multiflex/js/jquery.jcarousel.min.js"
+					global="true" />
+				<set field="layoutSettings.styleSheets[]" value="/multiflex/js/skin.css"
+					global="true" />
+				<set field="layoutSettings.styleSheets[]" value="/multiflex/js/jquery.autocomplete.css"
+					global="true" />
+				<set field="layoutSettings.javaScripts[]" value="/multiflex/js/jquery.autocomplete.js"
+					global="true" /-->
+				
+				<set field="layoutSettings.javaScripts[]" value="/erptheme1/js/jquery.nivo.slider.pack.js"
+					global="true" />
+				
+				<set field="layoutSettings.styleSheets[]" value="/erptheme1/nivo-slider.css"
+					global="true" />
+
+			</actions>
+			<widgets>
+				<decorator-screen name="home-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<platform-specific>
+						    
+							<html>
+								<html-template
+									location="component://ecommerce/webapp/ecomclone/welcome.ftl" />
+							</html>
+						</platform-specific>
+
+					
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+	<screen name="main">
+		<section>
+			<actions>
+				<!--<set field="leftbarScreenName" value="leftbar" />
+				<set field="rightbarScreenName" value="rightbar"/> -->
+				<set field="MainColumnStyle" value="center" />
+
+				<set field="titleProperty" value="PageTitleMain" />
+				<set field="headerItem" value="main" />
+				<set field="randomSurveyGroup" value="testSurveyGroup" />
+
+				<script
+					location="component://ecommerce/webapp/ecomclone/WEB-INF/actions/Main.groovy" />
+				<script
+					location="component://order/webapp/ordermgr/WEB-INF/actions/entry/catalog/Category.groovy" />
+			</actions>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<platform-specific>
+							<html>
+								<html-template location="component://ecommerce/webapp/ecomclone/main.ftl" />
+							</html>
+						</platform-specific>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+	<!-- Social Login Network Screen Start -->
+	<screen name="reloadOpener">
+        <section>
+            <widgets>
+				<platform-specific><html><html-template location="component://ecommerce/webapp/ecomclone/customer/reloadOpener.ftl"/></html></platform-specific>
+            </widgets>
+        </section>
+	</screen>
+    <screen name="oauth2callback">
+        <section>
+			<widgets>
+				<platform-specific><html><html-template location="component://ecommerce/webapp/ecomclone/customer/oauth2callback.ftl"/></html></platform-specific>
+            </widgets>
+        </section>
+	</screen>
+	
+	
+	 <screen name="oauth2callbackfb">
+        <section>
+			<widgets>
+				<platform-specific><html><html-template location="component://ecommerce/webapp/ecomclone/customer/oauth2callbackfb.ftl"/></html></platform-specific>
+            </widgets>
+        </section>
+	</screen>
+	<!-- Social Login Network Screen End -->
+	<screen name="login">
+		<section>
+			<actions>
+				<set field="titleProperty" value="PageTitleLogin" />
+				<set field="headerItem" value="login" />
+				<script
+					location="component://ecommerce/webapp/ecomclone/WEB-INF/actions/Login.groovy" />
+			</actions>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<platform-specific>
+							<html>
+								<html-template
+									location="component://ecommerce/webapp/ecomclone/login.ftl" />
+							</html>
+						</platform-specific>
+						<!--platform-specific>
+							<html>
+								<html-template
+									location="component://ecommerce/webapp/ecomclone/order/startanoncheckout.ftl" />
+							</html>
+						</platform-specific-->
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+	
+	<screen name="loginright">
+		<section>
+			<actions>
+				<set field="titleProperty" value="PageTitleLogin" />
+				<set field="headerItem" value="login" />
+				<script
+					location="component://ecommerce/webapp/ecomclone/WEB-INF/actions/Login.groovy" />
+			</actions>
+			<widgets>
+						<platform-specific>
+							<html>
+								<html-template
+									location="component://ecommerce/webapp/ecomclone/loginright.ftl" />
+							</html>
+						</platform-specific>
+			</widgets>
+		</section>
+	</screen>
+	<screen name="requirePasswordChange">
+		<section>
+			<actions>
+				<set field="titleProperty" value="PageTitleLogin" />
+				<set field="headerItem" value="login" />
+				<script
+					location="component://ecommerce/webapp/ecomclone/WEB-INF/actions/Login.groovy" />
+			</actions>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<platform-specific>
+							<html>
+								<html-template
+									location="component://ecommerce/webapp/ecomclone/requirePasswordChange.ftl" />
+							</html>
+						</platform-specific>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+	<screen name="responseTreeLine">
+		<section>
+			<actions>
+				<service service-name="getPublicForumMessage" result-map="contentData">
+					<field-map field-name="contentId" from-field="rsp.contentId" />
+				</service>
+				<set field="textData" from-field="contentData.resultData.electronicText.textData" />
+			</actions>
+			<widgets>
+				<section>
+					<condition>
+						<if-compare-field field="responseContentId"
+							operator="equals" to-field="rsp.contentId" />
+					</condition>
+					<widgets>
+						<container style="responseSelected">
+							<container style="responsetext">
+								<platform-specific>
+									<html>
+										<html-template
+											location="component://ecommerce/webapp/ecomclone/forum/messageDisplay.ftl" />
+									</html>
+								</platform-specific>
+							</container>
+						</container>
+					</widgets>
+					<fail-widgets>
+						<container>
+							<container style="responsetext">
+								<platform-specific>
+									<html>
+										<html-template
+											location="component://ecommerce/webapp/ecomclone/forum/messageDisplay.ftl" />
+									</html>
+								</platform-specific>
+							</container>
+						</container>
+					</fail-widgets>
+				</section>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="termofuse">
+		<section>
+			<widgets>
+				<decorator-screen name="main-decorator"	location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<content content-id="${parameters.FaqsId}"  />
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+	<screen name="policies">
+		<section>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<sub-content content-id="WebStoreCONTENT" map-key="policies" />
+						<sub-content content-id="WebStoreCONTENT" map-key="policies2" />
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+	<!-- <screen name="policies"> <section> <widgets> <decorator-screen name="main-decorator" 
+		location="${parameters.mainDecoratorLocation}"> <decorator-section name="body"> 
+		<content content-id="110012"/> </decorator-section> </decorator-screen> </widgets> 
+		</section> </screen> -->
+		
+		<screen name="orderTracking">
+		<section>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<platform-specific>
+					<html>
+						<html-template
+							location="component://ecommerce/webapp/ecomclone/order/orderTracking.ftl" />
+					</html>
+				</platform-specific>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+		<screen name="locationSearch">
+		<section>
+		<actions>
+		
+		<script location="component://ecommerce/webapp/ecomclone/WEB-INF/actions/order/locationsearch.groovy" />
+		</actions>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+
+						<platform-specific>
+					<html>
+						<html-template
+							location="component://ecommerce/webapp/ecomclone/order/locationSearch.ftl" />
+					</html>
+				</platform-specific>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+		<screen name="autosearch-main-decorator">
+		<section>
+			<actions>
+				<!-- base/top/specific map first, then more common map added for shared 
+					labels -->
+				<property-map resource="EcommerceUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<property-map resource="ContentUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<property-map resource="CommonUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<property-map resource="ProductUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<property-map resource="AccountingUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<property-map resource="PartyUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<property-map resource="OrderUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<set field="MainColumnStyle" value="nocolumns" global="true" />
+				<set field="MainColumnStyle" value="nocolumns" global="true" />
+
+				<!-- The default (global) shortcut icon -->
+				<set field="layoutSettings.shortcutIcon" value="/images/ofbiz.ico"
+					global="true" />
+					
+				<!-- The default (main) java scripts -->
+				<!-- NOTE: this should be included on each screen that uses it to avoid 
+					including it in all screens: -->
+					
+				
+				<set field="layoutSettings.javaScripts[]" value="/images/selectall.js"
+					global="true" />
+				<set field="initialLocaleComplete" type="String"
+					value="${groovy:parameters?.userLogin?.lastLocale}" default-value="${groovy:locale.toString()}" />
+				<set field="layoutSettings.javaScripts[+0]"
+					value="${groovy: org.ofbiz.common.JsLanguageFilesMapping.dateTime.getFilePath(initialLocaleComplete)}"
+					global="true" />
+			
+			 	<set field="layoutSettings.javaScripts[+0]" value="/images/jquery/jquery-1.5.2.min.js"
+					global="true" />
+				<set field="layoutSettings.javaScripts[+0]"
+					value="/images/jquery/plugins/datetimepicker/jquery-ui-timepicker-addon-0.9.6.js"
+					global="true" />
+				<set field="layoutSettings.javaScripts[+0]" value="/images/jquery/ui/js/jquery-ui.js"
+					global="true" />
+				<set field="layoutSettings.javaScripts[]"
+					value="/images/jquery/ui/development-bundle/ui/jquery.ui.datepicker.js"
+					global="true" />
+				<set field="layoutSettings.javaScripts[+0]"
+					value="/images/jquery/plugins/validate/jquery.validate.min.js"
+					global="true" />
+				<set field="layoutSettings.javaScripts[+0]" value="/images/jquery/jquery-1.8.3.js"
+					global="true" />
+					 <set field="layoutSettings.javaScripts[+0]" value="/images/prototype.js" global="true"/>
+				 <set field="layoutSettings.javaScripts[]" value="/images/calendar_date_select.js" global="true"/>
+				<script
+					location="component://ecommerce/widget/ecomclone/EcommerceSetup.groovy" />
+
+				<!-- Get the store VisualTheme -->
+				<set field="visualThemeId" from-field="productStore.visualThemeId"
+					default-value="EC_DEFAULT" />
+				<service service-name="getVisualThemeResources">
+					<field-map field-name="visualThemeId" />
+					<field-map field-name="themeResources" from-field="layoutSettings" />
+				</service>
+				<set field="layoutSettings" from-field="themeResources"
+					default-value="${layoutSettings}" global="true" />
+				<set field="headerTemplateLocation" from-field="layoutSettings.VT_HDR_TMPLT_LOC[0]"
+					default-value="component://ecommerce/webapp/ecomclone/includes/header.ftl" />
+				<set field="footerTemplateLocation" from-field="layoutSettings.VT_FTR_TMPLT_LOC[0]"
+					default-value="component://ecommerce/webapp/ecomclone/includes/footer.ftl" />
+			</actions>
+			<widgets>
+				<section>
+					<condition>
+						<not>
+							<if-empty field="globalContext.productStore" />
+						</not>
+					</condition>
+					<widgets>
+
+						<container id="ecom-mainarea">
+							<!-- by default will render left-bar only if left/rightbarScreenName 
+								value not empty -->
+							<container id="div1" style="left">
+								<include-screen name="${leftbarScreenName}"
+									location="${leftbarScreenLocation}" />
+							</container>
+							 <container id="div2" style="right"><include-screen name="${rightbarScreenName}" 
+								location="${rightbarScreenLocation}"/></container> 
+
+							<container id="div3" style="${MainColumnStyle}">
+								<!-- render messages -->
+								<platform-specific>
+									<html>
+										<html-template
+											location="component://common/webcommon/includes/messages.ftl" />
+									</html>
+								</platform-specific>
+								<decorator-section-include name="body" />
+							</container>
+
+							<container id="div4" style="endcolumns" />
+						</container>
+
+						
+					</widgets>
+					<fail-widgets>
+						<label
+							text="A Product Store has not been defined for this ecommerce site.  A Product Store can be created using the ofbizsetup wizard." />
+					</fail-widgets>
+				</section>
+			</widgets>
+		</section>
+	</screen>
+</screens>

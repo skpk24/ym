@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <property key="reportsApplication">
+        <value xml:lang="en">Reports Application</value>
+    </property>
+    <property key="reportsCompanyName">
+        <value xml:lang="en">YouMart Reports</value>
+    </property>
+    <property key="reportsCompanySubtitle">
+        <value xml:lang="en">Part of the Open For Business Family of Open Source Software</value>
+    </property>
+    <property key="reportsViewPermissionError">
+        <value xml:lang="en">You are not allowed to view this page.</value>
+    </property>
+	<property key="Reports">
+        <value xml:lang="en">Reports</value>
+    </property>
+    <property key="COMMONCSVREPORT">
+        <value xml:lang="en">CSV Report</value>
+    </property>
+    
+    <property key="CommonViewReport">
+        <value xml:lang="en">View Report</value>
+    </property>
+    
+    <property key="CommonCSVReport">
+        <value xml:lang="en">CSV Report</value>
+    </property>
+    <property key="EXCELReport">
+        <value xml:lang="en">Excel Report</value>
+    </property>
+     <property key="salesTaxReport">
+        <value xml:lang="en">Sales Tax Report</value>
+    </property>
+        
+
+
+    
+</resource>

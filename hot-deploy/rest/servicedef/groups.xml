@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service-group xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/service-group.xsd">
+
+    <group name="createShippingLabelGroup" send-mode="all">
+        <invoke name="createShippingLabel" mode="sync" result-to-context="true"/>
+        <invoke name="storeShippingCost" mode="sync"/>
+    </group>
+</service-group>

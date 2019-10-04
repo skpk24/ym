@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+        
+         <form name="FindExitSlot" target="findExistSlot" title="" type="single"
+        header-row-style="header-row" default-table-style="basic-table">
+        <auto-fields-entity entity-name="OrderSlotType" default-field-type="find"/>
+       
+        <field name="submitButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit">
+            <submit button-type="button"/>
+        </field>
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+    </form>
+    <form name="ListExitSlot" list-name="listIt" target="" title="" type="list"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar" paginate-target="findExistSlot">
+          <actions>
+          
+              <service service-name="performFind" result-map="result" result-map-list="listIt">
+                  <field-map field-name="inputFields" from-field="parameters"/>
+                  <field-map field-name="entityName" value="OrderSlotType"/>
+                  <field-map field-name="viewIndex" from-field="viewIndex"/>
+                  <field-map field-name="viewSize" from-field="viewSize"/>
+              </service>
+          </actions>
+        <auto-fields-entity entity-name="OrderSlotType" default-field-type="display"/>
+         <field name="slotTypeId" title="Slot Id" widget-style="buttontext">
+            <hyperlink also-hidden="false" description="${slotTypeId}" target="EditSlot" target-window="_blank">
+                <parameter param-name="slotTypeId"/>
+            </hyperlink>
+        </field> 
+         <field name="cutOffTimeInHour" ><hidden/></field>
+        
+      </form>
+     
+        
+        
+         <form name="FindSlot" target="FindSlot" title="" type="single"
+        header-row-style="header-row" default-table-style="basic-table">
+        <actions>
+        <entity-condition entity-name="OrderSlotType"
+				list="slotList">
+				
+				<condition-list combine="and">
+				 	<condition-expr field-name="fromDate" operator="less-equals" value="${nowTimestamp}" />
+					<condition-list combine="or">
+					<condition-expr field-name="thruDate" operator="equals" value="" />
+					<condition-expr field-name="thruDate" operator="greater-equals" value="${nowTimestamp}" />
+					</condition-list>
+				</condition-list>
+				</entity-condition>
+        </actions>
+        <auto-fields-entity entity-name="OrderSlot" default-field-type="find"/>
+        <field name="slotId" title="SlotId"></field>
+        
+        <field name="slotType" title="Slot Type">
+            <drop-down allow-empty="true">
+            <list-options list-name="slotList" key-name="slotList.slotType"
+					list-entry-name="slotList" description="${slotList.slotType}" />
+            </drop-down>
+        </field>
+        
+        <field name="slotStatus" title="Slot Status">
+            <drop-down>
+            	<entity-options description="${description}" entity-name="StatusItem" key-field-name="statusId">
+            	  <entity-constraint name="statusTypeId" value="SLOT_STATUS"/>
+            	<entity-order-by field-name="sequenceId"/>
+            	</entity-options>
+            </drop-down>
+        </field>
+     
+        <field name="partyId" title="${uiLabelMap.PartyPartyId}">
+            <lookup target-form-name="LookupPartyName"/>
+        </field>
+        <field name="deliveryDate" title="DeliveryDate"></field>
+        <field name="orderId" title="orderId"/>
+       
+        <field name="description"><hidden/></field>
+       
+        <field name="submitButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit">
+            <submit button-type="button"/>
+        </field>
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+    </form>
+    <form name="ListSlot" list-name="listIt" target="" title="" type="list"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar" paginate-target="FindSlot">
+          <actions>
+          
+              <service service-name="performFind" result-map="result" result-map-list="listIt">
+                  <field-map field-name="inputFields" from-field="parameters"/>
+                  <field-map field-name="entityName" value="OrderSlot"/>
+                  <field-map field-name="viewIndex" from-field="viewIndex"/>
+                  <field-map field-name="viewSize" from-field="viewSize"/>
+              </service>
+          </actions>
+       
+        <field name="slotId" title="Slot Id" widget-style="buttontext">
+            <hyperlink also-hidden="false" description="${slotId}" target="ViewSlot">
+                <parameter param-name="slotId"/>
+            </hyperlink>
+        </field>
+        <field name="slotType"><display></display></field>
+        <field name="slotStatus"><display></display></field>
+        <field name="partyId" title="User Id"><display></display></field>
+         <field name="orderId" title="Order Id" widget-style="buttontext">
+            <hyperlink also-hidden="false" description="${orderId}" target="orderview" target-window="_blank">
+                <parameter param-name="orderId"/>
+            </hyperlink>
+        </field>
+		<field name="deliveryDate" title="Delivery Date">
+		
+		 <display description="${groovy:org.ofbiz.base.util.UtilDateTime.toDateString(deliveryDate, &quot;dd-MM-yyyy&quot;);}"/>
+		
+		</field>
+    </form>
+    
+        <form name="EditSlot" type="single" target="updateSlot" title="" default-map-name="slot"
+        header-row-style="header-row" default-table-style="basic-table">
+        <alt-target use-when="slot==null" target="createSlot"/>
+        <auto-fields-entity entity-name="OrderSlotType"/>
+        <field name="slotTypeId"><hidden/></field>
+        <field name="slotType" required-field="true"></field>
+        <field name="slotTiming" required-field="true"></field>
+        <field name="maxDelivery" required-field="true" action="javascript:return isNumberKeyForForm(event,'EditSlot_maxDelivery');" event="onkeypress"></field>
+        <field name="fromDate" required-field="true"> </field>
+        
+        <field name="cutOffTime" title="CutOff Time For Slot" position="1" tooltip="Hour" action="javascript:return isNumberKeyForForm(event,'EditSlot_cutOffTime');" event="onkeypress">
+        	<text size="2" maxlength="2"/>
+        </field>
+        <field name="cutOffTimeInHour"><hidden/></field>
+        <field name="cutOffTimeInMinute" title=" " position="2" tooltip="Minute" action="javascript:return isNumberKeyForForm(event,'EditSlot_cutOffTimeInMinute');" event="onkeypress">
+        	<text size="2" maxlength="2"/>
+        </field>
+        <field name="timePeriod" title=" "  position="3">
+            <drop-down allow-empty="false">
+	           <option key="AM" description="AM"/>
+	           <option key="PM" description="PM"/>
+            </drop-down>
+        </field>
+        <field name="submitButton" title="${uiLabelMap.CommonSubmit}" widget-style="smallSubmit">
+            <submit button-type="button"/>
+        </field>
+    </form>   
+        
+        </forms>
+        

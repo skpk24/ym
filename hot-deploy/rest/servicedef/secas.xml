@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<service-eca xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/service-eca.xsd">
+    <!--eca service="changeOrderStatus" event="global-commit" run-on-error="false"-->
+       	<!--  <condition field-name="orderTypeId" operator="equals" value="SALES_ORDER" /> -->
+        <!-- action service="createOrderInfo" mode="async" />
+    </eca>
+    
+     <eca service="cancelOrderItemShipGrpInvRes" event="global-commit" run-on-error="false">
+        <action service="updateOrderInfo" mode="async" />
+    </eca-->
+    
+    
+    
+</service-eca>

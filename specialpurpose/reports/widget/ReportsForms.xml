@@ -1,0 +1,1490 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+        Licensed to the Apache Software Foundation (ASF) under one
+        or more contributor license agreements.  See the NOTICE file
+        distributed with this work for additional information
+        regarding copyright ownership.  The ASF licenses this file
+        to you under the Apache License, Version 2.0 (the
+        "License"); you may not use this file except in compliance
+        with the License.  You may obtain a copy of the License at
+        
+        http://www.apache.org/licenses/LICENSE-2.0
+        
+        Unless required by applicable law or agreed to in writing,
+        software distributed under the License is distributed on an
+        "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+        KIND, either express or implied.  See the License for the
+        specific language governing permissions and limitations
+        under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+
+        <!-- this file is intentionally empty and is used in the build.xml file in the ofbiz root directory  -->
+        
+        <form name="reportingVal" type="single" target="reportingValue.pdf"  header-row-style="header-row" default-table-style="basic-table">
+        	<field name="salesChannelEnumId">
+        		<hidden value="${parameters.targetchannel}"/>
+        	</field>
+        	<field name="fromOrderDate">
+        	<date-time/>
+        	</field>
+        	<field name="thruOrderDate">
+        	<date-time/>
+        	</field>
+        	<field name="typeVal">
+        	<hidden value="${parameters.typeVal}"/>
+        	</field>
+        	<field name="PDF" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false"  target-type="plain" description="PDF" target="javascript:document.reportingVal.submit();"/>
+        </field>
+		<field name="CSV" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="CSV" target="javascript:document.reportingVal.action='reportingValue.CSV';document.reportingVal.submit();"/>
+        </field>
+        
+        </form>
+        
+	<form name="reportingValueCSV" type="list" list-name="myList" >        
+		<field name="orderId" title="${uiLabelMap.orderId}"><display/></field>
+		<field name="orderDate" title="${uiLabelMap.orderDate}"><display/></field>
+		<field name="billToPartyId" title="${uiLabelMap.BillToPartyId}"><display/></field>
+		<field name="statusId" title="${uiLabelMap.Status}"><display/></field>
+		<field name="grandTotal" title="${uiLabelMap.GrandTotal}"><display/></field>
+    </form>
+
+    <form name="SearchInventoryItemsParams" type="single" target="InventoryReports?viewReport=true"
+        header-row-style="header-row" default-table-style="basic-table">
+        <field name="facilityId">
+            <drop-down allow-empty="false">
+                <entity-options entity-name="Facility" key-field-name="facilityId" description="${facilityName} [${facilityId}]">
+                    <entity-order-by field-name="facilityName"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="productId"><lookup target-form-name="LookupProduct" /></field>
+        <field name="reportType">
+            <drop-down allow-empty="false">
+             <option key="InventoryReport" description="Stock Report"/>
+             <option key="OutOfStockReport" description="Out Of Stock Report"/>             
+            </drop-down>
+        </field>        
+ 		 <field name="viewReport" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext" event="onClick" action="javascript:var field=document.SearchInventoryItemsParams.softIdentifier;var tmp=field.value;if (tmp.substring(0, 2) == '0x') {tmp=parseInt(tmp, 16)};if (!isNaN(tmp)) {field.value=tmp};return true;">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonViewReport}" target="javascript:document.SearchInventoryItemsParams.action='InventoryReports?viewReport=true';document.SearchInventoryItemsParams.submit();"  />
+        </field>         
+		<field name="CSV" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonCSVReport}" target="javascript:document.SearchInventoryItemsParams.action='InventoryReports.csv?getCSV=true';document.SearchInventoryItemsParams.submit();"/>
+        </field>
+        <field name="EXCEL" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.EXCELReport}" target="javascript:document.SearchInventoryItemsParams.action='InventoryReports.xls?getEXCEL=true';document.SearchInventoryItemsParams.submit();"/>
+        </field>
+    </form>
+
+<form name="ListFacilityInventoryItems" type="list" list-name="listIt" header-row-style="header-row-2"
+        paginate-target="InventoryReports" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        
+        
+        <field name="facilityName" title="Location Name"><display description="${facilityName}"/></field>
+        <field name="productId" title="Item Code"><display description="${productId}"/>
+            <!--<hyperlink target="/catalog/control/EditProduct" target-type="inter-app" description="${productId}">
+                <parameter param-name="productId"/>
+            </hyperlink>-->
+        </field>
+     <field name="productName" title="Item Name"><display description="${productName}"/></field>        
+       <!--  <field name="totalQuantityOnHand" title="Total Quantity On Hand" ><display description="${totalQuantityOnHand}"/></field> -->        
+        <field name="totalAvailableToPromise" title="Stock" ><display description="${totalAvailableToPromise}"/></field>
+    <field name="cost" title="Cost"><display description="${wholesale}"/></field>
+    <field name="sellingCost" title="Selling Cost"><display description="${defaultprice}"/></field>
+    <field name="mrp" title="MRP"><display description="${mrp}"/></field>
+    </form>
+
+    
+ <form name="ListFacilityInventoryItemsCSV" type="list" list-name="listIt" view-size="2000">
+    <field name="facilityName" title="Location Name"><display description="${facilityName}"/></field>
+    <field name="productId" title="Item Code"><display description="${productId}"/></field>
+    <field name="productName" title="Item Name"><display description="${productName}"/></field>
+        <!-- <field name="totalQuantityOnHand" title="Total Quantity On Hand" ><display description="${totalQuantityOnHand}"/></field>
+    <field name="separator3" title=","><display description=","/></field> -->
+        <field name="totalAvailableToPromise" title="Stock" ><display description="${totalAvailableToPromise}"/></field> 
+   <field name="cost" title="Cost"><display description="${wholesale}"/></field>  
+  <field name="sellingCost" title="Selling Cost"><display description="${defaultprice}"/></field> 
+  <field name="mrp" title="MRP"><display description="${mrp}"/></field>    
+ </form>  
+
+
+ 	<form name="lookuporder" type="single" target="searchorders?viewReport=true" header-row-style="header-row" default-table-style="basic-table">
+		
+		<field name="orderTypeId"><hidden value="SALES_ORDER"></hidden></field>
+		<field name="viewSize" parameter-name="viewSize">  <hidden value="10" /></field>
+		<field name="viewIndex" parameter-name="viewIndex">  <hidden value="0"></hidden></field>
+		<!-- <field name="orderId" title="Order Id"><text></text></field>-->
+		<field name="partyId" title="User Id">
+			<lookup target-form-name="LookupPartyName"/>
+		</field>
+		<field name="productStoreId"><text size="10"  default-value="${session.getAttribute(&quot;productStoreId&quot;)}" disabled="true"/></field>		
+		<field name="orderStatusId">
+			<drop-down>
+				<option key="" description="All"/>
+				<option key="ORDER_CREATED" description="Created"/>
+				<option key="ORDER_APPROVED" description="Approved"/>
+				<option key="ORDER_COMPLETED" description="Completed"/>
+				<option key="ORDER_CANCELLED" description="Cancelled"/>
+			</drop-down>
+		</field>
+		<field name="minDate" title="From Date"  event="onClick" action="javascript:return chooseValidate('lookuporder');" >
+        	<date-time default-value="${parameters.fromDateStr?if_exists}" />
+       	</field>
+		<field name="maxDate" title="Thru Date">
+        	<date-time default-value="${parameters.thruDateStr?if_exists}"/>
+       	</field>
+ 		 <field name="viewReport"  title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext" >
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonViewReport}" target="javascript:document.lookuporder.action='searchorders?viewReport=true';document.lookuporder.submit();" />
+        </field>  
+ 		<field name="GetCSV" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonCSVReport}" target="javascript:document.lookuporder.action='CustomerOrdersReport.csv';document.lookuporder.submit();"/>
+        </field>
+	</form>
+	
+	<form name="lookupcustorder" type="single" target="searchcustorders?viewReport=true" header-row-style="header-row" default-table-style="basic-table">
+		
+		<field name="orderTypeId"><hidden value="SALES_ORDER"></hidden></field>
+		<field name="viewSize" parameter-name="viewSize">  <hidden value="10" /></field>
+		<field name="viewIndex" parameter-name="viewIndex">  <hidden value="0"></hidden></field>
+		<!-- <field name="orderId" title="Order Id"><text></text></field>-->
+		<field name="partyId" title="User Id">
+			<lookup target-form-name="LookupPartyName"/>
+		</field>
+		<field name="productStoreId"><text size="10"  default-value="${session.getAttribute(&quot;productStoreId&quot;)}" disabled="true"/></field>		
+		<field name="orderStatusId">
+			<drop-down>
+				<option key="" description="All"/>
+				<option key="ORDER_CREATED" description="Created"/>
+				<option key="ORDER_APPROVED" description="Approved"/>
+				<option key="ORDER_COMPLETED" description="Completed"/>
+				<option key="ORDER_CANCELLED" description="Cancelled"/>
+			</drop-down>
+		</field>
+		<field name="minDate" title="From Date"  event="onClick" action="javascript:return chooseValidate('lookuporder');" >
+        	<date-time default-value="${parameters.fromDateStr?if_exists}" />
+       	</field>
+		<field name="maxDate" title="Thru Date">
+        	<date-time default-value="${parameters.thruDateStr?if_exists}"/>
+       	</field>
+ 		 <field name="viewReport"  title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext" >
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonViewReport}" target="javascript:document.lookupcustorder.action='searchcustorders?viewReport=true';document.lookupcustorder.submit();" />
+        </field>  
+ 		<field name="GetCSV" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonCSVReport}" target="javascript:document.lookupcustorder.action='CustOrdersReport.csv';document.lookupcustorder.submit();"/>
+        </field>
+	</form>
+    <form name="CustomerOrdersReportCSV" type="list" list-name="OrdersList" view-size="1000">
+		<row-actions>
+            <set  field="remainingSubTotal"  value="${groovy: 
+            priceString = Double.toString(remainingSubTotal);
+            if(priceString != null)
+            priceString = priceString.replaceAll(&quot;,&quot;, &quot;&quot;);
+            	return priceString;
+                 }" type="String"/>		
+            <set  field="grandTotal"  value="${groovy: 
+            	priceString1 = Double.toString(grandTotal);
+            	if(priceString1 != null)
+            	priceString1 = priceString1.replaceAll(&quot;,&quot;, &quot;&quot;);
+				return priceString1;
+                }" type="String"/>
+            <set  field="orderItemsQuantity"  value="${groovy: 
+            	quantityString = Double.toString(orderItemsQuantity);
+            	if(quantityString != null)
+            	quantityString = quantityString.replaceAll(&quot;,&quot;, &quot;&quot;);
+				return quantityString;
+                }" type="String"/> 
+                      
+                
+                         
+        </row-actions>   
+        
+        <field name="orderId" title="Order Id"><display description="${orderId}"/></field>
+		<field name="partyId" title="Party Id"><display description="${partyId}"/></field>
+        <field name="partyName" title="Party Name" ><display description="${partyName}"/></field>
+        <field name="orderItemsQuantity" title="Items Ordered" ><display description="${orderItemsQuantity}"/></field>	
+		<field name="backOrderQuantity" title="Items Back Ordered" ><display description="${backOrderQuantity}"/></field>	
+        <field name="orderReturnedQuantity" title="Items Returned" ><display description="${orderReturnedQuantity}"/></field>	
+		<field name="remainingSubTotal" title="Remaining Sub Total" ><display description="${remainingSubTotal}"/></field>	
+		<field name="grandTotal" title="Order Total" ><display description="${grandTotal}"/></field>	
+		<field name="status" title="Status" ><display description="${status}"/></field>	
+		<field name="orderDate" title="Order Date" ><display description="${orderDate}"/></field>	
+    </form>  
+
+    <form name="FindReturns" type="single"  target="findreturn" target-type="intra-app" title="" header-row-style="header-row" default-table-style="basic-table">
+        <field name="returnHeaderTypeId">
+             <drop-down allow-empty="false">
+               <option key="" description="--Select--"/>
+                <entity-options entity-name="ReturnHeaderType" description="${description}"/>
+            </drop-down>
+        </field>
+        <field name="returnId" title="${uiLabelMap.OrderReturnId}"><text/></field>
+        <field name="fromPartyId" title="${uiLabelMap.OrderReturnFromParty}">
+            <lookup target-form-name="LookupPartyName"/>
+        </field>
+        <!--<field name="billingAccountId" title="Billing Account}">
+            <text-find/>
+        </field>-->
+        <field name="statusId" title="${uiLabelMap.CommonStatus}">
+            <drop-down allow-empty="false">
+               <option key="" description="--Select--"/>
+                <entity-options entity-name="StatusItem" description="${description}">
+                    <entity-constraint name="statusTypeId" operator="equals" value="ORDER_RETURN_STTS"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="fromDate" title="From Date" >
+            <date-time default-value="${fromDate?if_exists}"/>
+        </field>
+        <field name="thruDate" title="Thru Date">
+            <date-time default-value="${thruDate?if_exists}"/>
+        </field>
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+ 		<field name="viewReport" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonViewReport}" target="javascript:document.FindReturns.action='findreturn?viewReport=true';document.FindReturns.submit();"/>
+        </field>         
+        
+ 		<field name="GetCSV" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonCSVReport}" target="javascript:document.FindReturns.action='returns.csv';document.FindReturns.submit();"/>
+        </field>                  
+    </form>
+
+    <form name="ListReturns" type="list"  target="findreturn" title="" list-name="listIt"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar" paginate-target="findreturn">
+        <actions>
+           <!-- <service service-name="performFind"  result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="requestParameters"/>
+                <field-map field-name="entityName" value="ReturnHeader"/>
+                <field-map field-name="orderBy" value="entryDate DESC"/>
+            </service>-->
+            <script location="component://reports/webapp/reports/WEB-INF/actions/reports/findReturns.groovy"/>
+        </actions>
+		<row-actions>
+            <!--<entity-and entity-name="ReturnItem" list="returnitems">
+                <field-map field-name="returnId" value="${returnId}"/>
+            </entity-and>
+            <set  field="orderId"  value="${groovy: 
+                orderId = &quot;&quot;;
+                if(returnitems!=null &amp;&amp; returnitems.size()>0 )  orderId = returnitems.get(0).getString(&quot;orderId&quot;);
+                return orderId;
+                }" type="String"/>
+            <set  field="returnReason"  value="${groovy: 
+                returnReason = &quot;&quot;;
+                if(returnitems!=null &amp;&amp; returnitems.size()>0 )
+                	returnReasonId = returnitems.get(0).getString(&quot;returnReasonId&quot;);
+                	returndesc = delegator.findByPrimaryKey(&quot;ReturnReason&quot;, org.ofbiz.base.util.UtilMisc.toMap(&quot;returnReasonId&quot;,returnReasonId));
+                	if(	returndesc!=null) returnReason = returndesc.getString(&quot;description&quot;);
+                return returnReason;
+                }" type="String"/>-->
+        </row-actions> 
+		<!--<field name="orderId" title="Order Id"><display/></field>-->
+        <field name="returnId" title="${uiLabelMap.OrderReturnId}"><display/></field>
+        <!--<field name="returnReason"  title="${uiLabelMap.OrderReturnReason}"><display description="${returnReason}"/></field>-->
+        <field name="entryDate" title="${uiLabelMap.OrderEntryDate}">
+            <display/>
+        </field>
+        <field name="fromPartyId" title="${uiLabelMap.OrderReturnFromParty}">
+            <display-entity entity-name="PartyNameView" key-field-name="partyId" description="${groupName} ${firstName} ${lastName}">
+            </display-entity>
+        </field>
+        <field name="destinationFacilityId" title="${uiLabelMap.OrderReturnDestinationFacility}"><display/></field>
+        <field name="statusId" title="${uiLabelMap.CommonStatus}">
+            <display-entity entity-name="StatusItem" key-field-name="statusId" description="${description}"/>
+        </field>
+    </form>
+
+    <form name="ListReturnsCSV" type="list"  target="findreturn" title="" list-name="listIt" view-size="1000"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar" paginate-target="findreturn">
+		<actions>
+		            <!--<service service-name="performFind"  result-map="result" result-map-list="listIt">
+		                <field-map field-name="inputFields" from-field="requestParameters"/>
+		                <field-map field-name="entityName" value="ReturnHeader"/>
+		                <field-map field-name="orderBy" value="entryDate DESC"/>
+		            </service>-->
+            <script location="component://reports/webapp/reports/WEB-INF/actions/reports/findReturns.groovy"/>		            
+		</actions>
+		<row-actions>
+            <!--<entity-and entity-name="ReturnItem" list="returnitems">
+                <field-map field-name="returnId" value="${returnId}"/>
+            </entity-and>
+            <set  field="orderId"  value="${groovy: 
+                orderId = &quot;&quot;;
+                if(returnitems!=null &amp;&amp; returnitems.size()>0 )  orderId = returnitems.get(0).getString(&quot;orderId&quot;);
+                return orderId;
+                }" type="String"/>
+            <set  field="returnReason"  value="${groovy: 
+                returnReason = &quot;&quot;;
+                if(returnitems!=null &amp;&amp; returnitems.size()>0 )
+                	returnReasonId = returnitems.get(0).getString(&quot;returnReasonId&quot;);
+                	returndesc = delegator.findByPrimaryKey(&quot;ReturnReason&quot;, org.ofbiz.base.util.UtilMisc.toMap(&quot;returnReasonId&quot;,returnReasonId));
+                	if(	returndesc!=null) returnReason = returndesc.getString(&quot;description&quot;);
+                return returnReason;
+                }" type="String"/>-->
+        </row-actions>  
+
+		<!--<field name="orderId" title="Order Id"><display description="${orderId}"/></field>
+		<field name="separator1" title=","><display description=","/></field>-->
+        <field name="returnId"  title="Return Id"><display/></field>
+ 		<!--<field name="returnReason"  title="Return Reason"><display/></field>-->
+        <!--<field name="separator3" title=","><display description=","/></field>-->
+        <field name="entryDate" title="Order Date">
+            <display/>
+        </field>
+        <field name="fromPartyId" title="Return From Party">
+            <display-entity entity-name="PartyNameView" key-field-name="partyId" description="${groupName} ${firstName} ${lastName}">
+            </display-entity>
+        </field>
+        <field name="destinationFacilityId" title="Return Facility"><display/></field>
+        <field name="statusId" title="Status">
+            <display-entity entity-name="StatusItem" key-field-name="statusId" description="${description}"/>
+        </field>
+    </form>
+
+
+    <form name="NewsLetterReportCSV" type="list" list-name="subscriptionList" view-size="2000">
+		<field name="contactListName" title="News Letter Name"><display description="${contactListName}"/></field>
+        <field name="date"  title="Subscription Date"><display description="${date}"/></field>
+ 		<field name="status"  title="Status"><display description="${status}"/></field>
+        <field name="emailId" title="Email Id"><display description="${emailId}"/></field>
+    </form>
+
+    <form name="CustomerRegistrationReportCSV" type="list" list-name="registrations" view-size="2000">
+		<row-actions>
+            <set  field="postalAddress"  value="${groovy: 
+                if(postalAddress!=null) postalAddress = postalAddress.replaceAll(&quot;,&quot;, &quot; &quot;);
+                return postalAddress;
+                }" type="String"/>
+        </row-actions>     
+		<field name="createdDate" title="Registration Date"><display description="${createdDate}"/></field>
+		<field name="partyId" title="Party Id"><display description="${partyId}"/></field>
+		<field name="PartyName" title="Party Name"><display description="${PartyName}"/></field>
+		<field name="userLoginId" title="User Login"><display description="${userLoginId}"/></field>
+		<field name="phoneNumber" title="Phone Number"><display description="${phoneNumber}"/></field>
+		<field name="emailId" title="Email Id"><display description="${emailId}"/></field>
+		<field name="postalAddress " title="Postal Address "><display description="${postalAddress}"/></field>
+    </form>
+
+    <form name="FindProduct" type="single" target="productReports" title="" default-map-name="product"
+        header-row-style="header-row" default-table-style="basic-table">
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+        <field name="productId" title="${uiLabelMap.ProductProductId}">
+        	<lookup target-form-name="LookupProduct"/>
+        </field>
+        <field name="internalName" title="${uiLabelMap.ProductInternalName}"><text/></field>
+ 		 <field name="viewReport" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonViewReport}" target="javascript:document.FindProduct.action='productReports';document.FindProduct.submit();"/>
+        </field>          
+ 		<field name="GetCSV" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonCSVReport}" target="javascript:document.FindProduct.action='productReportsCSV';document.FindProduct.submit();"/>
+        </field>       
+    </form>
+
+    <form name="ListProducts" list-name="listIt" target="" title="" type="list" paginate-target="productReports"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar" header-row-style="header-row-2">
+        <actions>
+        	<script location="component://reports/webapp/reports/WEB-INF/actions/reports/listProducts.groovy" />
+            <!--<set field="entityName" value="Product"/>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="requestParameters"/>
+                <field-map field-name="entityName" from-field="entityName"/>
+                <field-map field-name="orderBy" from-field="parameters.sortField"/>
+                <field-map field-name="viewIndex" from-field="viewIndex"/>
+                <field-map field-name="viewSize" from-field="viewSize"/>
+            </service>-->
+        </actions>
+        <field name="productId"><display description="${productId}"/></field>
+        <field name="internalName"><display/></field>
+        <!--<field name="brandName"><display/></field>-->
+        <field name="productName"><display/></field>
+        <field name="description"><display/></field>
+    </form>
+
+    <form name="ListProductsCSV" list-name="listIt" type="list" view-size="2000">
+        <actions>
+        	<set field="parameters.viewIndex" value="0"/>
+        	<set field="parameters.viewSize" value="1000"/>
+        	<script location="component://reports/webapp/reports/WEB-INF/actions/reports/listProducts.groovy" />
+            <!--<set field="entityName" value="Product"/>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="requestParameters"/>
+                <field-map field-name="entityName" from-field="entityName"/>
+                <field-map field-name="orderBy" from-field="parameters.sortField"/>
+                <field-map field-name="viewIndex" from-field="viewIndex"/>
+                <field-map field-name="viewSize" from-field="viewSize"/>
+            </service>-->
+        </actions>
+		<row-actions>
+            <set  field="internalName"  value="${groovy: 
+                if(internalName!=null) internalName = internalName.replaceAll(&quot;,&quot;, &quot;&amp;&quot;);
+                return internalName;
+                }" type="String"/>
+            <set  field="productName"  value="${groovy: 
+                if(productName!=null) productName = productName.replaceAll(&quot;,&quot;, &quot;&amp;&quot;);
+                return productName;
+                }" type="String"/>
+            <set  field="description"  value="${groovy: 
+				if(description!=null)
+                 description = description.trim();
+                 if(description!=null)
+                 description = description.replaceAll(&quot;\\n&quot;, &quot;&quot;);
+                if(description!=null)
+                 description = description.replaceAll(&quot;,&quot;, &quot; ;&quot;);                 
+                return description;
+                }" type="String"/>
+        </row-actions>        
+        <field name="productId"><display description="${productId}"/></field>
+        <field name="internalName"><display/></field>
+        <field name="productName"><display/></field>
+        <field name="description"><display/></field>
+    </form>
+
+    <form name="productPriceReportCSV" list-name="priceList" type="list" view-size="2000">
+        <field name="productId"><display description="${productId}"/></field>
+        <field name="productPriceTypeId" sort-field="true"><display description="${productPriceTypeId}"/></field>
+        <field name="price" sort-field="true"><display description="${price}"/></field>
+        <field name="currencyUomId" sort-field="true"><display description="${currencyUomId}"/></field>
+        <!--<field name="createdDate" sort-field="true"><display description="${createdDate}"/></field>-->
+    </form>
+
+    <form name="ListProductPromos" type="list" title="" list-name="productPromos"
+        paginate-target="promotionListReport" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="productPromoId"><display/></field>
+        <field name="promoName"><display/></field>
+        <field name="promoText" encode-output="false"><display/></field>
+        <field name="requireCode"><display/></field>
+        <field name="createdDate"><display/></field>
+    </form>
+
+    <form name="promosListFormCsv" type="list" list-name="productPromos" view-size="1000">
+		<row-actions>
+            <set  field="promoName"  value="${groovy: 
+                if(promoName!=null) promoName = promoName.replaceAll(&quot;,&quot;, &quot;&amp;&quot;);
+                return promoName;
+                }" type="String"/>
+            <set  field="promoText"  value="${groovy: 
+                if(promoText!=null) promoText = description.replaceAll(&quot;,&quot;, &quot;&amp;&quot;);
+                return promoText;
+                }" type="String"/>
+        </row-actions> 
+        <field name="productPromoId" title="Product Promo Id"><display/></field>
+        <field name="promoName" title="Promo Name"><display/></field>
+        <field name="promoText" encode-output="true" title="Promo Text"><display/></field>
+        <field name="requireCode" title="Code Required?"><display/></field>
+        <field name="createdDate" title="Created Date"><display/></field>
+    </form>
+
+    <form name="FindGCPayments" type="single" target="giftCertificatesReport"
+        header-row-style="header-row" default-table-style="basic-table">
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+        <field name="paymentId"><text/></field>
+        <field name="paymentTypeId"><hidden value="GC_WITHDRAWAL"/></field>
+        <field name="statusId">
+            <drop-down allow-empty="false">
+            <option key="" description="--Select--"/>
+                <entity-options description="${description}" entity-name="StatusItem">
+                    <entity-constraint name="statusTypeId" operator="equals" value="PMNT_STATUS"/>
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="partyIdFrom"><lookup target-form-name="LookupPartyName"/></field>
+        <field name="partyIdTo"><lookup target-form-name="LookupPartyName"/></field>
+        <field name="amount"><text/></field>
+        <field name="paymentRefNum"><text/></field>
+ 		 <field name="viewReport" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false"  target-type="plain"  description="${uiLabelMap.CommonViewReport}" target="javascript:document.FindGCPayments.action='giftCertificatesReport';document.FindGCPayments.submit();"/>
+        </field>          
+ 		<field name="GetCSV" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonCSVReport}" target="javascript:document.FindGCPayments.action='GiftCardReports.csv';document.FindGCPayments.submit();"/>
+        </field>
+    </form>
+    <form name="ListPayments" type="list" separate-columns="true" default-entity-name="Payment" list-name="listIt" paginate-target="giftCertificatesReport" paginate="true"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <actions>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="parameters"/>
+                <field-map field-name="entityName" value="Payment"/>
+                <field-map field-name="orderBy" value="effectiveDate DESC"/>
+            </service>
+        </actions>
+        <row-actions>
+            <set field="amountToApply" value="${groovy: org.ofbiz.accounting.payment.PaymentWorker.getPaymentNotApplied(delegator,paymentId);}"/>
+        </row-actions>
+        <field name="paymentId"><display/></field>
+        <field name="partyIdFrom">
+            <display-entity entity-name="PartyNameView" key-field-name="partyId" description="${groupName}${lastName},${firstName}">
+            </display-entity>
+        </field>
+        <field name="partyIdTo">
+            <display-entity entity-name="PartyNameView" key-field-name="partyId" description="${groupName}${lastName},${firstName}">
+            </display-entity>
+        </field>
+        <field name="statusId">
+        	<display-entity entity-name="StatusItem" key-field-name="statusId"></display-entity>
+        </field>
+        <field name="effectiveDate"><display/></field>
+        <field name="currencyUomId"><hidden/></field>
+        <field name="amount"><display also-hidden="false" type="currency" currency="${currencyUomId}"/></field>
+        <field name="amountToApply"><display also-hidden="false" type="currency" currency="${currencyUomId}"/></field>
+    </form>
+
+    <form name="GiftCardReports.csv" type="list" default-entity-name="Payment" list-name="listIt" view-size="1000">
+        <actions>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="parameters"/>
+                <field-map field-name="entityName" value="Payment"/>
+                <field-map field-name="orderBy" value="effectiveDate DESC"/>
+            </service>
+        </actions>
+        <row-actions>
+            <set field="amountToApply" value="${groovy: org.ofbiz.accounting.payment.PaymentWorker.getPaymentNotApplied(delegator,paymentId);}"/>
+            <set  field="partyIdFrom"  value="${groovy: 
+                if(partyIdFrom!=null) partyIdFrom = partyIdFrom.replaceAll(&quot;,&quot;, &quot; &quot;);
+                return partyIdFrom;
+                }" type="String"/>
+            <set  field="partyIdTo"  value="${groovy: 
+                if(partyIdTo!=null) partyIdTo = partyIdTo.replaceAll(&quot;,&quot;, &quot; &quot;);
+                return partyIdTo;
+                }" type="String"/>            
+        </row-actions>
+        
+        <field name="paymentId" title="Payment Id"><display/></field>
+        <field name="partyIdFrom">
+            <display-entity entity-name="PartyNameView" key-field-name="partyId" description="${groupName} ${lastName} ${firstName}">
+            </display-entity>
+        </field>
+        <field name="partyIdTo">
+            <display-entity entity-name="PartyNameView" key-field-name="partyId" description="${groupName} ${lastName} ${firstName}">
+            </display-entity>
+        </field>
+        <field name="statusId">
+        	<display-entity entity-name="StatusItem" key-field-name="statusId"></display-entity>
+        </field>        
+        <field name="effectiveDate"><display/></field>
+        <field name="amount"><display also-hidden="false" type="currency" currency="${currencyUomId}"/></field>
+        <field name="amountToApply"><display also-hidden="false" type="currency" currency="${currencyUomId}"/></field>
+    </form>
+
+    <form name="FindPromoSalesReport" type="single" target="promotionBasisSaleReport"
+        header-row-style="header-row" default-table-style="basic-table">
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>        
+        <field name="orderId"><text/></field>
+		<!--<field name="productStoreId" ><text default-value="${session.getAttribute(&quot;productStoreId&quot;)}"></text></field>-->
+        <field name="productPromoId"><text/></field>
+        <!--<field name="partyId"><text-find default-option="contains" ignore-case="true"/></field>-->
+        
+		<field name="viewReport" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false"  target-type="plain"  description="${uiLabelMap.CommonViewReport}" target="javascript:document.FindPromoSalesReport.action='promotionBasisSaleReport';document.FindPromoSalesReport.submit();"/>
+        </field>          
+ 		<field name="GetCSV" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonCSVReport}" target="javascript:document.FindPromoSalesReport.action='ListPromoSales.csv';document.FindPromoSalesReport.submit();"/>
+        </field>
+    </form>
+
+    <form name="ListPromoSales" type="list" separate-columns="true" default-entity-name="ProductPromoUse" list-name="listIt" paginate="true"
+        paginate-target="promotionBasisSaleReport" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <actions>
+	        <script location="component://reports/webapp/reports/WEB-INF/actions/reports/promoBasisSalesReport.groovy"/>
+        </actions>
+
+        <field name="orderId"><display/></field>
+        <field name="productPromoId"><display/></field>
+        <field name="promoName"><display/></field>
+        <field name="partyId"><display/></field>
+		<field name="partyName"><display description="${firstName} ${lastName}"/></field>
+        <field name="totalDiscountAmount"><display/></field>
+        <field name="orderDate"><display/></field>
+    </form>
+
+    <form name="ListPromoSales.csv" type="list" separate-columns="true" default-entity-name="ProductPromoUse" list-name="listIt" view-size="1000">
+        <actions>
+        	<set field="parameters.viewIndex" value="0"/>
+        	<set field="parameters.viewSize" value="1000"/>
+			<script location="component://reports/webapp/reports/WEB-INF/actions/reports/promoBasisSalesReport.groovy"/>
+        </actions>
+
+        <row-actions>
+            <set field="promoName" value="${groovy: 
+            if(promoName != null)
+            promoName = promoName.replaceAll(&quot;,&quot;, &quot;&amp;&quot;);
+            return promoName;
+            }"/>
+            <!--<set field="totalDiscountAmount" value="${groovy: 
+            if(totalDiscountAmount != null)
+            totalDiscountAmount = totalDiscountAmount.replaceAll(&quot;,&quot;, &quot;&quot;);
+            return totalDiscountAmount;
+            }"/>-->
+        </row-actions>
+
+        <field name="orderId"><display/></field>
+        <field name="productPromoId"><display/></field>
+        <field name="promoName"><display/></field>
+        <field name="partyId"><display/></field>
+		<field name="partyName"><display description="${firstName} ${lastName}"/></field>
+        <field name="totalDiscountAmount"><display/></field>
+        <field name="orderDate" title="Order Date"><display/></field>
+    </form>
+
+    <form name="FindProductPrices" type="single" target="productPriceReport"
+        header-row-style="header-row" default-table-style="basic-table">
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>        
+		<field name="productId" title="Product Id">
+			<lookup target-form-name="LookupProduct"/>
+		</field>
+        <field name="productPriceTypeId" title="${uiLabelMap.ProductPriceType}">
+            <drop-down allow-empty="false" no-current-selected-key="DEFAULT_PRICE">
+                <entity-options entity-name="ProductPriceType" description="${description}">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        
+		<field name="viewReport" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false"  target-type="plain"  description="${uiLabelMap.CommonViewReport}" target="javascript:document.FindProductPrices.action='productPriceReport';document.FindProductPrices.submit();"/>
+        </field>          
+ 		<field name="GetCSV" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonCSVReport}" target="javascript:document.FindProductPrices.action='productPriceReport.csv';document.FindProductPrices.submit();"/>
+        </field>
+    </form>
+
+    <form name="ListProductPrices" type="list" separate-columns="true" list-name="listIt" paginate="true"
+        paginate-target="productPriceReport" odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <actions>
+			<script location="component://reports/webapp/reports/WEB-INF/actions/reports/productPriceReport.groovy" />
+            <!--<service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="parameters"/>
+                <field-map field-name="entityName" value="ProductPrice"/>
+                <field-map field-name="orderBy" value="productId"/>
+            </service>-->
+        </actions>
+
+        <row-actions>
+            <entity-one entity-name="Product" value-field="product">
+                <field-map field-name="productId"/>
+            </entity-one>
+            <set field="productName" value="${groovy: 
+            productName = &quot;&quot;;
+            if(product != null)
+            productName = product.getString(&quot;productName&quot;);
+            if(productName == null || productName == &quot;&quot;)
+            productName = product.getString(&quot;internalName&quot;);
+            return productName;
+            }"/>
+        </row-actions>
+
+        <field name="productId"><display/></field>
+        <field name="productName"><display/></field>
+        <field name="productPriceTypeId">
+		<display-entity entity-name="ProductPriceType" key-field-name="productPriceTypeId" description="${description}"></display-entity>
+		</field>
+        <field name="price"><display/></field>
+		<field name="currencyUomId"><display/></field>
+        <!--<field name="createdDate"><display/></field>-->
+    </form>
+
+
+    <form name="ListProductPrices.csv" type="list" default-entity-name="ProductPrice" list-name="listIt" view-size="2000">
+        <actions>
+			<script location="component://reports/webapp/reports/WEB-INF/actions/reports/productPriceReport.groovy" />
+            <!--<service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="parameters"/>
+                <field-map field-name="entityName" value="ProductPrice"/>
+                <field-map field-name="orderBy" value="productId"/>
+            </service>-->
+        </actions>
+
+        <row-actions>
+            <entity-one entity-name="Product" value-field="product">
+                <field-map field-name="productId"/>
+            </entity-one>
+            <set field="productName" value="${groovy: 
+            productName = &quot;&quot;;
+            if(product != null)
+            productName = product.getString(&quot;productName&quot;);
+            if(productName == null || productName == &quot;&quot;)
+            productName = product.getString(&quot;internalName&quot;);
+            if(productName != null)
+            productName = productName.replaceAll(&quot;,&quot;, &quot;&amp;&quot;);
+            return productName;
+            }"/>
+            <set  field="price"  value="${groovy: 
+            	priceString = Double.toString(price);
+            	if(priceString != null)
+            	priceString = priceString.replaceAll(&quot;,&quot;, &quot;&quot;);
+				return priceString;
+                }" type="String"/>            
+        </row-actions>
+
+        <field name="productId"><display/></field>
+        <field name="productName"><display/></field>
+        <field name="productPriceTypeId"><display/></field>
+        <field name="price"><display/></field>
+		<field name="currencyUomId" ><display/></field>
+        <field name="createdDate"><display/></field>
+    </form>
+
+    <form name="FindProductOprions" type="single" target="productOptionsReport.csv" title="" default-map-name="productAssoc"
+        header-row-style="header-row" default-table-style="basic-table">
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+		<field name="productId" title="Virtual Product Id">
+			<lookup target-form-name="LookupProduct"/>
+		</field>
+ 		 <!--<field name="viewReport" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonViewReport}" target="javascript:document.FindProductOprions.action='productOptionsReport';document.FindProductOprions.submit();"/>
+        </field>-->
+ 		<field name="GetCSV" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonCSVReport}" target="javascript:document.FindProductOprions.action='productOptionsReport.csv';document.FindProductOprions.submit();"/>
+        </field>       
+    </form>
+
+    <form name="ListProductOptions" list-name="listIt" target="" title="" type="list" paginate-target="productOptionsReport"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar" header-row-style="header-row-2">
+        <actions>
+            <set field="entityName" value="ProductAssoc"/>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="requestParameters"/>
+                <field-map field-name="entityName" from-field="entityName"/>
+                <field-map field-name="orderBy" from-field="parameters.sortField"/>
+                <field-map field-name="viewIndex" from-field="viewIndex"/>
+                <field-map field-name="viewSize" from-field="viewSize"/>
+            </service>
+        </actions>
+        <row-actions>
+            <entity-one entity-name="Product" value-field="product">
+                <field-map field-name="productId"/>
+            </entity-one>
+            <set field="productName" value="${groovy: 
+            productName = &quot;&quot;;
+            if(product != null)
+            productName = product.getString(&quot;productName&quot;);
+            if(productName == null || productName == &quot;&quot;)
+            productName = product.getString(&quot;internalName&quot;);
+            return productName;
+            }"/>
+        </row-actions>        
+        <field name="productId" title="Virtual Product"><display description="&quot;\&quot;&quot; ${productId}&quot;\&quot;&quot;"/></field>
+        <field name="productIdTo" title="Variant Product"><display description="&quot;\&quot;&quot; ${productIdTo}&quot;\&quot;&quot;"/></field>
+        <field name="productName" title="Product Name"><display/></field>
+    </form>
+
+ 	<form name="salesReport" type="single" target="salesreports" header-row-style="header-row" default-table-style="basic-table">
+ 	
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+		<field name="viewSize" parameter-name="viewSize">  <hidden value="10" /></field>
+		<field name="viewIndex" parameter-name="viewIndex">  <hidden value="0"></hidden></field>
+		<!-- <field name="orderId" title="Order Id"><text></text></field>-->
+		<field name="productId" title="Product Id">
+			<lookup target-form-name="LookupProduct"/>
+		</field>
+		<field name="productStoreId" ><text size="4" default-value="${session.getAttribute(&quot;productStoreId&quot;)}" disabled="true"/></field>
+		<field name="orderStatusId">
+			<drop-down>
+				<option key="" description="All"/>
+				<option key="ORDER_CREATED" description="Created"/>
+				<option key="ORDER_APPROVED" description="Approved"/>
+				<option key="ORDER_COMPLETED" description="Completed"/>
+				<option key="ORDER_CANCELLED" description="Cancelled"/>
+			</drop-down>
+		</field>
+
+		<field name="paymentMethodTypeId" title="PaymentType">
+			<drop-down>
+				<option key="" description="All"/>
+				<option key="CASH" description="Cash Sales"/>
+				<option key="EXT_COD" description="Credit Sales"/>
+				<option key="CREDIT_CARD" description="CreditCard Sales"/>
+			
+			</drop-down>
+		</field>
+ 		 <field name="viewReport" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonViewReport}" target="javascript:document.salesReport.action='viewSalesreport?viewReport=true';document.salesReport.submit();"/>
+        </field>  
+ 		<field name="GetCSV" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonCSVReport}" target="javascript:document.salesReport.action='genSalesreportCSV';document.salesReport.submit();"/>
+        </field>
+	</form>
+	
+	<form name="purchaseSummaryReport" type="single" target="purchaseSummary" header-row-style="header-row" default-table-style="basic-table">
+ 	
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+		<field name="viewSize" parameter-name="viewSize">  <hidden value="10" /></field>
+		<field name="viewIndex" parameter-name="viewIndex">  <hidden value="0"></hidden></field>
+		<field name="orderTypeId" parameter-name="orderTypeId">  <hidden value="PURCHASE_ORDER"></hidden></field>
+		<!-- <field name="orderId" title="Order Id"><text></text></field>-->
+		<field name="productId" title="Product Id">
+			<lookup target-form-name="LookupProduct"/>
+		</field>
+		<field name="productStoreId" title="Product Store">
+            <drop-down allow-empty="true">
+                <entity-options entity-name="ProductStore" key-field-name="productStoreId" description="${storeName}">
+                    <entity-order-by field-name="storeName"/>
+                </entity-options>
+            </drop-down>
+        </field> 
+		<!-- <field name="productStoreId" ><text size="4" default-value="${session.getAttribute(&quot;productStoreId&quot;)}"/></field> -->
+		<field name="orderStatusId">
+			<drop-down>
+				<option key="" description="All"/>
+				<option key="ORDER_CREATED" description="Created"/>
+				<option key="ORDER_APPROVED" description="Approved"/>
+				<option key="ORDER_COMPLETED" description="Completed"/>
+				<option key="ORDER_CANCELLED" description="Cancelled"/>
+			</drop-down>
+		</field>
+		<!-- <field name="minDate" title="From Date"  event="onClick" action="javascript:return chooseValidate('lookuporder');" >
+        	<date-time default-value="${parameters.fromDateStr?if_exists}" />
+       	</field>
+		<field name="maxDate" title="Thru Date">
+        	<date-time default-value="${parameters.thruDateStr?if_exists}"/>
+       	</field> -->
+ 		 <field name="viewReport" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonViewReport}" target="javascript:document.purchaseSummaryReport.action='viewPurchaseReport?viewReport=true';document.purchaseSummaryReport.submit();"/>
+        </field>  
+	</form>
+	
+	<form name="purchaseDetailReport" type="single" target="purchaseDetail" header-row-style="header-row" default-table-style="basic-table">
+ 	
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+		<field name="viewSize" parameter-name="viewSize">  <hidden value="10" /></field>
+		<field name="viewIndex" parameter-name="viewIndex">  <hidden value="0"></hidden></field>
+		<field name="orderTypeId" parameter-name="orderTypeId">  <hidden value="PURCHASE_ORDER"></hidden></field>
+		<!-- <field name="productStoreId">
+            <drop-down allow-empty="true">
+                <entity-options entity-name="ProductStore" key-field-name="productStoreId" description="${storeName}">
+                    <entity-order-by field-name="storeName"/>
+                </entity-options>
+            </drop-down>
+        </field> -->
+		<field name="minDate" title="From Date"  event="onClick" action="javascript:return chooseValidate('lookuporder');" >
+        	<date-time default-value="${parameters.fromDateStr?if_exists}" />
+       	</field>
+		<field name="maxDate" title="Thru Date" event="onClick" action="javascript:return chooseValidate('lookuporder');">
+        	<date-time default-value="${parameters.thruDateStr?if_exists}"/>
+       	</field>
+ 		 <field name="viewReport" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonViewReport}" target="javascript:document.purchaseDetailReport.action='viewPurchaseDetailReport?viewReport=true';document.purchaseDetailReport.submit();"/>
+        </field>  
+	</form>
+	
+	<form name="salesTaxReport" type="single" target="salesTaxReport" header-row-style="header-row" default-table-style="basic-table">
+ 	
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+		<field name="viewSize" parameter-name="viewSize">  <hidden value="10" /></field>
+		<field name="viewIndex" parameter-name="viewIndex">  <hidden value="0"></hidden></field>
+		<field name="productStoreId">
+            <drop-down allow-empty="true">
+                <entity-options entity-name="ProductStore" key-field-name="productStoreId" description="${storeName}">
+                    <entity-order-by field-name="storeName"/>
+                </entity-options>
+            </drop-down>
+        </field>
+		<field name="minDate" title="From Date"  event="onClick" action="javascript:return chooseValidate('lookuporder');" >
+        	<date-time default-value="${parameters.fromDateStr?if_exists}" />
+       	</field>
+		<field name="maxDate" title="Thru Date" event="onClick" action="javascript:return chooseValidate('lookuporder');">
+        	<date-time default-value="${parameters.thruDateStr?if_exists}"/>
+       	</field>
+ 		 <field name="viewReport" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonViewReport}" target="javascript:document.salesTaxReport.action='viewSalesTaxReport?viewReport=true';document.salesTaxReport.submit();"/>
+        </field>  
+	</form>
+	
+	<form name="viewSalesTaxReport" list-name="listIt" type="list" paginate-target="salesTaxReport"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar" header-row-style="header-row-2">
+        <field name="productStoreId" title="Store Id"><display description="${productStoreId}"/></field>
+        <field name="storeName" title="Store Name"><display description="${storeName}"/></field>
+        <field name="companyName" title="Company Name"><display description="${companyName}"/></field>
+        <field name="totalTax" title="Total Tax"><display description="${totalTax}"/></field>
+        <field name="fromDate" title="From Date"><display description="${fromDate}"/></field>
+        <field name="thruDate" title="Thru Date"><display description="${thruDate}"/></field>
+    </form>
+	
+
+    <form name="ListSalesOrders" list-name="listIt" type="list" paginate-target="salesreports"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar" header-row-style="header-row-2">
+        <actions>
+            <set field="entityName" value="MyOrders"/>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="requestParameters"/>
+                <field-map field-name="entityName" value="MyOrders"/>
+                <field-map field-name="orderBy"  value="orderDate DESC"/>
+                <field-map field-name="viewIndex" from-field="viewIndex"/>
+                <field-map field-name="viewSize" from-field="viewSize"/>
+            </service>
+        </actions>
+		<row-actions>
+            <set  field="createdBy"  value="${groovy: 
+            	createdBy = org.ofbiz.party.contact.ContactMechWorker.getOrderEmailContactMech( delegator,  orderId);
+                return createdBy;
+                }" type="String"/>
+            <set  field="partyId"  value="${groovy: 
+            		partyId = &quot;&quot;;
+            		List orderRoleListGv = (List) delegator.findByAnd(&quot;OrderRole&quot;, org.ofbiz.base.util.UtilMisc.toMap(&quot;orderId&quot;, orderId));
+            		if(orderRoleListGv != null &amp;&amp; orderRoleListGv.size()>0)
+            		partyId = orderRoleListGv.get(0).getString(&quot;partyId&quot;);
+                return partyId;
+                }" type="String"/>
+            <set  field="subTotal"  value="${groovy: 
+            	subTotal =  org.ofbiz.order.report.Report.getOrderProductPrice(productId, orderId, orderItemSeqId);
+                return subTotal;
+                }" type="Double"/>
+        </row-actions>
+        <field name="orderId"><display description="${orderId}"/></field>
+        <field name="orderStatusId" title="Order Status">
+			<display-entity entity-name="StatusItem" key-field-name="statusId"  description="${description}"/>
+		</field>
+		<field name="partyId"><display description="${partyId}"/></field>
+		<field name="createdBy" title="Email Id"><display description="${createdBy}"/></field>
+        <field name="productId"><display description="${productId}"/></field>
+        <field name="productName"><display description="${productName}"/></field>
+       
+        <field name="quantity" title="Quantity"><display description="${quantity}"/></field>
+		<field name="price"><display description="${unitPrice *  quantity}"/></field>
+        <field name="Discount"><display description="${((unitPrice *  quantity)-subTotal)}"/></field>
+        <field name="subTotal"><display description="${subTotal}"/></field>
+        <!--<field name="productStoreId"><display/></field>-->
+		<field name="orderDate"><display description="${orderDate}"/></field>        
+    </form>
+    
+    
+    
+    <form name="ListPurchaseOrders" list-name="listIt" type="list" paginate-target="purchaseSummary"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar" header-row-style="header-row-2">
+        
+        <actions>
+            <set field="entityName" value="MyPurchaseOrders"/>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="requestParameters"/>
+                <field-map field-name="entityName" value="MyPurchaseOrders"/>
+                <field-map field-name="orderBy"  value="orderDate DESC"/>
+                <field-map field-name="viewIndex" from-field="viewIndex"/>
+                <field-map field-name="viewSize" from-field="viewSize"/>
+            </service>
+        </actions>
+		<row-actions>
+            <set  field="createdBy"  value="${groovy: 
+            	createdBy = org.ofbiz.party.contact.ContactMechWorker.getOrderEmailContactMech( delegator,  orderId);
+                return createdBy;
+                }" type="String"/>
+            <set  field="partyId"  value="${groovy: 
+            		partyId = &quot;&quot;;
+            		List orderRoleListGv = (List) delegator.findByAnd(&quot;OrderRole&quot;, org.ofbiz.base.util.UtilMisc.toMap(&quot;orderId&quot;, orderId));
+            		if(orderRoleListGv != null &amp;&amp; orderRoleListGv.size()>0)
+            		partyId = orderRoleListGv.get(0).getString(&quot;partyId&quot;);
+                return partyId;
+                }" type="String"/>
+            <set  field="subTotal"  value="${groovy: 
+            	subTotal =  org.ofbiz.order.report.Report.getOrderProductPrice(productId, orderId, orderItemSeqId);
+                return subTotal;
+                }" type="Double"/>
+                
+                <set  field="invoiceDetail"  value="${groovy: 
+                 invoiceDetail =  org.ofbiz.order.report.Report.getinvoiceDetail(orderId, orderItemSeqId);
+                return invoiceDetail }" type="java.util.Map"/>
+        </row-actions>
+        <field name="productId"><display description="${productId}"/></field>
+        <field name="invoiceId"><display description="${invoiceDetail.invoiceId}"/></field>
+        <field name="productStoreId"><display description="${productStoreId}"/></field>
+        <field name="invoiceDate"><display description="${invoiceDetail.createdDate}"/></field>
+        <field name="orderDate"><display description="${orderDate}"/></field>
+        <field name="productName"><display description="${productName}"/></field>
+        <field name="originFacilityId"><display description="${originFacilityId}"/></field>
+        <field name="quantity" title="Quantity"><display description="${quantity}"/></field>
+        <field name="unitPrice"><display description="${unitPrice}"/></field>
+		<field name="price"><display description="${unitPrice *  quantity}"/></field>
+        <field name="Discount"><display description="${((unitPrice *  quantity)-subTotal)}"/></field>
+        <field name="subTotal"><display description="${subTotal}"/></field>
+        <field name="orderStatusId" title="Order Status">
+			<display-entity entity-name="StatusItem" key-field-name="statusId"  description="${description}"/>
+		</field>
+		<field name="companyName"><display description="${companyName}"/></field>
+		<field name="storeName"><display description="${storeName}"/></field>
+		<field name="partyId"><display description="${partyId}"/></field>
+        <field name="orderId"><display description="${orderId}"/></field>
+		<!-- <field name="createdBy" title="Email Id"><display description="${createdBy}"/></field> -->
+        <!--<field name="productStoreId"><display/></field>-->
+    </form>
+    
+    <form name="viewPurchaseDetailReport" list-name="listIt" type="list" paginate-target="purchaseDetail"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar" header-row-style="header-row-2">
+        <actions>
+        <entity-one entity-name="ProductStore" value-field="storeDetails">
+        <field-map field-name="productStoreId" from-field="key"/>
+		<select-field field-name="storeName"/>
+		<select-field field-name="companyName"/>
+        </entity-one>
+        </actions>
+        <!-- <field name="orderDate"><display description="${orderDate}"/></field>
+        <field name="originFacilityId"><display description="${originFacilityId}"/></field>-->
+        <field name="key" title="Store Id"><display description="${key}"/></field>
+        <field name="grandTotal" title="Grand Total"><display description="${grandTotal}"/></field>
+        <field name="storeName" title="Dist Name"><display description="${storeName}"/></field>
+        <field name="companyName" title="Location Name"><display description="${companyName}"/></field>
+        <field name="fromDate" title="From Date"><display description="${fromDate}"/></field>
+        <field name="thruDate" title="Thru Date"><display description="${thruDate}"/></field>
+        <!-- <field name="orderStatusId" title="Order Status">
+			<display-entity entity-name="StatusItem" key-field-name="statusId"  description="${description}"/>
+		</field> -->
+    </form>
+    
+    <form name="lookupPartyName" target="LookupPartyName" type="single"
+        header-row-style="header-row" default-table-style="basic-table">
+        <!--<auto-fields-entity entity-name="PartyNameView" default-field-type="find"/>-->
+        <field name="partyId" title="${uiLabelMap.PartyPartyId}"><text-find/></field>
+        <field name="partyTypeId" title="${uiLabelMap.PartyTypeId}">
+            <drop-down allow-empty="true">
+                <entity-options description="${description}" entity-name="PartyType"/>
+            </drop-down>
+        </field>
+        <field name="firstName" title="${uiLabelMap.PartyFirstName}"><text-find/></field>
+        <field name="lastName"  title="${uiLabelMap.PartyLastName}"><text-find/></field>
+        <field name="groupName" title="${uiLabelMap.PartyGroupName}"><text-find/></field>
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+        <field name="submitButton" title="${uiLabelMap.CommonLookup}"><submit button-type="button"/></field>
+    </form>
+
+    <form name="listLookupPartyName" type="list" list-name="listIt" paginate-target="LookupPartyName"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <actions>
+            <set field="inputFields" from-field="parameters"/>
+            <set field="orderBy" value="partyId"/>
+            <set field="entityName" value="PartyNameView"/>
+            <script location="component://party/webapp/partymgr/WEB-INF/actions/party/FindLookUp.groovy"/>
+        </actions>
+        <!--<auto-fields-entity entity-name="PartyNameView" default-field-type="display"/>-->
+        <field name="partyId" title="${uiLabelMap.PartyPartyId}"  widget-style="smallSubmit">
+            <hyperlink also-hidden="false" target-type="plain" description="${partyId}" target="javascript:set_value('${partyId}')"/>
+        </field>
+        <field name="partyTypeId" title="${uiLabelMap.PartyTypeId}">
+            <display-entity also-hidden="false" entity-name="PartyType" description="${description}"/>
+        </field>
+        <field name="firstName" title="${uiLabelMap.PartyFirstName}"><display/></field>
+        <field name="lastName"  title="${uiLabelMap.PartyLastName}"><display/></field>
+        <field name="groupName" title="${uiLabelMap.PartyGroupName}"><display/></field>
+    </form>
+    <form name="lookupProduct" target="LookupProduct" title="" type="single"
+        header-row-style="header-row" default-table-style="basic-table">
+        <!-- <auto-fields-entity entity-name="Product" default-field-type="hidden"/> -->
+        <field name="productId" title="Item Id"><text-find/></field>
+        <field name="brandName" title="${uiLabelMap.ProductBrandName}"><text-find/></field>
+        <field name="internalName" title="Item Name"><text-find default-option="contains"/></field>
+        <!-- <field name="productTypeId" title="${uiLabelMap.ProductProductType}">
+            <drop-down allow-empty="true">
+                <entity-options entity-name="ProductType" description="${description}">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field> -->
+        <field name="primaryProductCategoryId" title="${uiLabelMap.ProductPrimaryCategory}">
+            <drop-down allow-empty="true">
+                <entity-options description="${description}" entity-name="ProductCategory" key-field-name="productCategoryId">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="noConditionFind"><hidden value="Y"/></field>
+        <!-- NOTE DEJ20070829 not sure why this is here, but it doesn't seem applicable for a general product lookup, also doesn't handle case where isVariant is null <field name="isVariant"><hidden value="N"/></field> -->
+        <field name="submitButton" title="${uiLabelMap.CommonLookup}" widget-style="smallSubmit"><submit button-type="button"/></field>
+    </form>
+     <form name="lookupBrand" target="LookupBrand" title="" type="single"
+        header-row-style="header-row" default-table-style="basic-table">
+        <!-- <auto-fields-entity entity-name="Product" default-field-type="hidden"/> -->
+        <field name="brandName" title="${uiLabelMap.ProductBrandName}"><text-find/></field>
+        <!--  <field name="productId" title="Item Id"><text-find/></field>
+         <field name="internalName" title="Item Name"><text-find default-option="contains"/></field>-->
+        <!-- <field name="productTypeId" title="${uiLabelMap.ProductProductType}">
+            <drop-down allow-empty="true">
+                <entity-options entity-name="ProductType" description="${description}">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field> 
+        <field name="primaryProductCategoryId" title="${uiLabelMap.ProductPrimaryCategory}">
+            <drop-down allow-empty="true">
+                <entity-options description="${description}" entity-name="ProductCategory" key-field-name="productCategoryId">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>-->
+        <field name="noConditionFind"><hidden value="Y"/></field>
+        <!-- NOTE DEJ20070829 not sure why this is here, but it doesn't seem applicable for a general product lookup, also doesn't handle case where isVariant is null <field name="isVariant"><hidden value="N"/></field> -->
+        <field name="submitButton" title="${uiLabelMap.CommonLookup}" widget-style="smallSubmit"><submit button-type="button"/></field>
+    </form>
+    <form name="listLookupProduct" list-name="listIt" title="" type="list" paginate-target="LookupProduct"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar" view-size="20">
+        <actions>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="parameters"/>
+                <field-map field-name="entityName" value="Product"/>
+            </service>
+        </actions>
+        <field name="productId" title="Item Id" widget-style="linkbuttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${productId}" target="javascript:set_value('${productId}')"/>
+        </field>
+        <field name="brandName" title="${uiLabelMap.ProductBrandName}"><display/></field>
+        <field name="internalName" title="Item Name"><display/></field>
+        <field name="productTypeId" title="Item Type"><display-entity entity-name="ProductType"/></field>
+        <field name="searchVariants" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext" use-when="isVirtual!=null&amp;&amp;&quot;${isVirtual}&quot;.equals(&quot;Y&quot;)">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.ProductVariants}" target="LookupVariantProduct">
+                <parameter param-name="productId"/>
+            </hyperlink>
+        </field> 
+    </form>
+ <form name="listLookupBrand" list-name="listIt" title="" type="list" paginate-target="LookupBrand"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar" view-size="20">
+        <actions>
+        <set field="fieldList" value="${groovy:[&quot;brandName&quot;]}" type="List"/>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="parameters"/>
+                 <field-map field-name="fieldList" from-field="fieldList"/>
+                 <field-map field-name="distinct" value="Y" />
+                <field-map field-name="entityName" value="Product"/>
+               
+            </service>
+        </actions>
+        <field name="brandName" title="Brand Name" widget-style="linkbuttontext" >
+            <hyperlink also-hidden="false" target-type="plain" description="${brandName}" target="javascript:set_value('${brandName}')"/>
+        </field>
+        <!--  <field name="productId" title="Item Id"><display/></field>
+        <field name="internalName" title="Item Name"><display/></field>
+        <field name="productTypeId" title="Item Type"><display-entity entity-name="ProductType"/></field>
+        <field name="searchVariants" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext" use-when="isVirtual!=null&amp;&amp;&quot;${isVirtual}&quot;.equals(&quot;Y&quot;)">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.ProductVariants}" target="LookupVariantProduct">
+                <parameter param-name="productId"/>
+            </hyperlink>
+        </field>-->
+    </form>
+
+    <form name="FindStaffActivities" type="single" target="staffActivity" title="" default-map-name="activity"
+        header-row-style="header-row" default-table-style="basic-table">
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+		<field name="changedByInfo" title="${uiLabelMap.PartyUserLoginId}">
+		<lookup target-form-name="LookupUserLoginAndPartyDetails" size="30"></lookup>
+		</field>        
+ 		 <field name="viewReport" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonViewReport}" target="javascript:document.FindStaffActivities.action='staffActivity';document.FindStaffActivities.submit();"/>
+        </field>          
+ 		<field name="GetCSV" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonCSVReport}" target="javascript:document.FindStaffActivities.action='staffActivityCSV';document.FindStaffActivities.submit();"/>
+        </field>       
+    </form>
+
+    <form name="ListStaffActivities" list-name="listIt" target="" title="" type="list" paginate-target="staffActivity"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar" header-row-style="header-row-2">
+        <actions>
+            <set field="entityName" value="EntityAuditLogs"/>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="requestParameters"/>
+                <field-map field-name="entityName" from-field="entityName"/>
+                <field-map field-name="orderBy" from-field="parameters.sortField"/>
+                <field-map field-name="viewIndex" from-field="viewIndex"/>
+                <field-map field-name="viewSize" from-field="viewSize"/>
+            </service>
+        </actions>
+        <field name="changedEntityName"><display/></field>
+        <field name="operation"><display/></field>
+        <!--<field name="brandName"><display/></field>-->
+        <field name="changedByInfo" title="User Login"><display/></field>
+        <field name="description" title="Description (FieldName \ PreviousValue \ Modified Value)"><display/></field>
+    </form>
+
+    <form name="FindBillProductWiseSalesReports" type="single" target="FindBillProductWiseSalesReports" header-row-style="header-row" default-table-style="basic-table">
+ 	
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+		<field name="viewSize" parameter-name="viewSize">  <hidden value="10" /></field>
+		<field name="viewIndex" parameter-name="viewIndex">  <hidden value="0"></hidden></field>
+		<!-- <field name="orderId" title="Order Id"><text></text></field>-->
+		<field name="productId" title="Item Id">
+			<lookup target-form-name="LookupProduct"/>
+		</field>
+		<field name="productStoreId" title="Product Store">
+            <drop-down allow-empty="true">
+                <entity-options entity-name="ProductStore" key-field-name="productStoreId" description="${storeName}">
+                    <entity-order-by field-name="storeName"/>
+                </entity-options>
+            </drop-down>
+        </field> 
+		<!-- <field name="productStoreId" ><text size="4" default-value="${session.getAttribute(&quot;productStoreId&quot;)}" disabled="true"/></field> -->
+        <!-- <field name="facilityName" title="Location Name">
+	        <drop-down allow-empty="true">
+	        	 <entity-options description="${facilityName}" entity-name="Facility"/>
+	        </drop-down>
+        </field> -->
+ 		 <field name="viewReport" title="View Report" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="View Report" target="javascript:document.FindBillProductWiseSalesReports.action='ViewBillProductWiseSalesReports?viewReport=true';document.FindBillProductWiseSalesReports.submit();"/>
+        </field>  
+ 		<!-- <field name="GetCSV" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonCSVReport}" target="javascript:document.FindBillProductWiseSalesReports.action='genSalesreportCSV';document.FindBillProductWiseSalesReports.submit();"/>
+        </field> -->
+	</form>
+    
+    <form name="ListBillProductWiseSalesReports" list-name="listIt" type="list" paginate-target="billProductWiseReports"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar" header-row-style="header-row-2">
+        <actions>
+            <set field="entityName" value="MySalesOrders"/>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="requestParameters"/>
+                <field-map field-name="entityName" value="MySalesOrders"/>
+                <!-- <field-map field-name="productName"  value="productName DESC"/> -->
+                <field-map field-name="viewIndex" from-field="viewIndex"/>
+                <field-map field-name="viewSize" from-field="viewSize"/>
+                <field-map field-name="orderBy" value="orderDate DESC"/>
+            </service>
+        </actions>
+		<row-actions>
+            <set  field="createdBy"  value="${groovy: 
+            	createdBy = org.ofbiz.party.contact.ContactMechWorker.getOrderEmailContactMech( delegator,  orderId);
+                return createdBy;
+                }" type="String"/>
+            <set  field="partyId"  value="${groovy: 
+            		partyId = &quot;&quot;;
+            		List orderRoleListGv = (List) delegator.findByAnd(&quot;OrderRole&quot;, org.ofbiz.base.util.UtilMisc.toMap(&quot;orderId&quot;, orderId));
+            		if(orderRoleListGv != null &amp;&amp; orderRoleListGv.size()>0)
+            		partyId = orderRoleListGv.get(0).getString(&quot;partyId&quot;);
+                return partyId;
+                }" type="String"/>
+            <set  field="subTotal"  value="${groovy: 
+            	subTotal =  org.ofbiz.order.report.Report.getOrderProductPrice(productId, orderId, orderItemSeqId);
+                return subTotal;
+                }" type="Double"/>
+               <set  field="facilityNameAndId"  value="${groovy: 
+                facilityNameAndId =  org.ofbiz.order.report.Report.getFacilityNameAndId(productStoreId);
+                return facilityNameAndId;
+                }" type="java.util.Map"/> 
+                
+        </row-actions>
+        <!-- <field name="orderId" title="Item Code"><display description="${orderId}"/></field> -->
+		<!-- <field name="companyName"><display description="${companyName}"></display></field> -->
+		<field name="facilityName" title="Location Name"><display description="${facilityNameAndId.facilityName}"/></field>
+		<!-- <field name="facilityId" title="Location Id"><display description="${facilityNameAndId.facilityId}"/></field> -->
+		<field name="orderDate" title="Bill Date"><display description="${orderDate}"/></field>  
+        <field name="productId" title="Item Code"><display description="${productId}"/></field>
+        <field name="productName" title="Item Name"><display description="${productName}"/></field>
+       
+        <field name="quantity" title="Item Qty"><display description="${quantity}"/></field>
+		<field name="unitPrice" title="Item Rate"><display description="${unitPrice}"/></field>
+		<field name="price" title="Amount"><display description="${unitPrice *  quantity}"></display></field>
+        <field name="Discount"><display description="${((unitPrice *  quantity)-subTotal)}"/></field>
+        <field name="subTotal" title="Bill Amount"><display description="${subTotal}"/></field>
+        <!-- <field name="facilityId" title="Location Id"><display description="${facilityId}"></display></field>
+        <field name="facilityTypeId" title="Location Type Id"><display description="${facilityTypeId}"></display></field> -->
+		<field name="partyId"><display description="${partyId}"/></field>   
+    </form>
+    
+    <form name="FindItemWiseSalesReports" type="single" target="FindItemWiseSalesReports" header-row-style="header-row" default-table-style="basic-table">
+ 	
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+		<field name="viewSize" parameter-name="viewSize">  <hidden value="10" /></field>
+		<field name="viewIndex" parameter-name="viewIndex">  <hidden value="0"></hidden></field>
+		<!-- <field name="orderId" title="Order Id"><text></text></field>-->
+		<field name="productId" title="Item Id">
+			<lookup target-form-name="LookupProduct"/>
+		</field>
+		<field name="productStoreId" title="Product Store">
+            <drop-down allow-empty="true">
+                <entity-options entity-name="ProductStore" key-field-name="productStoreId" description="${storeName}">
+                    <entity-order-by field-name="storeName"/>
+                </entity-options>
+            </drop-down>
+        </field> 
+		<!-- <text size="4" default-value="${session.getAttribute(&quot;productStoreId&quot;)}"/> -->
+			<!-- <field name="facilityId" title="Location Name">
+            <drop-down allow-empty="true">
+                <entity-options description="${facilityName}" entity-name="Facility" key-field-name="facilityId"/>
+            </drop-down>
+        </field> -->
+ 		 <field name="viewReport" title="View Report" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="View Report" target="javascript:document.FindItemWiseSalesReports.action='ViewItemWiseSalesReports?viewReport=true';document.FindItemWiseSalesReports.submit();"/>
+        </field>  
+ 		<!-- <field name="GetCSV" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonCSVReport}" target="javascript:document.FindBillProductWiseSalesReports.action='genSalesreportCSV';document.FindBillProductWiseSalesReports.submit();"/>
+        </field> -->
+	</form>
+    
+    <form name="ListItemWiseSalesReports" list-name="listIt" type="list" paginate-target="itemWiseReports"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar" header-row-style="header-row-2">
+        <actions>
+            <set field="entityName" value="MySalesOrders"/>
+            <set field="orderBy" value="productName"/>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="requestParameters"/>
+                <field-map field-name="entityName" value="MySalesOrders"/>
+                <!-- <field-map field-name="productName"  value="productName DESC"/> -->
+                <field-map field-name="viewIndex" from-field="viewIndex"/>
+                <field-map field-name="viewSize" from-field="viewSize"/>
+            </service>
+        </actions>
+		<row-actions>
+            <set  field="createdBy"  value="${groovy: 
+            	createdBy = org.ofbiz.party.contact.ContactMechWorker.getOrderEmailContactMech( delegator,  orderId);
+                return createdBy;
+                }" type="String"/>
+            <set  field="partyId"  value="${groovy: 
+            		partyId = &quot;&quot;;
+            		List orderRoleListGv = (List) delegator.findByAnd(&quot;OrderRole&quot;, org.ofbiz.base.util.UtilMisc.toMap(&quot;orderId&quot;, orderId));
+            		if(orderRoleListGv != null &amp;&amp; orderRoleListGv.size()>0)
+            		partyId = orderRoleListGv.get(0).getString(&quot;partyId&quot;);
+                return partyId;
+                }" type="String"/>
+            <set  field="subTotal"  value="${groovy: 
+            	subTotal =  org.ofbiz.order.report.Report.getOrderProductPrice(productId, orderId, orderItemSeqId);
+                return subTotal;
+                }" type="Double"/>
+                <set  field="facilityNameAndId"  value="${groovy: 
+                facilityNameAndId =  org.ofbiz.order.report.Report.getFacilityNameAndId(productStoreId);
+                return facilityNameAndId;
+                }" type="java.util.Map"/> 
+        </row-actions>
+        <field name="companyName" title="Company"><display description="${companyName}"></display></field>
+        <field name="productId" title="Item Id"><display description="${productId}"/></field>
+        <field name="productName" title="Item Name"><display description="${productName}"/></field>
+        <field name="facilityName" title="Location Name"><display description="${facilityNameAndId.facilityName}"/></field>
+        <field name="facilityId" title="Location Id"><display description="${facilityNameAndId.facilityId}"/></field>
+        <field name="quantity" title="Item Qty"><display description="${quantity}"/></field>
+        <field name="unitPrice" title="Item Rate"><display description="${unitPrice}"/></field>
+        <field name="Discount"><display description="${((unitPrice *  quantity)-subTotal)}"/></field>
+        <field name="subTotal" title="Bill Amount"><display description="${subTotal}"/></field>
+		<field name="orderDate" title="Bill Date"><display description="${orderDate}"/></field>        
+    </form>
+    
+    
+    <form name="FindCounterWiseSalesReports" type="single" target="FindCounterWiseSalesReports" header-row-style="header-row" default-table-style="basic-table">
+ 	
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+		<field name="viewSize" parameter-name="viewSize">  <hidden value="10" /></field>
+		<field name="viewIndex" parameter-name="viewIndex">  <hidden value="0"></hidden></field>
+		<field name="orderTypeId" parameter-name="orderTypeId">  <hidden value="SALES_ORDER"></hidden></field>
+		<field name="minDate" title="From Date"  event="onClick" action="javascript:return chooseValidate('lookuporder');" >
+        	<date-time default-value="${parameters.fromDateStr?if_exists}" />
+       	</field>
+		<field name="maxDate" title="Thru Date" event="onClick" action="javascript:return chooseValidate('lookuporder');">
+        	<date-time default-value="${parameters.thruDateStr?if_exists}"/>
+       	</field>
+ 		 <field name="viewReport" title="View Report" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="View Report" target="javascript:document.FindCounterWiseSalesReports.action='ViewCounterWiseSalesReports?viewReport=true';document.FindCounterWiseSalesReports.submit();"/>
+        </field>  
+	</form>
+    
+    <form name="ListCounterWiseSalesReports" list-name="listIt" type="list" paginate-target="counterWiseReports"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar" header-row-style="header-row-2">
+        <!-- <field name="facilityId" title="Location Id"><display description="${facilityId}"/></field> -->
+       <!--  <field name="facilityName" title="Location Name"><display description="${facilityName}"/></field> -->
+        <field name="key" title="Terminal Id"><display description="${key}"/></field>
+        <field name="terminalName" title="Terminal Name"><display description="${terminalName}"/></field>
+        <field name="salesQty" title="Sales Qty"><display description="${salesQty}"/></field>
+        <field name="returnQty" title="Return Qty"><display description="${returnQty}"/></field>
+        <field name="netQty" title="Net Qty"><display description="${(salesQty - returnQty)}"/></field>
+        <field name="grandTotal" title="Grand Total"><display description="${grandTotal}"/></field>
+        <field name="locationName" title="Location Name"><display description="${locationName}"/></field>
+        <field name="fromDate" title="From Date"><display description="${fromDate}"/></field>
+        <field name="thruDate" title="Thru Date"><display description="${thruDate}"/></field>      
+    </form>
+
+	<form name="FindSalesDetailItemWiseReports" type="single" target="viewSalesDetailItemWiseReports" header-row-style="header-row" default-table-style="basic-table">
+ 	
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+		<field name="viewSize" parameter-name="viewSize">  <hidden value="10" /></field>
+		<field name="viewIndex" parameter-name="viewIndex">  <hidden value="0"></hidden></field>
+		<field name="productId" title="Item Id">
+			<lookup target-form-name="LookupProduct"/>
+		</field>
+		<field name="productStoreId" title="Product Store">
+            <drop-down allow-empty="true">
+                <entity-options entity-name="ProductStore" key-field-name="productStoreId" description="${storeName}">
+                    <entity-order-by field-name="storeName"/>
+                </entity-options>
+            </drop-down>
+        </field> 
+		<!-- <text size="4" default-value="${session.getAttribute(&quot;productStoreId&quot;)}"/> -->
+		<!-- <field name="facilityId" title="Location Name">
+            <drop-down allow-empty="true">
+                <entity-options description="${facilityName}" entity-name="Facility" key-field-name="facilityId"/>
+            </drop-down>
+        </field> -->
+ 		 <field name="viewReport" title="View Report" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="View Report" target="javascript:document.FindSalesDetailItemWiseReports.action='viewSalesDetailItemWiseReports?viewReport=true';document.FindSalesDetailItemWiseReports.submit();"/>
+        </field>  
+ 		<!-- <field name="GetCSV" title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonCSVReport}" target="javascript:document.FindBillProductWiseSalesReports.action='genSalesreportCSV';document.FindBillProductWiseSalesReports.submit();"/>
+        </field> -->
+	</form>
+    
+    <form name="ListSalesDetailItemWiseReports" list-name="listIt" type="list" paginate-target="viewSalesDetailItemWiseReports"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar" header-row-style="header-row-2">
+        <actions>
+            <set field="entityName" value="MySalesOrders"/>
+            <set field="orderBy" value="productId"/>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="requestParameters"/>
+                <field-map field-name="entityName" value="MySalesOrders"/>
+                <!-- <field-map field-name="productName"  value="productName DESC"/> -->
+                <field-map field-name="viewIndex" from-field="viewIndex"/>
+                <field-map field-name="viewSize" from-field="viewSize"/>
+            </service>
+        </actions>
+		<row-actions>
+            <set  field="createdBy"  value="${groovy: 
+            	createdBy = org.ofbiz.party.contact.ContactMechWorker.getOrderEmailContactMech( delegator,  orderId);
+                return createdBy;
+                }" type="String"/>
+            <set  field="partyId"  value="${groovy: 
+            		partyId = &quot;&quot;;
+            		List orderRoleListGv = (List) delegator.findByAnd(&quot;OrderRole&quot;, org.ofbiz.base.util.UtilMisc.toMap(&quot;orderId&quot;, orderId));
+            		if(orderRoleListGv != null &amp;&amp; orderRoleListGv.size()>0)
+            		partyId = orderRoleListGv.get(0).getString(&quot;partyId&quot;);
+                return partyId;
+                }" type="String"/>
+            <set  field="subTotal"  value="${groovy: 
+            	subTotal =  org.ofbiz.order.report.Report.getOrderProductPrice(productId, orderId, orderItemSeqId);
+                return subTotal;
+                }" type="Double"/>
+            <set  field="facilityNameAndId"  value="${groovy: 
+                facilityNameAndId = org.ofbiz.order.report.Report.getFacilityNameAndId(productStoreId);
+                return facilityNameAndId;
+                }" type="java.util.Map"/>
+        </row-actions>
+        <field name="companyName" title="Company"><display description="${companyName}"></display></field>
+        <field name="facilityId" title="Location Id"><display description="${facilityNameAndId.facilityId}"/></field>
+        <field name="facilityName" title="Location"><display description="${facilityNameAndId.facilityName}"/></field>
+        <field name="productId" title="Item Code"><display description="${productId}"/></field>
+        <field name="productName" title="Item Name"><display description="${productName}"/></field>
+        <field name="internalName" title="Alias Name"><display description="${internalName}"/></field>
+        <field name="quantity" title="Item Qty"><display description="${quantity}"/></field>
+        <field name="unitPrice" title="MRP"><display description="${unitPrice}"/></field>
+        <field name="Discount" title="Item Discount AMT"><display description="${((unitPrice *  quantity)-subTotal)}"/></field>
+        <field name="subTotal" title="Net Value"><display description="${subTotal}"/></field>
+        <!-- <field name="quantityOnHandTotal" title="Opening Stock"><display description="${quantityOnHandTotal}"/></field> -->
+    </form> 
+ 
+    <form name="LookupPinCode" target="LookupPinCode" type="single"
+        header-row-style="header-row" default-table-style="basic-table">
+  
+     
+        <field name="zoneName" title="ZOne Name"><text-find/></field>
+        <field name="pinCode"  title="pin Code"><text-find/></field>
+       
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+        <field name="submitButton" title="${uiLabelMap.CommonLookup}"><submit button-type="button"/></field>
+    </form>
+
+    <form name="listLookupPinCode" type="list" list-name="listIt" paginate-target="LookupPinCode"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <actions>
+            <set field="inputFields" from-field="parameters"/>
+            <set field="orderBy" value="zoneName"/>
+            <set field="entityName" value="ZoneType"/>
+            <script location="component://party/webapp/partymgr/WEB-INF/actions/party/FindLookUp.groovy"/>
+        </actions>
+        <!--<auto-fields-entity entity-name="PartyNameView" default-field-type="display"/>-->
+        <field name="zoneName" title="Zone Name"  widget-style="smallSubmit">
+            <hyperlink also-hidden="false" target-type="plain" description="${zoneName}" target="javascript:set_value('${zoneName}')"/>
+        </field>
+        
+        <field name="pinCode" title="pin Code"><display/></field>
+   
+    </form>
+    
+    </forms>

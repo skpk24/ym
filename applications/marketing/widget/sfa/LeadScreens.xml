@@ -1,0 +1,710 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+	license agreements. See the NOTICE file distributed with this work for additional 
+	information regarding copyright ownership. The ASF licenses this file to 
+	you under the Apache License, Version 2.0 (the "License"); you may not use 
+	this file except in compliance with the License. You may obtain a copy of 
+	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+	by applicable law or agreed to in writing, software distributed under the 
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. See the License for the specific 
+	language governing permissions and limitations under the License.
+-->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+	<screen name="FindLeads">
+		<section>
+			<actions>
+				<set field="secondaryMenuName" value="SfaMainTabBar" global="true" />
+				<set field="secondaryMenuLocation" value="component://marketing/widget/sfa/SfaMenus.xml"
+					global="true" />
+				<!-- <set field="titleProperty" value="MarketingFindLeads"/> -->
+				<set field="currentUrl" value="FindLeads" />
+				<set field="headerItem" value="sfa" />
+				<set field="tabButtonItem1" value="findLead" />
+				<set field="tabButtonItem" value="Leads" />
+				<set field="setLeadtDescription"
+					value="${groovy:session.setAttribute(&quot;leadDescription&quot;,headerItem)}" />
+				<set field="removeAccountDescription"
+					value="${groovy:session.removeAttribute(&quot;accountDescription&quot;)}" />
+				<set field="removeContactDescription"
+					value="${groovy:session.removeAttribute(&quot;contactDescription&quot;)}" />
+				<script
+					location="component://marketing/webapp/sfa/WEB-INF/action/GetParties.groovy" />
+				<script
+					location="component://marketing/webapp/sfa/WEB-INF/action/ListCompaniesPermission.groovy" />
+			</actions>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="left-column">
+						<include-screen name="leftbar"
+							location="component://marketing/widget/sfa/CommonScreens.xml" />
+					</decorator-section>
+					
+					<decorator-section name="body">
+						<section>
+							<widgets>
+								<include-menu name="LeadSubTabBar"
+									location="component://marketing/widget/sfa/SfaMenus.xml" />
+								<container style="no-clear">
+									<include-menu name="LeadFindTabBar"
+										location="component://marketing/widget/sfa/SfaMenus.xml" />
+
+									<screenlet collapsible="true" initially-collapsed="false"
+										id="LeadForms" title="Search Options">
+										<include-form name="FindLeads"
+											location="component://marketing/widget/sfa/forms/LeadForms.xml" />
+									</screenlet>
+
+									<screenlet collapsible="true" initially-collapsed="false"
+										id="ListLeads" title="Search Results">
+										<include-form name="ListCompanies"
+											location="component://marketing/widget/sfa/forms/LeadForms.xml" />
+									</screenlet>
+								</container>
+							</widgets>
+						</section>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="ListLeads">
+		<section>
+			<actions>
+				<set field="secondaryMenuName" value="SfaMainTabBar" global="true" />
+				<set field="secondaryMenuLocation" value="component://marketing/widget/sfa/SfaMenus.xml"
+					global="true" />
+				<!-- <set field="titleProperty" value="MarketingFindLeads"/> -->
+				<set field="currentUrl" value="listLeads" />
+				<set field="headerItem" value="sfa" />
+				<set field="tabButtonItem" value="Leads" />
+				<set field="tabButtonItem1" value="listLeads" />
+				<set field="setLeadtDescription"
+					value="${groovy:session.setAttribute(&quot;leadDescription&quot;,headerItem)}" />
+				<set field="removeAccountDescription"
+					value="${groovy:session.removeAttribute(&quot;accountDescription&quot;)}" />
+				<set field="removeContactDescription"
+					value="${groovy:session.removeAttribute(&quot;contactDescription&quot;)}" />
+			</actions>
+			<widgets>
+
+			<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="left-column">
+						<include-screen name="leftbar"
+							location="component://marketing/widget/sfa/CommonScreens.xml" />
+					</decorator-section>
+
+					<decorator-section name="body">
+						<include-menu name="LeadSubTabBar"
+							location="component://marketing/widget/sfa/SfaMenus.xml" />
+						<section>
+							<widgets>
+
+								<container style="no-clear">
+									<decorator-screen name="FindScreenDecorator"
+										location="component://common/widget/CommonScreens.xml">
+										<!-- <decorator-section name="search-options"> <include-menu name="LeadFindTabBar" 
+											location="component://marketing/widget/sfa/SfaMenus.xml"/> <include-form 
+											name="FindLeads" location="component://marketing/widget/sfa/forms/LeadForms.xml"/> 
+											</decorator-section>
+-->
+										<decorator-section name="search-results">
+											<section>
+												<condition>
+													<or>
+														<if-empty field="parameters.all" />
+														<if-compare field="parameters.all" operator="equals"
+															value="true" />
+													</or>
+												</condition>
+												<widgets>
+													<!-- list all leads -->
+													<!-- <label style="h1" text="${uiLabelMap.SfaAllLeads}"/> -->
+													<include-form name="ListLeads"
+														location="component://marketing/widget/sfa/forms/LeadForms.xml" />
+												</widgets>
+												<!-- <fail-widgets> list my leads <label style="h1" text="${uiLabelMap.SfaMyLeads}"/> 
+													<include-form name="ListMyLeads" location="component://marketing/widget/sfa/forms/LeadForms.xml"/> 
+													</fail-widgets>
+-->
+											</section>
+										</decorator-section>
+									</decorator-screen>
+								</container>
+							</widgets>
+						</section>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+
+
+	<screen name="NewLead">
+		<section>
+			<actions>
+			
+				<set field="secondaryMenuName" value="SfaMainTabBar" global="true" />
+				<set field="secondaryMenuLocation" value="component://marketing/widget/sfa/SfaMenus.xml"
+					global="true" />
+				<!-- <set field="titleProperty" value="MarketingFindLeads"/> -->
+				<set field="currentUrl" value="listLeads" />
+				<set field="headerItem" value="sfa" />
+				<set field="tabButtonItem" value="Leads" />
+				<set field="tabButtonItem1" value="NewLead" />
+				<property-to-field field="defaultCountryGeoId"
+					resource="general" property="country.geo.id.default" default="USA" />
+				<script
+					location="component://marketing/webapp/sfa/WEB-INF/action/GetParties.groovy" />
+			</actions>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="left-column">
+						<include-screen name="leftbar"
+							location="component://marketing/widget/sfa/CommonScreens.xml" />
+					</decorator-section>
+					<decorator-section name="body">
+					<include-menu name="LeadSubTabBar"
+							location="component://marketing/widget/sfa/SfaMenus.xml" />
+						<platform-specific>
+							<html>
+								<html-template
+									location="component://common/webcommon/includes/setDependentDropdownValuesJs.ftl" />
+							</html>
+						</platform-specific>
+						<screenlet title="${uiLabelMap.CommonCreate} Lead"
+							collapsible="true" id="createLead">
+							<include-form name="createLead"
+								location="component://marketing/widget/sfa/forms/LeadForms.xml" />
+						</screenlet>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="ConvertLead">
+		<section>
+			<actions>
+				<set field="headerItem" value="sfa" />
+				<set field="tabButtonItem" value="Leads" />
+				<set field="tabButtonItem1" value="listLeads" />
+				<set field="tabButtonItem2" value="ConvertLead" />
+			</actions>
+			<widgets>
+			<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="left-column">
+						<include-screen name="leftbar"
+							location="component://marketing/widget/sfa/CommonScreens.xml" />
+					</decorator-section>
+					<decorator-section name="body">
+						<section>
+							<!-- <condition> -->
+							<!-- <not> -->
+							<!-- <if-empty field="parameters.partyGroupId" /> -->
+							<!-- </not> -->
+							<!-- </condition> -->
+							<widgets>
+								<include-menu location="component://marketing/widget/sfa/SfaMenus.xml"
+									name="LeadTabBar" />
+								<screenlet title="Convert Company">
+									<include-form name="ConvertLead"
+										location="component://marketing/widget/sfa/forms/LeadForms.xml" />
+								</screenlet>
+							</widgets>
+							<!-- <fail-widgets> -->
+							<!-- <include-menu location="component://marketing/widget/sfa/SfaMenus.xml"
+-->
+							<!-- name="LeadTabBar" /> -->
+							<!-- <label text="Please first add related company." style="h2" /> -->
+							<!-- <screenlet title="${uiLabelMap.PageTitleAddRelatedCompany}"> -->
+							<!-- <include-form name="AddRelatedCompany" -->
+							<!-- location="component://marketing/widget/sfa/forms/LeadForms.xml" 
+								/>
+-->
+							<!-- </screenlet> -->
+							<!-- </fail-widgets> -->
+						</section>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="CloneLead">
+		<section>
+			<actions>
+				<set field="headerItem" value="sfa" />
+				<set field="tabButtonItem" value="Leads" />
+				<set field="tabButtonItem1" value="listLeads" />
+				<set field="tabButtonItem2" value="CloneLead" />
+				<set field="secondaryMenuName" value="LeadTabBar" global="true" />
+				<set field="secondaryMenuLocation" value="component://marketing/widget/sfa/SfaMenus.xml"
+					global="true" />
+				<script
+					location="component://marketing/webapp/sfa/WEB-INF/action/CloneLead.groovy" />
+			</actions>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="left-column">
+						<include-screen name="leftbar"
+							location="component://marketing/widget/sfa/CommonScreens.xml" />
+					</decorator-section>
+					<decorator-section name="body">
+						<include-menu location="component://marketing/widget/sfa/SfaMenus.xml"
+							name="LeadTabBar" />
+						<screenlet title="Clone Company">
+							<include-form name="createLead"
+								location="component://marketing/widget/sfa/forms/LeadForms.xml" />
+						</screenlet>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="MergeLeads">
+		<section>
+			<actions>
+				<set field="headerItem" value="sfa" />
+				<set field="tabButtonItem" value="Leads" />
+				<set field="tabButtonItem1" value="listLeads" />
+				<set field="tabButtonItem2" value="MergeLeads" />
+				<set field="secondaryMenuName" value="LeadTabBar" global="true" />
+				<set field="secondaryMenuLocation" value="component://marketing/widget/sfa/SfaMenus.xml"
+					global="true" />
+				<script
+					location="component://marketing/webapp/sfa/WEB-INF/action/MergeContacts.groovy" />
+			</actions>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="left-column">
+						<include-screen name="leftbar"
+							location="component://marketing/widget/sfa/CommonScreens.xml" />
+					</decorator-section>
+					<decorator-section name="body">
+						<include-menu location="component://marketing/widget/sfa/SfaMenus.xml"
+							name="LeadTabBar" />
+						<screenlet title="Merge Companies">
+							<include-form name="MergeLeads"
+								location="component://marketing/widget/sfa/forms/LeadForms.xml" />
+						</screenlet>
+						<section>
+							<condition>
+								<if-compare-field field="parameters.partyIdFrom"
+									operator="not-equals" to-field="parameters.partyIdTo" />
+							</condition>
+							<widgets>
+								<platform-specific>
+									<html>
+										<html-template
+											location="component://marketing/webapp/sfa/lead/mergeLeads.ftl" />
+									</html>
+								</platform-specific>
+							</widgets>
+							<fail-widgets>
+								<label text="${uiLabelMap.SfaCanNotMergeSameLeads}" style="h3"></label>
+							</fail-widgets>
+						</section>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="TransferLead">
+		<section>
+			<actions>
+				<set field="headerItem" value="Leads" />
+				<set field="secondaryMenuName" value="LeadTabBar" global="true" />
+				<set field="secondaryMenuLocation" value="component://marketing/widget/sfa/SfaMenus.xml"
+					global="true" />
+				<set field="tabButtonItem" value="TransferLead" />
+				<script
+					location="component://marketing/webapp/sfa/WEB-INF/action/MergeContacts.groovy" />
+			</actions>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="left-column">
+						<include-screen name="leftbar"
+							location="component://marketing/widget/sfa/CommonScreens.xml" />
+					</decorator-section>
+					<decorator-section name="body">
+						<include-menu location="component://marketing/widget/sfa/SfaMenus.xml"
+							name="LeadTabBar" />
+						<screenlet title="${uiLabelMap.SfaMergeLeads}">
+							<include-form name="TransferLead"
+								location="component://marketing/widget/sfa/forms/LeadForms.xml" />
+						</screenlet>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+
+
+
+	<screen name="NewLeadFromVCard">
+		<section>
+			<actions>
+				<set field="titleProperty" value="PageTitleCreateLeadFromVCard" />
+				<set field="tabButtonItem" value="Leads" />
+				<set field="tabButtonItem1" value="importLeads" />
+				<set field="headerItem" value="sfa" />
+			</actions>
+			<widgets>
+				<decorator-screen name="CommonLeadDecorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<screenlet title="Import Companies" collapsible="true"
+							id="NewLeadFromVCard">
+							<!-- <container><label style="h3" text="${uiLabelMap.SfaAutoCreateLeadByImportingVCard}"/></container>
+-->
+							<include-form name="NewLeadFromVCard"
+								location="component://marketing/widget/sfa/forms/LeadForms.xml" />
+						</screenlet>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="LeadPartyDataSource">
+		<section>
+			<actions>
+				<set field="partyId" from-field="parameters.partyId" />
+				<entity-and entity-name="PartyDataSource" list="partyDataSources">
+					<field-map field-name="partyId" from-field="partyId" />
+				</entity-and>
+			</actions>
+			<widgets>
+				<screenlet title="${uiLabelMap.SfaLeadSource}">
+					<include-form name="AddLeadPartyDataSource"
+						location="component://marketing/widget/sfa/forms/LeadForms.xml" />
+					<include-form name="ViewLeadPartyDataSources"
+						location="component://marketing/widget/sfa/forms/LeadForms.xml" />
+				</screenlet>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="AddRelatedCompany">
+		<section>
+			<actions>
+				<set field="headerItem" value="Leads" />
+			</actions>
+			<widgets>
+				<decorator-screen name="CommonLeadDecorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<screenlet title="${uiLabelMap.PageTitleAddRelatedCompany}">
+							<include-form name="AddRelatedCompany"
+								location="component://marketing/widget/sfa/forms/LeadForms.xml" />
+						</screenlet>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="View_Profile">
+		<section>
+			<actions>
+				<property-map resource="SFAUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<set field="titleProperty" value="PageTitleViewPartyProfile" />
+				<set field="headerItem" value="sfa" />
+				<set field="tabButtonItem" value="Leads" />
+				<set field="tabButtonItem1" value="listLeads" />
+				<set field="tabButtonItem2" value="profile" />
+				<set field="labelTitleProperty" value="PartyTaxAuthInfos" />
+
+				<set field="layoutSettings.javaScripts[]" value="/partymgr/js/PartyProfileContent.js"
+					global="true" />
+
+				<script
+					location="component://party/webapp/partymgr/WEB-INF/actions/party/ViewProfile.groovy" />
+				<script
+					location="component://party/webapp/partymgr/WEB-INF/actions/party/SetRoleVars.groovy" />
+				<set field="parameters.partyId" from-field="partyId" />
+				<set field="parameters.partyGroupId" from-field="partyGroupId" />
+			</actions>
+			<widgets>
+
+				<decorator-screen name="CommonPartyDecorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<include-menu location="component://marketing/widget/sfa/SfaMenus.xml"
+							name="LeadTabBar" />
+						<section>
+							<condition>
+								<not>
+									<if-empty field="party" />
+								</not>
+							</condition>
+							<widgets>
+								<!-- <section> <condition> <if-compare field="showOld" operator="equals" 
+									value="true" type="Boolean"/> </condition> <widgets> <container style="button-bar 
+									button-style-2"> <link target="viewprofile" text="${uiLabelMap.PartyHideOld}"> 
+									<parameter param-name="partyId" from-field="party.partyId"/> </link> </container> 
+									</widgets> <fail-widgets> <container style="button-bar button-style-2"> <link 
+									target="viewprofile" text="${uiLabelMap.PartyShowOld}"> <parameter param-name="partyId" 
+									from-field="party.partyId"/> <parameter param-name="SHOW_OLD" value="true"/> 
+									</link> </container> </fail-widgets> </section>
+-->
+								<section>
+									<condition>
+										<not>
+											<if-empty field="accountDescription" />
+										</not>
+									</condition>
+									<widgets>
+										<container style="profile-left">
+											<include-screen name="Party"
+												location="component://party/widget/partymgr/ProfileScreens.xml" />
+											<include-screen name="partyRelContacts"
+												location="component://party/widget/partymgr/ProfileScreens.xml" />
+											<include-screen name="Contact"
+												location="component://party/widget/partymgr/ProfileScreens.xml" />
+										</container>
+										<container style="profile-right">
+											<include-screen name="FinAccounts"
+												location="component://party/widget/partymgr/ProfileScreens.xml" />
+											<include-screen name="Attributes"
+												location="component://party/widget/partymgr/ProfileScreens.xml" />
+											<!-- <include-screen name="PaymentMethods" -->
+											<!-- location="component://party/widget/partymgr/ProfileScreens.xml" 
+												/>
+-->
+											<!-- <include-screen name="LeadPartyDataSource" -->
+											<!-- location="component://marketing/widget/sfa/LeadScreens.xml" 
+												/>
+-->
+										</container>
+										<container style="profile-bottom">
+											<include-screen name="PartySalesOpportunities"
+												location="component://party/widget/partymgr/ProfileScreens.xml" />
+											<include-screen name="Notes"
+												location="component://party/widget/partymgr/ProfileScreens.xml" />
+											<include-screen name="Content"
+												location="component://party/widget/partymgr/ProfileScreens.xml" />
+										</container>
+									</widgets>
+								</section>
+								<section>
+									<condition>
+										<and>
+											<or>
+												<not>
+													<if-empty field="leadDescription" />
+												</not>
+												<not>
+													<if-empty field="accountLeadDescription" />
+												</not>
+											</or>
+										</and>
+									</condition>
+									<widgets>
+										<container style="profile-left">
+											<section>
+												<actions>
+													<set field="parameters.partyId" from-field="partyId" />
+												</actions>
+												<widgets>
+													<include-screen name="Party"
+														location="component://party/widget/partymgr/ProfileScreens.xml" />
+												</widgets>
+											</section>
+											<section>
+												<condition>
+													<not>
+														<if-empty field="partyGroupId" />
+													</not>
+												</condition>
+												<actions>
+													<set field="parameters.partyId" from-field="partyGroupId" />
+												</actions>
+												<widgets>
+													<include-screen name="Party"
+														location="component://party/widget/partymgr/ProfileScreens.xml" />
+													<include-screen name="partyRelContacts"
+														location="component://party/widget/partymgr/ProfileScreens.xml" />
+												</widgets>
+											</section>
+											<section>
+												<actions>
+													<set field="parameters.partyId" from-field="partyId" />
+												</actions>
+												<widgets>
+													<include-screen name="Contact"
+														location="component://party/widget/partymgr/ProfileScreens.xml" />
+													<include-screen name="LeadPartyDataSource"
+														location="component://marketing/widget/sfa/LeadScreens.xml" />
+												</widgets>
+											</section>
+										</container>
+										<container style="profile-right">
+											<section>
+												<actions>
+													<set field="parameters.partyId" from-field="partyId" />
+												</actions>
+												<widgets>
+													<include-screen name="Content"
+														location="component://party/widget/partymgr/ProfileScreens.xml" />
+													<include-screen name="Notes"
+														location="component://party/widget/partymgr/ProfileScreens.xml" />
+													<include-screen name="PartySalesOpportunities"
+														location="component://party/widget/partymgr/ProfileScreens.xml" />
+												</widgets>
+											</section>
+										</container>
+									</widgets>
+								</section>
+								<section>
+									<condition>
+										<not>
+											<if-empty field="contactDescription" />
+										</not>
+									</condition>
+									<widgets>
+										<!-- <container style="profile-left"> -->
+										<container>
+											<include-screen name="Party"
+												location="component://party/widget/partymgr/ProfileScreens.xml" />
+											<include-screen name="partyRelAccounts"
+												location="component://party/widget/partymgr/ProfileScreens.xml" />
+											<include-screen name="Contact"
+												location="component://party/widget/partymgr/ProfileScreens.xml" />
+											<include-screen name="Content"
+												location="component://party/widget/partymgr/ProfileScreens.xml" />
+											<include-screen name="Notes"
+												location="component://party/widget/partymgr/ProfileScreens.xml" />
+										</container>
+										<!-- <container style="profile-right"> <include-screen name="UserLogin" 
+											location="component://party/widget/partymgr/ProfileScreens.xml"/> <include-screen 
+											name="Attributes" location="component://party/widget/partymgr/ProfileScreens.xml"/> 
+											<include-screen name="Visits" location="component://party/widget/partymgr/ProfileScreens.xml"/> 
+											<include-screen name="Subscriptions" location="component://party/widget/partymgr/ProfileScreens.xml"/> 
+											<include-screen name="Content" location="component://party/widget/partymgr/ProfileScreens.xml"/> 
+											<include-screen name="Notes" location="component://party/widget/partymgr/ProfileScreens.xml"/> 
+											</container>
+-->
+									</widgets>
+								</section>
+							</widgets>
+							<fail-widgets>
+								<container>
+									<label style="h3">${uiLabelMap.PartyNoPartyFoundWithPartyId}:
+										${parameters.partyId}</label>
+								</container>
+							</fail-widgets>
+						</section>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="CompanyProfile_SFACompany">
+		<section>
+			<actions>
+				<property-map resource="SFAUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<set field="titleProperty" value="PageTitleViewPartyProfile" />
+				<set field="headerItem" value="sfa" />
+				<set field="tabButtonItem" value="Leads" />
+				<set field="tabButtonItem1" value="listLeads" />
+				<set field="tabButtonItem2" value="profile" />
+				<set field="labelTitleProperty" value="PartyTaxAuthInfos" />
+				<set field="layoutSettings.javaScripts[]" value="/partymgr/js/PartyProfileContent.js"
+					global="true" />
+				<script
+					location="component://party/webapp/partymgr/WEB-INF/actions/party/ViewProfile.groovy" />
+				<script
+					location="component://party/webapp/partymgr/WEB-INF/actions/party/SetRoleVars.groovy" />
+				<set field="parameters.partyId" from-field="partyId" />
+				<set field="parameters.partyGroupId" from-field="partyGroupId" />
+			</actions>
+			<widgets>
+
+				<decorator-screen name="CommonPartyDecorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<include-menu location="component://marketing/widget/sfa/SfaMenus.xml"
+							name="LeadTabBar" />
+						<section>
+							<widgets>
+								<!-- <container style="profile-left"> -->
+								<container>
+									<include-screen name="Party_SFACompany"
+										location="component://party/widget/partymgr/ProfileScreens.xml" />
+									<include-screen name="Party_SFACompanyDetail"
+										location="component://party/widget/partymgr/ProfileScreens.xml" />
+								</container>
+							</widgets>
+						</section>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="ListCompanies">
+		<section>
+			<actions>
+				<set field="secondaryMenuName" value="SfaMainTabBar" global="true" />
+				<set field="secondaryMenuLocation" value="component://marketing/widget/sfa/SfaMenus.xml"
+					global="true" />
+				<!-- <set field="titleProperty" value="MarketingFindLeads"/> -->
+				<set field="currentUrl" value="listLeads" />
+				<set field="headerItem" value="sfa" />
+				<set field="tabButtonItem" value="Leads" />
+				<set field="tabButtonItem1" value="ListLeads" />
+				<set field="setLeadtDescription"
+					value="${groovy:session.setAttribute(&quot;leadDescription&quot;,headerItem)}" />
+				<set field="removeAccountDescription"
+					value="${groovy:session.removeAttribute(&quot;accountDescription&quot;)}" />
+				<set field="removeContactDescription"
+					value="${groovy:session.removeAttribute(&quot;contactDescription&quot;)}" />
+				<script
+					location="component://marketing/webapp/sfa/WEB-INF/action/ListCompaniesPermission.groovy" />
+			</actions>
+			<widgets>
+
+			<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="left-column">
+						<include-screen name="leftbar"
+							location="component://marketing/widget/sfa/CommonScreens.xml" />
+					</decorator-section>
+
+					<decorator-section name="body">
+						<include-menu name="LeadSubTabBar"
+							location="component://marketing/widget/sfa/SfaMenus.xml" />
+						<section>
+							<widgets>
+								<screenlet collapsible="true" id="ListCompanies"
+									title="Leads List">
+									<include-form name="ListCompanies"
+										location="component://marketing/widget/sfa/forms/LeadForms.xml" />
+								</screenlet>
+							</widgets>
+						</section>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+
+
+</screens>

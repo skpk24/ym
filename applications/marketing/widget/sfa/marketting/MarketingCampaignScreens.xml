@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+   <screen name="CommonMarketingCampaignDecorator">
+        <section>
+            <actions>
+                <property-map resource="MarketingUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="marketingCampaignId" from-field="parameters.marketingCampaignId"/>
+                <!-- <set field="headerItem" value="Campaign"/> -->
+                <set field="headerItem" value="Marketing"/>
+                <set field="secondaryMenuName" value="MarketingAppBar" global="true"/>
+                <set field="secondaryMenuLocation" value="component://marketing/widget/sfa/SfaMenus.xml" global="true"/>    
+                <entity-one entity-name="MarketingCampaign" value-field="marketingCampaign"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="pre-body">
+                        <section>
+                            <!-- do check for MARKETING, _VIEW permission -->
+                            <condition>
+                                <and>
+                                    <if-has-permission permission="MARKETING" action="_VIEW"/>
+                                    <not><if-empty field="marketingCampaignId"/></not>
+                                </and>
+                            </condition>
+                            <widgets>
+                                <include-menu name="MarketingCampaignTabBar" location="component://marketing/widget/MarketingCampaignMenus.xml"/>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                    <decorator-section name="body">
+                        <section>
+                            <!-- do check for MARKETING, _VIEW permission -->
+                            <condition>
+                                <if-has-permission permission="MARKETING" action="_VIEW"/>
+                            </condition>
+                            <widgets>
+                                <decorator-section-include name="body"/>
+                            </widgets>
+                            <fail-widgets>
+                                <label style="h3">${uiLabelMap.MarketingViewPermissionError}</label>
+                            </fail-widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+   <screen name="EditMarketingCampaign">
+        <section>
+            <actions>
+                <property-map resource="OrderUiLabels" map-name="uiLabelMap"/>
+                <set field="titleProperty" value="PageTitleEditMarketingCampaign"/>
+                <set field="campaignTabButtonItem" value="MarketingCampaign"/>
+                <set field="labelTitleProperty" value="PageTitleEditMarketingCampaign"/>
+				<set field="tabButtonItem" value="Campaign"/>
+                <set field="donePage" from-field="parameters.DONE_PAGE" default-value="FindMarketingCampaign"/>
+                <set field="marketingCampaignId" from-field="parameters.marketingCampaignId"/>
+                <entity-one entity-name="MarketingCampaign" value-field="marketingCampaign"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonMarketingCampaignDecorator">
+                    <decorator-section name="body">
+                        <section>
+                            <condition>
+                                <not><if-empty field="marketingCampaign"/></not>
+                            </condition>
+                            <widgets>
+                                <screenlet title="${uiLabelMap.PageTitleEditMarketingCampaign}">
+                                    <container style="button-bar">
+                                        <link  text="${uiLabelMap.MarketingCampaignCreate}" target="EditMarketingCampaign" style="buttontext create">
+                                            <parameter param-name="DONE_PAGE" from-field="donePage"/>
+                                        </link>
+                                    </container>
+                                    <include-form name="EditMarketingCampaign" location="component://marketing/widget/sfa/marketting/MarketingCampaignForms.xml"/>
+                                </screenlet>
+                            </widgets>
+                            <fail-widgets>
+                            <screenlet title="Create Marketing Campaign">
+                                    <include-form name="EditMarketingCampaign" location="component://marketing/widget/sfa/marketting/MarketingCampaignForms.xml"/>
+                            </screenlet> 
+                            </fail-widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+   <screen name="budgetAndTargets">
+        <section>
+            <actions>
+                <property-map resource="OrderUiLabels" map-name="uiLabelMap"/>
+                <set field="titleProperty" value="PageTitleEditMarketingCampaign"/>
+                
+				<set field="headerItem" value="Marketing"/>
+               	<set field="tabButtonItem" value="Campaign"/>                  
+                <set field="campaignTabButtonItem" value="budgetAndTargets"/>
+                
+                <set field="labelTitleProperty" value="PageTitleEditMarketingCampaign"/>
+                <set field="donePage" from-field="parameters.DONE_PAGE" default-value="FindMarketingCampaign"/>
+                <set field="marketingCampaignId" from-field="parameters.marketingCampaignId"/>
+                <entity-one entity-name="MarketingCampaign" value-field="marketingCampaign"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonMarketingCampaignDecorator">
+                    <decorator-section name="body">
+                        <section>
+                            <condition>
+                                <not><if-empty field="marketingCampaign"/></not>
+                            </condition>
+                            <widgets>
+                                <screenlet title="${uiLabelMap.PageTitleEditMarketingCampaign}">
+                                    <include-form name="EditBudgetAndTargets" location="component://marketing/widget/sfa/marketting/MarketingCampaignForms.xml"/>
+                                </screenlet>
+                            </widgets>
+                            <fail-widgets>
+                            <screenlet title="Create Marketing Campaign">
+                                    <include-form name="EditMarketingCampaign" location="component://marketing/widget/sfa/marketting/MarketingCampaignForms.xml"/>
+                            </screenlet> 
+                            </fail-widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+   <screen name="ListMarketingCampaign">
+        <section>
+            <actions>
+                <set field="titleProperty" value="PageTitleListMarketingCampaign"/>
+                <set field="labelTitleProperty" value="PageTitleListMarketingCampaign"/>
+ 				<set field="headerItem" value="Campaign"/>
+               <set field="tabButtonItem" value="Campaign"/> 
+                <set field="donePage" from-field="parameters.DONE_PAGE" default-value="FindListMarketingCampaign"/>
+                <set field="marketingCampaignId" from-field="parameters.marketingCampaignId"/>
+                <set field="entityName" value="MarketingCampaign"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonMarketingCampaignDecorator">
+                    <decorator-section name="body">
+                        <screenlet title="${uiLabelMap.PageTitleListMarketingCampaign}">
+                            <container style="button-bar">
+                                <link text="${uiLabelMap.MarketingCampaignCreate}" target="EditMarketingCampaign" style="buttontext create">
+                                    <parameter param-name="DONE_PAGE" from-field="donePage"/>
+                                </link>
+                            </container>
+                            <include-form name="ListMarketingCampaign" location="component://marketing/widget/sfa/marketting/MarketingCampaignForms.xml"/>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EditMarketingCampaignRoles">
+        <section>
+            <actions>
+                <set field="titleProperty" value="PageTitleEditMarketingCampaignRole1"/>
+                <set field="campaignTabButtonItem" value="MarketingCampaignRole"/>
+                <set field="labelTitleProperty" value="PageTitleEditMarketingCampaignRole1"/>
+
+                <set field="donePage" from-field="parameters.DONE_PAGE" default-value="ListMarketingCampaignRoles"/>
+                <set field="marketingCampaignId" from-field="parameters.marketingCampaignId"/>
+                <set field="partyId" from-field="parameters.partyId"/>
+                <set field="roleTypeId" from-field="parameters.roleTypeId"/>
+                <set field="fromDate" from-field="parameters.fromDate"/>
+                <entity-one entity-name="MarketingCampaignRole" value-field="marketingCampaignRole"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonMarketingCampaignDecorator">
+                    <decorator-section name="body">
+                        <screenlet title="${uiLabelMap.PageTitleEditMarketingCampaignRole1}">
+                            <container style="button-bar">
+                                <link  text="${uiLabelMap.MarketingCampaignRoleCreate1}" target="EditMarketingCampaignRoles" style="buttontext create">
+                                    <parameter param-name="marketingCampaignId"/>
+                                    <parameter param-name="DONE_PAGE" from-field="donePage"/>
+                                </link>
+                            </container>
+                            <include-form name="EditMarketingCampaignRoles" location="component://marketing/widget/sfa/marketting/MarketingCampaignForms.xml"/>
+                            <container><label style="h2" text="${uiLabelMap.CommonStatusHistory}"/></container>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ListMarketingCampaignRoles">
+        <section>
+            <actions>
+                <set field="titleProperty" value="PageTitleListMarketingCampaignRole1"/>
+                <set field="campaignTabButtonItem" value="MarketingCampaignRole"/>
+                <set field="labelTitleProperty" value="PageTitleListMarketingCampaignRole1"/>
+
+                <set field="donePage" from-field="parameters.DONE_PAGE" default-value="FindMarketingCampaign"/>
+                <set field="marketingCampaignId" from-field="parameters.marketingCampaignId"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonMarketingCampaignDecorator">
+                    <decorator-section name="body">
+                        <screenlet title="${uiLabelMap.PageTitleListMarketingCampaignRole1}">
+                            <container style="button-bar">
+                                <link  text="${uiLabelMap.MarketingCampaignRoleCreate1}" target="EditMarketingCampaignRoles" style="buttontext create">
+                                    <parameter param-name="marketingCampaignId"/>
+                                    <parameter param-name="DONE_PAGE" from-field="donePage"/>
+                                </link>
+                            </container>
+                            <include-form name="ListMarketingCampaignRoles" location="component://marketing/widget/sfa/marketting/MarketingCampaignForms.xml"/>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+	<screen name="compaignContactList">
+       <section>
+           <actions>
+               <set field="titleProperty" value="MarketingContactListFindContactLists"/>
+               <set field="headerItem" value="Marketing"/>
+               <set field="tabButtonItem" value="Campaign"/>               
+               <!-- <set field="contactListTabButtonItem" value="ContactList"/> -->
+               <set field="campaignTabButtonItem" value="compaignContactList"/>
+               <set field="labelTitleProperty" value="PageTitleFindContactLists"/>
+               <set field="donePage" from-field="parameters.DONE_PAGE" default-value="/marketing/control/FindContactList"/>
+           </actions>
+           <widgets>
+              <decorator-screen name="CommonMarketingCampaignDecorator">
+                   <decorator-section name="body">
+                        <decorator-screen name="ListItemsDecorator" location="component://common/widget/CommonScreens.xml">
+                            <decorator-section name="search-results">
+                                <include-form name="ListCompaignContactLists" location="component://marketing/widget/sfa/marketting/ContactListForms.xml"/>
+                            </decorator-section>
+                        </decorator-screen>
+                   </decorator-section>
+               </decorator-screen>
+           </widgets>
+       </section>
+   </screen>    
+   
+   <screen name="ListChildCampaigns">
+        <section>
+            <actions>
+                <set field="titleProperty" value="PageTitleListMarketingCampaign"/>
+                <set field="labelTitleProperty" value="PageTitleListMarketingCampaign"/>
+ 				<set field="headerItem" value="Campaign"/>
+               	<set field="tabButtonItem" value="Campaign"/> 
+                <set field="campaignTabButtonItem" value="childCampaigns"/>
+                <set field="donePage" from-field="parameters.DONE_PAGE" default-value="FindListMarketingCampaign"/>
+                <set field="marketingCampaignId" from-field="parameters.marketingCampaignId"/>
+                <set field="entityName" value="MarketingCampaign"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonMarketingCampaignDecorator">
+                    <decorator-section name="body">
+                        <screenlet title="${uiLabelMap.PageTitleListMarketingChildCampaign}">
+                            <include-form name="ListChildCampaign" location="component://marketing/widget/sfa/marketting/MarketingCampaignForms.xml"/>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>   
+    
+</screens>

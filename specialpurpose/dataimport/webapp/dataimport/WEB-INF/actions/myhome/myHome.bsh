@@ -1,0 +1,167 @@
+/*
+ * Copyright (c) 2006 - 2007 Open Source Strategies, Inc.
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the Honest Public License.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Honest Public License for more details.
+ * 
+ * You should have received a copy of the Honest Public License
+ * along with this program; if not, write to Funambol,
+ * 643 Bair Island Road, Suite 305 - Redwood City, CA 94063, USA
+ */
+ 
+import org.ofbiz.base.util.*;
+import org.ofbiz.base.util.string.*;
+import org.ofbiz.entity.*;
+import org.ofbiz.entity.condition.*;
+
+GenericValue userLogin = (GenericValue) context.get("userLogin");
+// make the image file formats
+String filenameFormat = UtilProperties.getPropertyValue("dataimport", "file.filename.format");
+String serverPath = UtilProperties.getPropertyValue("dataimport", "file.server.path");
+String urlPrefix = UtilProperties.getPropertyValue("dataimport", "file.url.prefix");
+context.put("filenameFormat", filenameFormat);
+context.put("serverPath", serverPath);
+context.put("urlPrefix", urlPrefix);
+
+FlexibleStringExpander filenameExpander = new FlexibleStringExpander(filenameFormat);
+
+// UPLOADING STUFF
+
+Object forLock = new Object();
+String contentType = null;
+String fileType = request.getParameter("upload_file_type");
+if (fileType != null) {
+    context.put("fileType", fileType);
+
+    String fileLocation = filenameExpander.expandString(UtilMisc.toMap("location", "importFiles", "type", fileType, "id", fileType));
+    String filePathPrefix = "";
+    String filenameToUse = fileLocation;
+    if (fileLocation.lastIndexOf("/") != -1) {
+        filePathPrefix = fileLocation.substring(0, fileLocation.lastIndexOf("/") + 1); // adding 1 to include the trailing slash
+        filenameToUse = fileLocation.substring(fileLocation.lastIndexOf("/") + 1);
+    }
+
+    int i1;
+    if (contentType != null && (i1 = contentType.indexOf("boundary=")) != -1) {
+        contentType = contentType.substring(i1 + 9);
+        contentType = "--" + contentType;
+    }
+
+    String defaultFileName = filenameToUse + "_temp";
+    HttpRequestFileUpload uploadObject = new HttpRequestFileUpload();
+    uploadObject.setOverrideFilename(defaultFileName);
+    uploadObject.setSavePath(serverPath + "/" + filePathPrefix);
+    uploadObject.doUpload(request);
+
+    String clientFileName = uploadObject.getFilename();
+
+    if (clientFileName != null && clientFileName.length() > 0) {
+        if (clientFileName.lastIndexOf(".") > 0 && clientFileName.lastIndexOf(".") < clientFileName.length()) {
+            filenameToUse += clientFileName.substring(clientFileName.lastIndexOf("."));
+        } else {
+            filenameToUse += ".xls";
+        }
+
+        context.put("clientFileName", clientFileName);
+        context.put("filenameToUse", filenameToUse);
+
+        String characterEncoding = request.getCharacterEncoding();
+        String fileUrl = urlPrefix + "/" + filePathPrefix + java.net.URLEncoder.encode(filenameToUse, characterEncoding);
+
+        try {
+            File file = new File(serverPath + "/" + filePathPrefix, defaultFileName);
+            File file1 = new File(serverPath + "/" + filePathPrefix, filenameToUse);
+            try {
+                file1.delete();
+            } catch(Exception e) {
+                System.out.println("error deleting existing file (not neccessarily a problem)");
+            }
+            file.renameTo(file1);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    if(fileType.equals("catalog")){
+    	Map message = dispatcher.runSync("uploadCatalog", UtilMisc.toMap("userLogin", userLogin));
+    }
+    if(fileType.equals("category")){
+    	Map message = dispatcher.runSync("uploadCategory", UtilMisc.toMap("userLogin", userLogin));
+    }
+    if(fileType.equals("product")){
+    	Map message = dispatcher.runSync("uploadProduct", UtilMisc.toMap("userLogin", userLogin));
+    }
+    if(fileType.equals("feature")){
+    	Map message = dispatcher.runSync("uploadFeature", UtilMisc.toMap("userLogin", userLogin));
+    }
+    if(fileType.equals("variantProduct")){
+    	Map message = dispatcher.runSync("uploadVariantProduct", UtilMisc.toMap("userLogin", userLogin));
+    }
+    if(fileType.equals("productSku")){
+    	Map message = dispatcher.runSync("uploadProductSkuId", UtilMisc.toMap("userLogin", userLogin));
+    }
+}
+
+mainCondition = null;
+andExprs = new ArrayList();
+andExprs.add(new EntityExpr(new EntityExpr("processedTimestamp", EntityOperator.NOT_EQUAL, null), EntityOperator.AND, new EntityExpr("message", EntityOperator.EQUALS, "Success")));	
+mainCondition = new EntityConditionList(andExprs, EntityOperator.AND);
+
+mainCond = null;
+andExp = new ArrayList();
+andExp.add(new EntityExpr(new EntityExpr("processedTimestamp", EntityOperator.EQUALS, null), EntityOperator.OR, new EntityExpr("message", EntityOperator.NOT_EQUAL, "Success")));	
+mainCond = new EntityConditionList(andExp, EntityOperator.AND);
+
+importedCatalogList = delegator.findByCondition("DataImportCatalog",  mainCondition, null, null); 
+importedCatalog = importedCatalogList.size();
+context.put("importedCatalog", importedCatalog);
+
+unimportedCatalogList = delegator.findByCondition("DataImportCatalog",  mainCond, null, null); 
+unimportedCatalog = unimportedCatalogList.size();
+context.put("unimportedCatalog", unimportedCatalog);
+
+importedCategoryList = delegator.findByCondition("DataImportCategory",  mainCondition, null, null); 
+importedCategory = importedCategoryList.size();
+context.put("importedCategory", importedCategory);
+
+unimportedCategoryList = delegator.findByCondition("DataImportCategory",  mainCond, null, null); 
+unimportedCategory = unimportedCategoryList.size();
+context.put("unimportedCategory", unimportedCategory);
+
+importedFeatureList = delegator.findByCondition("DataImportProductFeature",  mainCondition, null, null); 
+importedFeature = importedFeatureList.size();
+context.put("importedFeature", importedFeature);
+
+unimportedFeatureList = delegator.findByCondition("DataImportProductFeature",  mainCond, null, null); 
+unimportedFeature = unimportedFeatureList.size();
+context.put("unimportedFeature", unimportedFeature);
+
+importedProductList = delegator.findByCondition("DataImportProduct",  mainCondition, null, null); 
+importedProduct = importedProductList.size();
+context.put("importedProduct", importedProduct);
+
+unimportedProductList = delegator.findByCondition("DataImportProduct",  mainCond, null, null); 
+unimportedProduct = unimportedProductList.size();
+context.put("unimportedProduct", unimportedProduct);
+
+importedVariantProductList = delegator.findByCondition("DataImportVariantProduct",  mainCondition, null, null); 
+importedVariantProduct = importedVariantProductList.size();
+context.put("importedVariantProduct", importedVariantProduct);
+
+unimportedVariantProductList = delegator.findByCondition("DataImportVariantProduct",  mainCond, null, null); 
+unimportedVariantProduct = unimportedVariantProductList.size();
+context.put("unimportedVariantProduct", unimportedVariantProduct);
+/*
+importedProductSKUIdList = delegator.findByCondition("DataImportProductSku",  mainCondition, null, null); 
+importedProductSKU = importedProductSKUIdList.size();
+context.put("importedProductSKU", importedProductSKU);
+
+unimportedProductSKUIdList = delegator.findByCondition("DataImportProductSku",  mainCond, null, null); 
+unimportedProductSKU = unimportedProductSKUIdList.size();
+context.put("unimportedProductSKU", unimportedProductSKU);
+*/

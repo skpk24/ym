@@ -1,0 +1,39 @@
+import java.util.*;
+import javolution.util.FastList;
+import org.ofbiz.base.util.UtilMisc;
+import org.ofbiz.base.util.UtilValidate;
+import org.ofbiz.entity.condition.EntityCondition;
+import org.ofbiz.entity.condition.EntityOperator;
+import org.ofbiz.entity.util.EntityUtil;
+
+
+
+
+// possible fields we're searching by
+priority = parameters.get("priority");
+
+print("*****************priority****" +priority);
+custRequestName = parameters.get("custRequestName");
+print("*****************custRequestName****" +custRequestName);
+
+custRequestTypeId = parameters.get("custRequestTypeId");
+print("*****************custRequestTypeId****" +custRequestTypeId);
+custRequestCategoryId = parameters.get("custRequestCategoryId");
+print("*****************custRequestCategoryId****" +custRequestCategoryId);
+statusId = parameters.get("statusId");
+
+print("*****************statusId****" +statusId);
+performFind = parameters.get("performFind");
+
+
+List conditions=new ArrayList();
+	//conditions.add(EntityCondition.makeCondition("priority",EntityOperator.EQUALS,priority);
+	conditions.add(EntityCondition.makeCondition("custRequestName",EntityOperator.EQUALS,custRequestName));
+	//conditions.add(EntityCondition.makeCondition("custRequestTypeId",EntityOperator.EQUALS,custRequestTypeId));
+	conditions.add(EntityCondition.makeCondition("statusId",EntityOperator.EQUALS,statusId));
+	
+custRequest = delegator.findByCondition("CustRequest", EntityCondition.makeCondition(conditions,EntityOperator.AND), null, null, null, null); 
+
+
+context.put("custRequest",custRequest);
+

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/services.xsd">
+    <description>RestfulComponent Services</description>
+    <vendor></vendor>
+    <version>1.0</version>
+    
+    <service name="createShippingLabelGroup" engine="group" location="createShippingLabelGroup" invoke="" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Generate the Shipping Labels For Each Package But Only Stores the Master Tracking Number</description>
+        <attribute name="shipmentId" type="String" mode="IN" optional="true"></attribute>
+        <attribute name="shipmentPackageSeqId" type="String" mode="IN" optional="true"></attribute>
+        <attribute name="shipmentRouteSegmentId" type="String" mode="IN" optional="true"></attribute>
+        <attribute name="orderId" type="String" mode="IN" optional="true"></attribute>
+        <attribute name="netCost" type="BigDecimal" mode="IN" optional="true"></attribute>
+        <attribute name="totalSurCharge" type="BigDecimal" mode="IN" optional="true"/>
+    </service>
+    
+    
+    <service name="calculateStoreShippingCost" engine="java" location="com.ilinks.restful.service.RESTfulServices" invoke="calculateStoreShippingCost" auth="false" transaction-timeout="120" max-retry="0">
+        <description>FedEx Shipping Cost</description>
+        <attribute name="orderID" type="String" mode="IN" optional="false" />
+        <attribute name="address" type="String" mode="IN" optional="false"/>
+        <attribute name="city" type="String" mode="IN" optional="false" />
+        <attribute name="state" type="String" mode="IN" optional="false"/>
+        <attribute name="postalCode" type="String" mode="IN" optional="false"/>
+        <attribute name="country" type="String" mode="IN" optional="true" default-value="US"/>
+        <attribute name="weight" type="String" mode="IN" optional="false"/>
+    </service>
+    
+    <service name="createShippingLabel" engine="java" location="com.ilinks.restful.service.RESTfulServices" invoke="createShippingLabel" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Generate the Shipping Labels For Each Package But Only Stores the Master Tracking Number</description>
+        <attribute name="shipmentId" type="String" mode="IN" optional="false" />
+        <attribute name="shipmentPackageSeqId" type="String" mode="IN" optional="false" />
+        <attribute name="shipmentRouteSegmentId" type="String" mode="IN" optional="false" />
+        <attribute name="orderId" type="String" mode="OUT" optional="false"/>
+        <attribute name="netCost" type="BigDecimal" mode="OUT" optional="false" />
+        <attribute name="totalSurCharge" type="BigDecimal" mode="OUT" optional="false"/>
+    </service> 
+</services>

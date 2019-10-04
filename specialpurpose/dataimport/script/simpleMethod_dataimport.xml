@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simple-methods xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/simple-methods.xsd">
+    
+    
+    
+    <simple-method method-name="readuploadedCatalog" short-description="read all the catalogs that are uploaded" login-required="false">
+        <call-class-method method-name="readuploadedCatalog" class-name="org.ofbiz.dataimport.UploadEvents" ret-field="readuploadedCatalogList">
+            <field field="delegator" type="org.ofbiz.entity.GenericDelegator"/>
+        </call-class-method>
+        <iterate list="readuploadedCatalogList" entry="uploadedCatalog">
+            <set field="uploadedCatalogList" value="${uploadedCatalog.exportCatalogSeqId}:${uploadedCatalog.prodCatalogId}:${uploadedCatalog.catalogName}:${uploadedCatalog.useQuickAdd}:${uploadedCatalog.productStoreId}:${uploadedCatalog.fromDate}:${uploadedCatalog.allowProductCompare}"/>
+            <field-to-list list="uploadedCatalogLists" field="uploadedCatalogList"/>
+        </iterate>
+        <field-to-result field="uploadedCatalogLists"/>
+    </simple-method>
+    
+    
+    <simple-method method-name="readuploadedCategory" short-description="read all the caregory that are uploaded" login-required="false">
+        <call-class-method method-name="readuploadedCategory" class-name="org.ofbiz.dataimport.UploadEvents" ret-field="readuploadedCategoryList">
+            <field field="delegator" type="org.ofbiz.entity.GenericDelegator"/>
+        </call-class-method>
+        <iterate list="readuploadedCategoryList" entry="uploadedCategory">
+            <set field="uploadedCategoryList" value="${uploadedCategory.productCategoryId}:${uploadedCategory.primaryParentCategoryId}:${uploadedCategory.categoryName}:${uploadedCategory.description}:${uploadedCategory.longDescription}:${uploadedCategory.categoryImageUrl}:${uploadedCategory.linkOneImageUrl}:${uploadedCategory.prodCatalogId}:${uploadedCategory.prodCatalogCategoryTypeId}:${uploadedCategory.rollUpCategoryId}:${uploadedCategory.productCategoryTypeId}"/>
+            <field-to-list list="uploadedCategoryLists" field="uploadedCategoryList"/>
+        </iterate>
+        <field-to-result field="uploadedCategoryLists"/>
+    </simple-method>
+    
+    
+    <simple-method method-name="readuploadedFeature" short-description="read all the feature that are uploaded" login-required="false">
+        <call-class-method method-name="readuploadedFeature" class-name="org.ofbiz.dataimport.UploadEvents" ret-field="readuploadedFeatureList">
+            <field field="delegator" type="org.ofbiz.entity.GenericDelegator"/>
+        </call-class-method>
+        <iterate list="readuploadedFeatureList" entry="uploadedFeature">
+            <set field="uploadedFeatureList" value="${uploadedFeature.productFeatureCategoryId}:${uploadedFeature.productFeatureCategoryDescription}:${uploadedFeature.productFeatureTypeId}:${uploadedFeature.productFeatureDescription}"/>
+            <field-to-list list="uploadedFeatureLists" field="uploadedFeatureList"/>
+        </iterate>
+        <field-to-result field="uploadedFeatureLists"/>
+    </simple-method>
+    
+    <simple-method method-name="readuploadedProduct" short-description="read all the product that are uploaded" login-required="false">
+        <call-class-method method-name="readuploadedProduct" class-name="org.ofbiz.dataimport.UploadEvents" ret-field="readuploadedProductList">
+            <field field="delegator" type="org.ofbiz.entity.GenericDelegator"/>
+        </call-class-method>
+        <iterate list="readuploadedProductList" entry="uploadedProduct">
+            <set field="uploadedProductList" value="${uploadedProduct.productId}:${uploadedProduct.productTypeId}:${uploadedProduct.internalName}:${uploadedProduct.brandName}:${uploadedProduct.productName}:${uploadedProduct.description}:${uploadedProduct.longDescription}:${uploadedProduct.smallImageUrl}:${uploadedProduct.largeImageUrl}:${uploadedProduct.detailImageUrl}:${uploadedProduct.firstImageUrl}:${uploadedProduct.secondImageUrl}:${uploadedProduct.thirdImageUrl}:${uploadedProduct.fourthImageUrl}:${uploadedProduct.fifthImageUrl}:${uploadedProduct.sixthImageUrl}:${uploadedProduct.seventhImageUrl}:${uploadedProduct.defaultPrice}:${uploadedProduct.listPrice}:${uploadedProduct.promotionalPrice}:${uploadedProduct.wholesalePrice}:${uploadedProduct.categoryOne}:${uploadedProduct.categoryTwo}:${uploadedProduct.categoryThree}:${uploadedProduct.categoryFour}:${uploadedProduct.categoryFive}:${uploadedProduct.categorySix}:${uploadedProduct.productFeatureCategoryId}:${uploadedProduct.productFeature}:${uploadedProduct.isVirtual}:${uploadedProduct.isVariant}"/>
+            <field-to-list list="uploadedProductLists" field="uploadedProductList"/>
+        </iterate>
+        <field-to-result field="uploadedProductLists"/>
+    </simple-method>
+    
+
+    <simple-method method-name="readuploadedVariantProductImage" short-description="read all the Variant Product that are uploaded" login-required="false">
+        <call-class-method method-name="readuploadedVariantProduct" class-name="org.ofbiz.dataimport.UploadEvents" ret-field="readuploadedVariantProductList">
+            <field field="delegator" type="org.ofbiz.entity.GenericDelegator"/>
+        </call-class-method>
+        <iterate list="readuploadedVariantProductList" entry="uploadedVariantProduct">
+            <set field="uploadedVariantProductList" value="${uploadedVariantProduct.productId}:${uploadedVariantProduct.smallImageUrl}:${uploadedVariantProduct.detailImageUrl}:${uploadedVariantProduct.largeImageUrl}:${uploadedVariantProduct.defaultPrice}:${uploadedVariantProduct.listPrice}:${uploadedVariantProduct.promotionalPrice}:${uploadedVariantProduct.wholesalePrice}:${uploadedVariantProduct.productName}"/>
+            <field-to-list list="uploadedVariantProductImageLists" field="uploadedVariantProductList"/>
+        </iterate>
+        <field-to-result field="uploadedVariantProductImageLists"/>
+    </simple-method>
+    
+</simple-methods>

@@ -1,0 +1,121 @@
+/*
+ * Copyright (c) 2006 - 2007 Open Source Strategies, Inc.
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the Honest Public License.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Honest Public License for more details.
+ * 
+ * You should have received a copy of the Honest Public License
+ * along with this program; if not, write to Funambol,
+ * 643 Bair Island Road, Suite 305 - Redwood City, CA 94063, USA
+ */
+ 
+import org.ofbiz.base.util.*;
+import org.ofbiz.base.util.string.*;
+import org.ofbiz.entity.*;
+import org.ofbiz.entity.condition.*;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+
+// create the fromDate for calendar
+fromCal = Calendar.getInstance();
+fromCal.setTime(new java.util.Date());
+fromCal.set(Calendar.HOUR_OF_DAY, fromCal.getActualMinimum(Calendar.HOUR_OF_DAY));
+fromCal.set(Calendar.MINUTE, fromCal.getActualMinimum(Calendar.MINUTE));
+fromCal.set(Calendar.SECOND, fromCal.getActualMinimum(Calendar.SECOND));
+fromCal.set(Calendar.MILLISECOND, fromCal.getActualMinimum(Calendar.MILLISECOND));
+fromTs = new Timestamp(fromCal.getTimeInMillis());
+fromStr = fromTs.toString();
+fromStr = fromStr.substring(0, fromStr.indexOf('.'));
+context.put("fromDateStr", fromStr);
+
+// create the thruDate for calendar
+toCal = Calendar.getInstance();
+toCal.setTime(new java.util.Date());
+toCal.set(Calendar.HOUR_OF_DAY, toCal.getActualMaximum(Calendar.HOUR_OF_DAY));
+toCal.set(Calendar.MINUTE, toCal.getActualMaximum(Calendar.MINUTE));
+toCal.set(Calendar.SECOND, toCal.getActualMaximum(Calendar.SECOND));
+toCal.set(Calendar.MILLISECOND, toCal.getActualMaximum(Calendar.MILLISECOND));
+toTs = new Timestamp(toCal.getTimeInMillis());
+toStr = toTs.toString();
+context.put("thruDateStr", toStr);
+
+andExprs = new ArrayList();
+mainCond = null;
+
+String option = request.getParameter("option");
+String fromDate = request.getParameter("fromDate");
+String thruDate = request.getParameter("thruDate");
+String status = request.getParameter("status");
+
+if (fromDate != null && fromDate.length() > 8) {            
+    fromDate = fromDate.trim();
+    if (fromDate.length() < 14) fromDate = fromDate + " " + "00:00:00.000";
+    paramList = paramList + "&fromDate=" + fromDate;
+    andExprs.add(new EntityExpr("processedTimestamp", EntityOperator.GREATER_THAN_EQUAL_TO, fromDate));
+}
+if (thruDate != null && thruDate.length() > 8) {
+    thruDate = thruDate.trim();
+    if (thruDate.length() < 14) thruDate = thruDate + " " + "23:59:59.999";
+    paramList = paramList + "&thruDate=" + thruDate;
+    andExprs.add(new EntityExpr("processedTimestamp", EntityOperator.LESS_THAN_EQUAL_TO, thruDate));
+}
+
+if(status != null && !status.equals("All") && status.length() > 0) {
+    	paramList = paramList + "&status=" + status;
+    	if(status.equals("Success")){
+    		andExprs.add(new EntityExpr("message", EntityOperator.EQUALS, "Success"));
+    	}	
+    	if(status.equals("Unsuccess")){
+    		andExprs.add(new EntityExpr("message", EntityOperator.NOT_EQUAL, "Success"));
+    	}	
+}
+
+if(option != null && option.equals("catalog")){
+	andExprs.add(new EntityExpr("processedTimestamp", EntityOperator.NOT_EQUAL, null));
+	mainCond = new EntityConditionList(andExprs, EntityOperator.AND);
+	importedCatalogList = delegator.findByCondition("DataImportCatalog",  mainCond, null, null); 
+	listSize = importedCatalogList.size();
+	context.put("importedCatalogList", importedCatalogList);
+	context.put("listSize", listSize);
+}
+
+if(option != null && option.equals("category")){
+	andExprs.add(new EntityExpr("processedTimestamp", EntityOperator.NOT_EQUAL, null));
+	mainCond = new EntityConditionList(andExprs, EntityOperator.AND);
+	importedCategoryList = delegator.findByCondition("DataImportCategory",  mainCond, null, null); 
+	listSize = importedCategoryList.size();
+	context.put("importedCategoryList", importedCategoryList);
+	context.put("listSize", listSize);
+}
+
+if(option != null && option.equals("feature")){
+	andExprs.add(new EntityExpr("processedTimestamp", EntityOperator.NOT_EQUAL, null));
+	mainCond = new EntityConditionList(andExprs, EntityOperator.AND);
+	importedFeatureList = delegator.findByCondition("DataImportProductFeature",  mainCond, null, null); 
+	listSize = importedFeatureList.size();
+	context.put("importedFeatureList", importedFeatureList);
+	context.put("listSize", listSize);
+}
+
+if(option != null && option.equals("product")){
+	andExprs.add(new EntityExpr("processedTimestamp", EntityOperator.NOT_EQUAL, null));
+	mainCond = new EntityConditionList(andExprs, EntityOperator.AND);
+	importedProductList = delegator.findByCondition("DataImportProduct", mainCond, null, null); 
+	listSize = importedProductList.size();
+	context.put("importedProductList", importedProductList);
+	context.put("listSize", listSize);
+}
+
+if(option != null && option.equals("variantproduct")){
+	andExprs.add(new EntityExpr("processedTimestamp", EntityOperator.NOT_EQUAL, null));
+	mainCond = new EntityConditionList(andExprs, EntityOperator.AND);
+	importedVariantProductList = delegator.findByCondition("DataImportVariantProduct",  mainCond, null, null); 
+	listSize = importedVariantProductList.size();
+	context.put("importedVariantProductList", importedVariantProductList);
+	context.put("listSize", listSize);
+}

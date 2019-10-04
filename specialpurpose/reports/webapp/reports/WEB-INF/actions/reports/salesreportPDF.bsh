@@ -1,0 +1,134 @@
+
+import java.util.*;
+import java.sql.Timestamp;
+import org.ofbiz.entity.*;
+import org.ofbiz.base.util.*;
+import org.ofbiz.entity.GenericDelegator;
+import org.ofbiz.entity.GenericEntityException;
+import org.ofbiz.entity.GenericValue;
+import org.ofbiz.entity.util.EntityUtil;
+import org.ofbiz.entity.condition.*;
+
+//System.out.println("BSH for PDF");
+delegator = request.getAttribute("delegator");
+security = request.getAttribute("security");
+String productId = parameters.get("productId");
+String fromDate = parameters.get("minDate");
+String thruDate = parameters.get("maxDate");
+String orderStatusID = parameters.get("orderStatusId");
+//System.out.println("fromDate : " + fromDate);
+//System.out.println("thruDate : " + thruDate);
+
+Date date = new Date();
+Integer intDay = new Integer(date.getDate());
+Integer intMonth = new Integer(date.getMonth()+1);
+Integer intYear = new Integer(date.getYear()+1900);
+
+String  day = intDay.toString();
+String  month = intMonth.toString();
+String  year = intYear.toString();
+	
+if(fromDate == null)
+	fromDate = year + "-" + month + "-" + day + " " + "00:00:00";
+if(fromDate != null && fromDate.length()<19)
+	fromDate = year + "-" + month + "-" + day + " " + "00:00:00";
+
+if(thruDate == null)
+	thruDate  = year + "-" + month + "-" + day + " " + "23:59:59.999";
+if(thruDate != null && thruDate.length()<19)
+	thruDate  = year + "-" + month + "-" + day + " " + "23:59:59.999";
+
+// Get orders from DB ...
+
+	try 
+	{
+			List mainExprs = new ArrayList();
+			List isOrderCompleted = new ArrayList();
+
+			if(orderStatusID != null && orderStatusID.length() > 0 ){
+				isOrderCompleted.add(new EntityExpr("orderStatusId", EntityOperator.EQUALS, orderStatusID));
+				// isOrderCompleted.add(new EntityExpr("orderStatusId", EntityOperator.EQUALS, "ORDER_COMPLETED"));
+				EntityConditionList isOrderCompletedCondition = new EntityConditionList(isOrderCompleted, EntityOperator.OR);
+				mainExprs.add(isOrderCompletedCondition);
+			}
+
+			List prodCond = new ArrayList();
+			if(productId != null){
+				if(productId.length() != 0)
+			prodCond.add(new EntityExpr("productId", EntityOperator.EQUALS, productId));
+			}
+			EntityConditionList prodTypeCondition = new EntityConditionList(prodCond, EntityOperator.OR);
+
+			List dateCondiList = new ArrayList();
+			dateCondiList.add(new EntityExpr("orderDate", EntityOperator.GREATER_THAN_EQUAL_TO, ObjectType.simpleTypeConvert(fromDate, "Timestamp", null, null) ));
+			dateCondiList.add(new EntityExpr("orderDate", EntityOperator.LESS_THAN_EQUAL_TO, ObjectType.simpleTypeConvert(thruDate, "Timestamp", null, null) ));
+			EntityConditionList dateCondition = new EntityConditionList(dateCondiList, EntityOperator.AND);
+			if(prodCond!=null && prodCond.size()>0)
+			mainExprs.add(prodTypeCondition);
+			mainExprs.add(dateCondition);
+			EntityConditionList mainCondition = new EntityConditionList(mainExprs, EntityOperator.AND);
+
+			//System.out.println("sales data : main condition : " + mainCondition);
+
+			sales = delegator.findByCondition("MyOrders",mainCondition,null,UtilMisc.toList("orderDate DESC") );
+
+			//System.out.println("\n\nSales list size : " + sales.size());
+			for(GenericValue genVal :sales){
+				orderId = genVal.get("orderId");
+				emailId = org.ofbiz.party.contact.ContactMechWorker.getOrderEmailContactMech( delegator,  orderId);
+				genVal.set("createdBy",emailId);
+			}
+			context.put("sales", sales);
+		}
+		catch (Exception gee) 
+		{
+			System.out.error("Error: (In salesreportPDF.bsh) Unable to retrieve sales report." + gee);
+		} 
+
+		if( fromDate!= null && fromDate.length()>0){
+			context.put("fromDate", fromDate.substring(0, fromDate.lastIndexOf(" ")) );
+			context.put("fromDateStr", fromDate);
+			}
+
+		if( thruDate!= null && thruDate.length()>0){
+			context.put("thruDate", thruDate.substring(0,thruDate.lastIndexOf(" ")));
+			context.put("thruDateStr", thruDate);
+			}
+			context.put("orderStatusID", orderStatusID);
+
+//pagination
+if(sales != null)
+	listSize = sales.size();
+else listSize = 0;
+
+viewSize = parameters.get("VIEW_SIZE");
+viewIndex = parameters.get("VIEW_INDEX");
+
+// set the default view size
+defaultViewSize = request.getAttribute("defaultViewSize");
+
+if (defaultViewSize == null) {
+    defaultViewSize = new java.lang.Integer(10);
+}
+
+
+if(viewSize == null) viewSize = defaultViewSize;
+else viewSize = Integer.parseInt(viewSize);
+
+if(viewIndex == null) viewIndex = 1;
+else viewIndex = Integer.parseInt(viewIndex);
+
+	int lowIndex = (viewIndex-1) * viewSize + 1;
+		//int highIndex = (viewIndex + 1) * viewSize;
+	int highIndex = (lowIndex + viewSize) -1;
+	if (listSize < highIndex) highIndex = listSize;
+
+context.put("viewIndex", viewIndex);
+context.put("viewSize", viewSize);
+context.put("lowIndex", lowIndex);
+context.put("highIndex", highIndex);
+context.put("listSize", listSize);
+
+//System.out.println(" viewIndex " + viewIndex + " -- viewSize " + viewSize);
+//System.out.println(" lowIndex " + lowIndex + " -- highIndex " + highIndex);
+//System.out.println(" listSize " + listSize );

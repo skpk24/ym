@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <!-- The controller elements that are common to all OFBiz components
+         can be found in the following xml file. A component can override the
+         elements found in the common-controller.xml file. -->
+    <include location="component://common/webcommon/WEB-INF/common-controller.xml"/>
+
+    <description>admin Component Site Configuration File</description>
+
+    <!-- Events to run on every request before security (chains exempt) -->
+    <!--
+    <preprocessor>
+    </preprocessor>
+    -->
+    <!-- Events to run on every request after all other processing (chains exempt) -->
+    <!--
+    <postprocessor>
+        <event name="test" type="java" path="org.ofbiz.webapp.event.TestEvent" invoke="test"/>
+    </postprocessor>
+    -->
+
+    <!-- Request Mappings -->
+    <request-map uri="main"><security https="true" auth="true"/><response name="success" type="view" value="main"/></request-map>
+    <request-map uri="expanseDetail">
+	    <security https="true" auth="true"/>
+	    <response name="success" type="view" value="expanseDetail"/>
+    </request-map>
+    
+     <request-map uri="createPartyNote">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="createPartyNote"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+    <request-map uri="createNote">
+        <security https="true" auth="true"/>
+        <event type="java" path="org.ofbiz.order.report.Report" invoke="createNote"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+  
+    <request-map uri="revenueReoprtCSV">
+	   <security https="true" auth="true"/>
+	    <event type="java" path="org.ofbiz.order.report.Report" invoke="revenueReoprtCSV"/>
+	   <response name="success" type="none" />
+	</request-map>
+	<request-map uri="purchaseCSV">
+	   <security https="true" auth="true"/>
+	    <event type="java" path="org.ofbiz.order.report.Report" invoke="purchaseCSV"/>
+	   <response name="success" type="none" />
+	</request-map>
+	<request-map uri="customerCSV">
+	   <security https="true" auth="true"/>
+	    <event type="java" path="org.ofbiz.order.report.Report" invoke="customerCSV"/>
+	   <response name="success" type="none" />
+	</request-map>
+	
+    <request-map uri="showChart1"><security https="true" auth="true"/>
+      <event type="java" path="org.ofbiz.order.report.Report" invoke="SalesChart"/>
+        <response name="success" type="none" />
+    </request-map>
+     <request-map uri="customerHtml"><security https="true" auth="true"/>
+      <event type="java" path="org.ofbiz.order.report.Report" invoke="customerHtml"/>
+        <response name="success" type="none" />
+    </request-map>
+     <request-map uri="purchaseHtml"><security https="true" auth="true"/>
+      <event type="java" path="org.ofbiz.order.report.Report" invoke="purchaseHtml"/>
+        <response name="success" type="none" />
+    </request-map>
+     <request-map uri="salesHtml"><security https="true" auth="true"/>
+      <event type="java" path="org.ofbiz.order.report.Report" invoke="salesHtml"/>
+        <response name="success" type="none" />
+    </request-map>
+    
+     <request-map uri="showChart2"><security https="true" auth="true"/>
+       
+          <event type="java" path="org.ofbiz.order.report.Report" invoke="purchaseChart"/>
+        <response name="success" type="none" />
+    </request-map>
+      <request-map uri="showChart3"><security https="true" auth="true"/>
+       
+          <event type="java" path="org.ofbiz.order.report.Report" invoke="customerChart"/>
+        <response name="success" type="none" />
+    </request-map>
+    
+    <!-- View Mappings -->
+    <view-map name="main" type="screen" page="component://admin/widget/adminScreens.xml#main"/>
+    <view-map name="expanseDetail" type="screen" page="component://admin/widget/adminScreens.xml#expanseDetail"/>
+    
+</site-conf>

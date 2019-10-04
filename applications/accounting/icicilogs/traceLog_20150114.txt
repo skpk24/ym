@@ -1,0 +1,96 @@
+[2015-01-14 06:19:55.826] <PostLib><postSSL><TxnNo-->1><Entered>
+[2015-01-14 06:19:55.827] <PostLib><postSSL><TxnNo-->1><MrtTxnID-->YMCO116020><MrtID-->96008628><Entered>
+[2015-01-14 06:19:55.827] <PostLib><buildMerchantBillShip><TxnNo-->1><MrtTxnID-->YMCO116020><Entered>
+[2015-01-14 06:19:55.828] <PostLib><buildMerchantBillShip><TxnNo-->1><MrtTxnID-->YMCO116020><Exiting>
+[2015-01-14 06:19:55.896] <PostLib><postData><TxnNo-->1><MrtTxnID-->YMCO116020><Entered>
+[2015-01-14 06:19:55.897] <PostLib><postData><Created URL object><TxnNo-->1><MrtTxnID-->YMCO116020>
+[2015-01-14 06:19:55.978] <PostLib><postData><Opened URL Connection><TxnNo-->1><MrtTxnID-->YMCO116020>
+[2015-01-14 06:19:57.757] <PostLib><postData><Written data on the output stream><TxnNo-->1><MrtTxnID-->YMCO116020>
+[2015-01-14 06:19:58.08] <PostLib><postData><Total transaction Response string value><RespCode=000&Message=Successful&TxnID=YMCO116020&RedirectionTxnID=1595E120724F7B6E07BE31AA88C3DA02>
+[2015-01-14 06:19:58.08] <PostLib><postData><Read response on the stream><TxnNo-->1><MrtTxnID-->YMCO116020>
+[2015-01-14 06:19:58.08] <PostLib><postData>Close the URL connection><TxnNo-->1><MrtTxnID-->YMCO116020>
+[2015-01-14 06:19:58.081] <PostLib><postSSL><TxnNo-->1><MrtTxnID-->YMCO116020><Exiting>
+[2015-01-14 07:48:13.17] <PostLib><postSSL><TxnNo-->2><Entered>
+[2015-01-14 07:48:13.171] <PostLib><postSSL><TxnNo-->2><MrtTxnID-->YMCO116021><MrtID-->96008628><Entered>
+[2015-01-14 07:48:13.171] <PostLib><buildMerchantBillShip><TxnNo-->2><MrtTxnID-->YMCO116021><Entered>
+[2015-01-14 07:48:13.171] <PostLib><buildMerchantBillShip><TxnNo-->2><MrtTxnID-->YMCO116021><Exiting>
+[2015-01-14 07:48:13.174] <PostLib><postData><TxnNo-->2><MrtTxnID-->YMCO116021><Entered>
+[2015-01-14 07:48:13.174] <PostLib><postData><Created URL object><TxnNo-->2><MrtTxnID-->YMCO116021>
+[2015-01-14 07:48:13.174] <PostLib><postData><Opened URL Connection><TxnNo-->2><MrtTxnID-->YMCO116021>
+[2015-01-14 07:48:14.548] <PostLib><postData><Written data on the output stream><TxnNo-->2><MrtTxnID-->YMCO116021>
+[2015-01-14 07:48:14.813] <PostLib><postData><IOException while reading response : java.io.IOException: Server returned HTTP response code: 503 for URL: https://payseal.icicibank.com/mpi/Ssl.jsp><TxnNo-->2><MrtTxnID-->YMCO116021>
+[2015-01-14 07:48:14.813] <PostLib><postData>Close the URL connection><TxnNo-->2><MrtTxnID-->YMCO116021>
+[2015-01-14 07:48:14.813] <PostLib><postSSL><SFAApplicationException. Error while reading data. Transaction cannot be processed><TxnNo-->2><MrtTxnID-->YMCO116021>
+[2015-01-14 07:48:14.813] <PostLib><postSSL><TxnNo-->2><MrtTxnID-->YMCO116021><Exiting>
+[2015-01-14 07:48:43.446] <PostLib><postSSL><TxnNo-->3><Entered>
+[2015-01-14 07:48:43.446] <PostLib><postSSL><TxnNo-->3><MrtTxnID-->YMCO116022><MrtID-->96008628><Entered>
+[2015-01-14 07:48:43.446] <PostLib><buildMerchantBillShip><TxnNo-->3><MrtTxnID-->YMCO116022><Entered>
+[2015-01-14 07:48:43.447] <PostLib><buildMerchantBillShip><TxnNo-->3><MrtTxnID-->YMCO116022><Exiting>
+[2015-01-14 07:48:43.449] <PostLib><postData><TxnNo-->3><MrtTxnID-->YMCO116022><Entered>
+[2015-01-14 07:48:43.449] <PostLib><postData><Created URL object><TxnNo-->3><MrtTxnID-->YMCO116022>
+[2015-01-14 07:48:43.449] <PostLib><postData><Opened URL Connection><TxnNo-->3><MrtTxnID-->YMCO116022>
+[2015-01-14 07:48:43.974] <PostLib><postData><Written data on the output stream><TxnNo-->3><MrtTxnID-->YMCO116022>
+[2015-01-14 07:48:44.234] <PostLib><postData><IOException while reading response : java.io.IOException: Server returned HTTP response code: 503 for URL: https://payseal.icicibank.com/mpi/Ssl.jsp><TxnNo-->3><MrtTxnID-->YMCO116022>
+[2015-01-14 07:48:44.234] <PostLib><postData>Close the URL connection><TxnNo-->3><MrtTxnID-->YMCO116022>
+[2015-01-14 07:48:44.234] <PostLib><postSSL><SFAApplicationException. Error while reading data. Transaction cannot be processed><TxnNo-->3><MrtTxnID-->YMCO116022>
+[2015-01-14 07:48:44.234] <PostLib><postSSL><TxnNo-->3><MrtTxnID-->YMCO116022><Exiting>
+[2015-01-14 07:55:48.076] <PostLib><postSSL><TxnNo-->4><Entered>
+[2015-01-14 07:55:48.076] <PostLib><postSSL><TxnNo-->4><MrtTxnID-->YMCO116023><MrtID-->96008628><Entered>
+[2015-01-14 07:55:48.076] <PostLib><buildMerchantBillShip><TxnNo-->4><MrtTxnID-->YMCO116023><Entered>
+[2015-01-14 07:55:48.076] <PostLib><buildMerchantBillShip><TxnNo-->4><MrtTxnID-->YMCO116023><Exiting>
+[2015-01-14 07:55:48.078] <PostLib><postData><TxnNo-->4><MrtTxnID-->YMCO116023><Entered>
+[2015-01-14 07:55:48.078] <PostLib><postData><Created URL object><TxnNo-->4><MrtTxnID-->YMCO116023>
+[2015-01-14 07:55:48.078] <PostLib><postData><Opened URL Connection><TxnNo-->4><MrtTxnID-->YMCO116023>
+[2015-01-14 07:55:49.438] <PostLib><postData><Written data on the output stream><TxnNo-->4><MrtTxnID-->YMCO116023>
+[2015-01-14 07:55:49.7] <PostLib><postData><IOException while reading response : java.io.IOException: Server returned HTTP response code: 503 for URL: https://payseal.icicibank.com/mpi/Ssl.jsp><TxnNo-->4><MrtTxnID-->YMCO116023>
+[2015-01-14 07:55:49.7] <PostLib><postData>Close the URL connection><TxnNo-->4><MrtTxnID-->YMCO116023>
+[2015-01-14 07:55:49.7] <PostLib><postSSL><SFAApplicationException. Error while reading data. Transaction cannot be processed><TxnNo-->4><MrtTxnID-->YMCO116023>
+[2015-01-14 07:55:49.7] <PostLib><postSSL><TxnNo-->4><MrtTxnID-->YMCO116023><Exiting>
+[2015-01-14 12:52:50.487] <PostLib><postSSL><TxnNo-->5><Entered>
+[2015-01-14 12:52:50.487] <PostLib><postSSL><TxnNo-->5><MrtTxnID-->YMCO116033><MrtID-->96008628><Entered>
+[2015-01-14 12:52:50.487] <PostLib><buildMerchantBillShip><TxnNo-->5><MrtTxnID-->YMCO116033><Entered>
+[2015-01-14 12:52:50.488] <PostLib><buildMerchantBillShip><TxnNo-->5><MrtTxnID-->YMCO116033><Exiting>
+[2015-01-14 12:52:50.491] <PostLib><postData><TxnNo-->5><MrtTxnID-->YMCO116033><Entered>
+[2015-01-14 12:52:50.491] <PostLib><postData><Created URL object><TxnNo-->5><MrtTxnID-->YMCO116033>
+[2015-01-14 12:52:50.491] <PostLib><postData><Opened URL Connection><TxnNo-->5><MrtTxnID-->YMCO116033>
+[2015-01-14 12:52:51.806] <PostLib><postData><Written data on the output stream><TxnNo-->5><MrtTxnID-->YMCO116033>
+[2015-01-14 12:52:52.129] <PostLib><postData><Total transaction Response string value><RespCode=000&Message=Successful&TxnID=YMCO116033&RedirectionTxnID=1595E120724F7B6EAB3D92CC27376231>
+[2015-01-14 12:52:52.129] <PostLib><postData><Read response on the stream><TxnNo-->5><MrtTxnID-->YMCO116033>
+[2015-01-14 12:52:52.129] <PostLib><postData>Close the URL connection><TxnNo-->5><MrtTxnID-->YMCO116033>
+[2015-01-14 12:52:52.129] <PostLib><postSSL><TxnNo-->5><MrtTxnID-->YMCO116033><Exiting>
+[2015-01-14 12:58:06.631] <PostLib><postSSL><TxnNo-->6><Entered>
+[2015-01-14 12:58:06.632] <PostLib><postSSL><TxnNo-->6><MrtTxnID-->YMCO116034><MrtID-->96008628><Entered>
+[2015-01-14 12:58:06.632] <PostLib><buildMerchantBillShip><TxnNo-->6><MrtTxnID-->YMCO116034><Entered>
+[2015-01-14 12:58:06.632] <PostLib><buildMerchantBillShip><TxnNo-->6><MrtTxnID-->YMCO116034><Exiting>
+[2015-01-14 12:58:06.635] <PostLib><postData><TxnNo-->6><MrtTxnID-->YMCO116034><Entered>
+[2015-01-14 12:58:06.635] <PostLib><postData><Created URL object><TxnNo-->6><MrtTxnID-->YMCO116034>
+[2015-01-14 12:58:06.635] <PostLib><postData><Opened URL Connection><TxnNo-->6><MrtTxnID-->YMCO116034>
+[2015-01-14 12:58:07.948] <PostLib><postData><Written data on the output stream><TxnNo-->6><MrtTxnID-->YMCO116034>
+[2015-01-14 12:58:08.253] <PostLib><postData><Total transaction Response string value><RespCode=000&Message=Successful&TxnID=YMCO116034&RedirectionTxnID=1595E120724F7B6E9EFB3E7BD84095E8>
+[2015-01-14 12:58:08.253] <PostLib><postData><Read response on the stream><TxnNo-->6><MrtTxnID-->YMCO116034>
+[2015-01-14 12:58:08.253] <PostLib><postData>Close the URL connection><TxnNo-->6><MrtTxnID-->YMCO116034>
+[2015-01-14 12:58:08.253] <PostLib><postSSL><TxnNo-->6><MrtTxnID-->YMCO116034><Exiting>
+[2015-01-14 16:01:43.843] <PostLib><postSSL><TxnNo-->7><Entered>
+[2015-01-14 16:01:43.843] <PostLib><postSSL><TxnNo-->7><MrtTxnID-->YMCO116040><MrtID-->96008628><Entered>
+[2015-01-14 16:01:43.843] <PostLib><buildMerchantBillShip><TxnNo-->7><MrtTxnID-->YMCO116040><Entered>
+[2015-01-14 16:01:43.843] <PostLib><buildMerchantBillShip><TxnNo-->7><MrtTxnID-->YMCO116040><Exiting>
+[2015-01-14 16:01:43.846] <PostLib><postData><TxnNo-->7><MrtTxnID-->YMCO116040><Entered>
+[2015-01-14 16:01:43.846] <PostLib><postData><Created URL object><TxnNo-->7><MrtTxnID-->YMCO116040>
+[2015-01-14 16:01:43.846] <PostLib><postData><Opened URL Connection><TxnNo-->7><MrtTxnID-->YMCO116040>
+[2015-01-14 16:01:45.149] <PostLib><postData><Written data on the output stream><TxnNo-->7><MrtTxnID-->YMCO116040>
+[2015-01-14 16:01:45.851] <PostLib><postData><Total transaction Response string value><RespCode=000&Message=Successful&TxnID=YMCO116040&RedirectionTxnID=1595E120724F7B6EBB1EBA2012CA9AF5>
+[2015-01-14 16:01:45.851] <PostLib><postData><Read response on the stream><TxnNo-->7><MrtTxnID-->YMCO116040>
+[2015-01-14 16:01:45.851] <PostLib><postData>Close the URL connection><TxnNo-->7><MrtTxnID-->YMCO116040>
+[2015-01-14 16:01:45.851] <PostLib><postSSL><TxnNo-->7><MrtTxnID-->YMCO116040><Exiting>
+[2015-01-14 16:06:45.543] <PostLib><postSSL><TxnNo-->8><Entered>
+[2015-01-14 16:06:45.543] <PostLib><postSSL><TxnNo-->8><MrtTxnID-->YMCO116041><MrtID-->96008628><Entered>
+[2015-01-14 16:06:45.543] <PostLib><buildMerchantBillShip><TxnNo-->8><MrtTxnID-->YMCO116041><Entered>
+[2015-01-14 16:06:45.543] <PostLib><buildMerchantBillShip><TxnNo-->8><MrtTxnID-->YMCO116041><Exiting>
+[2015-01-14 16:06:45.545] <PostLib><postData><TxnNo-->8><MrtTxnID-->YMCO116041><Entered>
+[2015-01-14 16:06:45.546] <PostLib><postData><Created URL object><TxnNo-->8><MrtTxnID-->YMCO116041>
+[2015-01-14 16:06:45.546] <PostLib><postData><Opened URL Connection><TxnNo-->8><MrtTxnID-->YMCO116041>
+[2015-01-14 16:06:46.878] <PostLib><postData><Written data on the output stream><TxnNo-->8><MrtTxnID-->YMCO116041>
+[2015-01-14 16:06:47.201] <PostLib><postData><Total transaction Response string value><RespCode=000&Message=Successful&TxnID=YMCO116041&RedirectionTxnID=1595E120724F7B6EC790F614DAC18A6B>
+[2015-01-14 16:06:47.201] <PostLib><postData><Read response on the stream><TxnNo-->8><MrtTxnID-->YMCO116041>
+[2015-01-14 16:06:47.201] <PostLib><postData>Close the URL connection><TxnNo-->8><MrtTxnID-->YMCO116041>
+[2015-01-14 16:06:47.202] <PostLib><postSSL><TxnNo-->8><MrtTxnID-->YMCO116041><Exiting>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ * Copyright (c) 2006 - 2007 Open Source Strategies, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the Honest Public License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Honest Public License for more details.
+ *
+ * You should have received a copy of the Honest Public License
+ * along with this program; if not, write to Funambol,
+ * 643 Bair Island Road, Suite 305 - Redwood City, CA 94063, USA
+-->
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="http://www.ofbiz.org/dtds/services.xsd">
+    <description>Data Import Services</description>
+    <vendor>Open Source Strategies, Inc.</vendor>
+    <version>1.0</version>
+
+    <service name="importCatalogs" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.ImportEvents" invoke="importCatalogs">
+        <description>
+            Import catalogs using DataImportCatalog.  
+            Note that this service is not wrapped in a transaction.  Each catalog record imported is in its
+            own transaction, so it can store as many good records as possible. 
+        </description>
+        <attribute type="Integer" mode="OUT" name="catalogsImported" optional="true"/>
+    </service>   
+     <service name="importOpentapsCusomter" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.ImportEvents" invoke="importOpentapsCusomter">
+        <description>
+            Import customer using DataImportCustomer.  
+           
+        </description>
+        <attribute type="Integer" mode="OUT" name="importedCustomer" optional="true"/>
+     </service> 
+   
+   <service name="importCategory" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.ImportEvents" invoke="importCategory">
+        <attribute type="Integer" mode="OUT" name="categoryImported" optional="true"/>
+    </service>
+    
+    
+    
+    
+    <service name="readuploadedCatalog" engine="simple" auth="false"
+            location="component://dataimport/script/simpleMethod_dataimport.xml" invoke="readuploadedCatalog">
+        <attribute name="uploadedCatalogLists" mode="OUT" type="java.util.List"/>
+	</service>
+	<service name="readuploadedCategory" engine="simple" auth="false"
+            location="component://dataimport/script/simpleMethod_dataimport.xml" invoke="readuploadedCategory">
+        <attribute name="uploadedCategoryLists" mode="OUT" type="java.util.List"/>
+	  </service>
+	  <service name="readuploadedProduct" engine="simple" auth="false"
+            location="component://dataimport/script/simpleMethod_dataimport.xml" invoke="readuploadedProduct">
+        <attribute name="uploadedProductLists" mode="OUT" type="java.util.List"/>
+	  </service>
+	  <service name="readuploadedVariantProductImage" engine="simple" auth="false"
+            location="component://dataimport/script/simpleMethod_dataimport.xml" invoke="readuploadedVariantProductImage">
+        <attribute name="uploadedVariantProductImageLists" mode="OUT" type="java.util.List"/>
+	  </service>
+	  
+	  
+	  
+	  
+	<service name="importFeature" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.ImportEvents" invoke="importFeature">
+        <attribute type="Integer" mode="OUT" name="featuresImported" optional="true"/>
+    </service>
+   <service name="importProducts" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.ImportEvents" invoke="importProducts" >
+        <attribute type="Integer" mode="OUT" name="productsImported" optional="true"/>
+    </service>
+	<service name="importVariantProductImage" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.ImportEvents" invoke="importVariantProductImage">
+        <attribute type="Integer" mode="OUT" name="variantProductsImported" optional="true"/>
+    </service>
+	
+   <service name="uploadCatalog" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.UploadEvents" invoke="uploadCatalog">
+        <attribute type="String" mode="OUT" name="message" optional="true"/>
+    </service>
+    <service name="uploadOpentapscustomer" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.UploadEvents" invoke="uploadOpentapscustomer">
+        <attribute type="String" mode="OUT" name="message" optional="true"/>
+    </service>
+    <!-- 
+     <service name="uploadcustomers" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.UploadEvents" invoke="uploadcustomers">
+         <attribute name="customerListName" mode="IN" type="String" optional="true"></attribute>
+         <attribute name="customerListId" mode="IN" type="String" optional="true"></attribute>
+        <attribute type="String" mode="OUT" name="message" optional="true"/>
+    </service>
+    -->
+    <service name="updateProducts" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.UploadEvents" invoke="updateProducts">
+        <attribute type="String" mode="OUT" name="message" optional="true"/>
+        <attribute type="String" mode="OUT" name="updated" optional="true"/>
+    </service>
+	<service name="uploadCategory" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.UploadEvents" invoke="uploadCategory">
+        <attribute type="String" mode="OUT" name="message" optional="true"/>
+    </service>  
+    <service name="uploadAisleNumber" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.UploadEvents" invoke="uploadAisleNumber">
+       <attribute type="String" mode="OUT" name="message" optional="true"/>
+    </service>  
+    
+	<service name="uploadProduct" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.UploadEvents" invoke="uploadProduct">
+        <attribute type="String" mode="OUT" name="message" optional="true"/>
+        <attribute type="String" mode="OUT" name="successCount" optional="true"/>
+       <attribute type="String" mode="OUT" name="errorRowNo" optional="true"/>
+        
+         
+         
+        
+        
+    </service> 
+    <service name="uploadProductExcel" engine="java" use-transaction="false"
+        location="org.ofbiz.order.shoppinglist.ShoppingListEvents" invoke="uploadProductExcel">
+        <attribute type="String" mode="OUT" name="message" optional="true"/>
+    </service> 
+	<service name="uploadFeature" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.UploadEvents" invoke="uploadFeature">
+        <attribute type="String" mode="OUT" name="message" optional="true"/>
+    </service>
+	<service name="uploadVariantProduct" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.UploadEvents" invoke="uploadVariantProduct">
+        <attribute type="String" mode="OUT" name="message" optional="true"/>
+    </service>
+	
+	<service name="uploadProductCategory" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.UploadEvents" invoke="uploadProductCategory">
+        <attribute type="String" mode="OUT" name="message" optional="true"/>
+    </service> 
+	
+	<service name="importProductCategory" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.ImportEvents" invoke="importProductCategory">
+        <attribute type="Integer" mode="OUT" name="productCategoryImported" optional="true"/>
+    </service>
+    
+    <service name="importProductInventory" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.ImportEvents" invoke="importProductInventory">
+        <attribute type="Integer" mode="OUT" name="importProductInventoryimported" optional="true"/>
+    </service>
+    
+    <service name="uploadProductInventory" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.UploadEvents" invoke="uploadProductInventory">
+        <attribute type="String" mode="OUT" name="message" optional="true"/>
+    </service> 
+    
+    
+    <service name="uploadProductSupplier" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.UploadEvents" invoke="uploadProductSupplier">
+        <attribute type="String" mode="OUT" name="message" optional="true"/>
+    </service> 
+    <service name="importProductSupplier" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.ImportEvents" invoke="importProductSupplier">
+        <attribute type="Integer" mode="OUT" name="importProductSupplierimported" optional="true"/>
+    </service>
+    
+    <service name="uploadPosOrders" engine="java" use-transaction="false"
+        location="org.ofbiz.dataimport.UploadEvents" invoke="uploadPosOrders">
+        <attribute type="String" mode="OUT" name="message" optional="true"/>
+    </service>
+    
+         
+</services>

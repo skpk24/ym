@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ * Copyright (c) 2006 - 2007 Open Source Strategies, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the Honest Public License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Honest Public License for more details.
+ *
+ * You should have received a copy of the Honest Public License
+ * along with this program; if not, write to Funambol,
+ * 643 Bair Island Road, Suite 305 - Redwood City, CA 94063, USA
+-->
+
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.ofbiz.org/dtds/site-conf.xsd">
+    <!-- Include requests for common opentaps features. -->
+	<include location="component://common/webcommon/WEB-INF/common-controller.xml"/>
+    <description>DataImport Module Site Configuration File</description>
+    <owner>Open Source Strategies, Inc. (c) 2007 </owner>
+    <errorpage>/error/error.jsp</errorpage>
+
+    <!-- event handlers -->
+    <handler name="java" type="request" class="org.ofbiz.webapp.event.JavaEventHandler"/>
+    <handler name="soap" type="request" class="org.ofbiz.webapp.event.SOAPEventHandler"/>
+    <handler name="service" type="request" class="org.ofbiz.webapp.event.ServiceEventHandler"/>
+    <handler name="service-multi" type="request" class="org.ofbiz.webapp.event.ServiceMultiEventHandler"/>
+    <handler name="simple" type="request" class="org.ofbiz.webapp.event.SimpleEventHandler"/>
+    <handler name="bsf" type="request" class="org.ofbiz.webapp.event.BsfEventHandler"/>
+
+    <!-- view handlers -->
+    <handler name="screen" type="view" class="org.ofbiz.widget.screen.ScreenWidgetViewHandler"/>
+    <handler name="screenfop" type="view" class="org.ofbiz.widget.screen.ScreenFopViewHandler"/>
+	<handler name="screentext" type="view" class="org.ofbiz.widget.screen.ScreenTextViewHandler"/>
+    <handler name="jsp" type="view" class="org.ofbiz.webapp.view.JspViewHandler"/>
+    <handler name="http" type="view" class="org.ofbiz.webapp.view.HttpViewHandler"/>
+	<handler name="jsonjava" type="request" class="org.ofbiz.webapp.event.JSONJavaEventHandler"/>
+
+    <preprocessor>
+        <!-- Events to run on every request before security (chains exempt) -->
+		<event type="java" path="org.ofbiz.webapp.control.LoginWorker" invoke="check509CertLogin"/>
+        <event type="java" path="org.ofbiz.webapp.control.LoginWorker" invoke="checkExternalLoginKey"/>
+    </preprocessor>
+    <postprocessor>
+        <!-- Events to run on every request after all other processing (chains exempt) -->
+    </postprocessor>
+    
+    <!-- ================= -->
+    <!-- Security Mappings -->
+    <!-- ================= -->
+
+    <request-map uri="checkLogin" edit="false">
+        <description>Verify a user is logged in.</description>
+        <security https="true" auth="false"/>
+        <event type="java" path="org.ofbiz.webapp.control.LoginWorker" invoke="checkLogin" />
+        <response name="success" type="view" value="main" />
+        <response name="error" type="view" value="login" />
+    </request-map>
+
+    <request-map uri="login">
+        <security https="true" auth="false"/>
+        <event type="java" path="org.ofbiz.webapp.control.LoginWorker" invoke="login"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="login"/>
+    </request-map>
+    <request-map uri="uploadProductInventory">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+    <request-map uri="ProductImportSheet">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="ProductImportSheet"/>
+        <response name="error" type="view" value="ProductImportSheet"/>
+    </request-map>
+    
+    
+   <request-map uri="importProductInventory">
+        <security https="true" auth="true"/>
+        <event type="service" path="" invoke="importProductInventory"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+	 <request-map uri="updateUploadedCatalog">
+        <security https="true" auth="true"/>
+        <event type="jsonjava" path="org.ofbiz.dataimport.UploadEvents" invoke="updateUploadedCatalog"/>
+        <response name="success" type="none" value=""/>
+        <response name="error" type="none" value=""/>
+    </request-map>
+	<request-map uri="update">
+        <security https="true" auth="true"/>
+        <event type="java" path="org.ofbiz.dataimport.UploadEvents" invoke="update"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+    
+    <request-map uri="ProductImportAction">
+        <security https="true" auth="true"/>
+         <event type="java" path="org.ofbiz.order.shoppinglist.ShoppingListEvents" invoke="ProductImportAction"/>
+       
+        <response name="success" type="view" value="ProductImportSheet"/>
+        <response name="error" type="view" value="ProductImportSheet"/>
+    </request-map>
+     <request-map uri="ProductupdateAction">
+        <security https="true" auth="true"/>
+         <event type="java" path="org.ofbiz.order.shoppinglist.ShoppingListEvents" invoke="dailyUpload"/>
+       
+        <response name="success" type="view" value="ProductImportSheet"/>
+        <response name="error" type="view" value="ProductImportSheet"/>
+    </request-map>
+    
+     <request-map uri="ProductUploadAction">
+        <security https="true" auth="true"/>
+         <event type="java" path="org.ofbiz.dataimport.ImportEvents" invoke="importProduct"/>
+       
+        <response name="success" type="view" value="ProductImportSheet"/>
+        <response name="error" type="view" value="ProductImportSheet"/>
+    </request-map>
+     <request-map uri="ProductVariantUploadAction">
+        <security https="true" auth="true"/>
+         <event type="java" path="org.ofbiz.dataimport.ImportEvents" invoke="importVariantProduct"/>
+       
+        <response name="success" type="view" value="ProductImportSheet"/>
+        <response name="error" type="view" value="ProductImportSheet"/>
+    </request-map>
+    
+    <request-map uri="delete">
+        <security https="true" auth="true"/>
+        <event type="jsonjava" path="org.ofbiz.dataimport.UploadEvents" invoke="delete"/>
+		<response name="success" type="none" value=""/>
+        <response name="error" type="none" value=""/>
+    </request-map>
+	 <request-map uri="readuploadedCatalog">
+        <security https="true" auth="true"/>
+        <event type="jsonservice" invoke="readuploadedCatalog"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+	 <request-map uri="readuploadedCategory">
+        <security https="true" auth="true"/>
+        <event type="jsonservice" invoke="readuploadedCategory"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+	<request-map uri="readuploadedFeature">
+        <security https="true" auth="true"/>
+        <event type="jsonservice" invoke="readuploadedFeature"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+	<request-map uri="readuploadedProduct">
+        <security https="true" auth="true"/>
+        <event type="jsonservice" invoke="readuploadedProduct"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+	 <request-map uri="updateProducts">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+    <request-map uri="logout">
+        <security https="true" auth="true"/>
+        <event type="java" path="org.ofbiz.webapp.control.LoginWorker" invoke="logout"/>
+        <response name="success" type="request" value="checkLogin"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+    
+    <!-- ====================== -->
+    <!-- Basic Request Mappings -->
+    <!-- ====================== -->
+
+   <request-map uri="view">
+        <security https="false" auth="false"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="error"/>
+    </request-map>
+
+    <request-map uri="authview">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="error"/>
+    </request-map>
+    <request-map uri="setSessionLocale">
+        <security https="true" auth="false"/>
+        <event type="java" path="org.ofbiz.common.CommonEvents" invoke="setSessionLocale"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+
+    <request-map uri="main">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="main"/>
+    </request-map>
+    
+    
+    <request-map uri="imageUploadMain">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="imageUploadMain"/>
+    </request-map>
+    
+    <request-map uri="imageUpload">
+        <security https="true" auth="true"/>
+        <event type="java" path="org.ofbiz.dataimport.UploadEvents" invoke="imageFileUpload"/>
+        <response name="success" type="request-redirect" value="imageUploadMain"/>
+    </request-map>
+    
+    <request-map uri="imageRemove">
+        <security https="true" auth="true"/>
+        <event type="java" path="org.ofbiz.dataimport.UploadEvents" invoke="imageRemove"/>
+        <response name="success" type="none" value=""/>
+    </request-map>
+    
+    <!-- ================== -->
+    <!-- Main Request Maps  -->
+    <!-- ================== -->
+    <request-map uri="uploadCustomers">
+        <security https="false" auth="true"/>
+         <response name="success" type="view" value="uploadCustomers"/>
+         <response name="error" type="view" value="uploadCustomers"/>
+    </request-map>
+    <request-map uri="uploadOrders">
+        <security https="false" auth="true"/>
+         <response name="success" type="view" value="uploadOrders"/>
+         <response name="error" type="view" value="uploadOrders"/>
+    </request-map>
+     <request-map uri="uploadExcelProducts">
+        <security https="true" auth="true"/>
+    <event type="java" path="org.ofbiz.dataimport.UploadEvents" invoke="getProductSheet"/>
+         <response name="success" type="request-redirect-noparam" value="main"/>
+         <response name="error" type="request-redirect-noparam" value="main"/>
+    </request-map>
+      <request-map uri="uploadAisleProducts">
+        <security https="false" auth="true"/>
+       <event type="java" path="org.ofbiz.dataimport.UploadEvents" invoke="getProductSheet"/>
+         <response name="success" type="view" value="uploadAisleProducts"/>
+         <response name="error" type="view" value="uploadAisleProducts"/>
+    </request-map>
+    
+    <request-map uri="uploadCatalog">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+    
+         
+	<request-map uri="uploadCategory">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+	
+	<request-map uri="uploadFeature">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+	
+	<request-map uri="uploadProduct">
+        <security https="true" auth="true"/>
+         <event type="java" path="org.ofbiz.dataimport.UploadEvents" invoke="getProductSheet"/>
+        <response name="success" type="request-redirect-noparam" value="main"/>
+        <response name="error" type="request-redirect-noparam" value="main"/>
+    </request-map>
+	
+	<request-map uri="uploadVariantProductImage">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+	
+	<request-map uri="uploadSkuId">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+	<request-map uri="importCustomers">
+        <security https="true" auth="true"/>
+		<event type="service" path="" invoke="importOpentapsCusomter"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+	<request-map uri="importCatalog">
+        <security https="true" auth="true"/>
+		<event type="service" path="" invoke="importCatalogs"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+	
+	<request-map uri="importCategory">
+        <security https="true" auth="true"/>
+		<event type="service" path="" invoke="importCategory"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+	
+	<request-map uri="importFeature">
+        <security https="true" auth="true"/>
+		<event type="service" path="" invoke="importFeature"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+	
+	<request-map uri="importProduct">
+        <security https="true" auth="true"/>
+		<event type="service" path="" invoke="importProducts"/>
+        <response name="success" type="request-redirect-noparam" value="main"/>
+        <response name="error" type="request-redirect-noparam" value="main"/>
+    </request-map>
+    
+	<request-map uri="dailyUpdate">
+        <security https="true" auth="true"/>
+        <event type="groovy"  path="component://dataimport/webapp/dataimport/WEB-INF/actions/myhome/myHome.groovy"/> 
+        <response name="success" type="request-redirect-noparam" value="main"/>
+        <response name="error" type="request-redirect-noparam" value="main"/>
+    </request-map>
+    
+    
+    
+	
+	<request-map uri="importVariantProductImage">
+        <security https="true" auth="true"/>
+		<event type="service" path="" invoke="importVariantProductImage"/>
+        <response name="success" type="request-redirect-noparam" value="main"/>
+        <response name="error" type="request-redirect-noparam" value="main"/>
+    </request-map>
+	
+	<request-map uri="importProductSKU">
+        <security https="true" auth="true"/>
+		<event type="service" path="" invoke="importProductSKU"/>
+        <response name="success" type="view" value="main"/>
+        <response name="error" type="view" value="main"/>
+    </request-map>
+	<request-map uri="dataimport">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="dataimport"/>
+    </request-map>
+	<request-map uri="variantProduct">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="variantProduct"/>
+    </request-map>
+	
+	<request-map uri="ExportVariantProduct">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="ExportVariantProduct"/>
+    </request-map>
+	
+	<request-map uri="report">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="report"/>
+    </request-map>
+     
+	<request-map uri="ExportCatalogReport">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="ExportCatalogReport"/>
+    </request-map>
+	<request-map uri="ExportCategoryReport">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="ExportCategoryReport"/>
+    </request-map>
+	<request-map uri="ExportFeatureReport">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="ExportFeatureReport"/>
+    </request-map>
+	<request-map uri="ExportProductReport">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="ExportProductReport"/>
+    </request-map>
+	<request-map uri="ExportVariantProductReport">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="ExportVariantProductReport"/>
+    </request-map>    
+	<request-map uri="LookupProduct"><security auth="true" https="true"/><response name="success" type="view" value="LookupProduct"/></request-map>
+    <request-map uri="LookupVariantProduct"><security auth="true" https="true"/><response name="success" type="view" value="LookupVariantProduct"/></request-map>
+    <request-map uri="LookupVirtualProduct"><security auth="true" https="true"/><response name="success" type="view" value="LookupVirtualProduct"/></request-map>
+    
+    <request-map uri="imageUplaod">
+       <security https="true" auth="true"/>
+ 	  <event type="java" path="org.ofbiz.order.shoppingcart.ShoppingCartEvents" invoke="imageFileUpload"/>
+      <response name="success" type="request-redirect-noparam" value="main"/>
+    </request-map>    
+ 
+    <!-- ============= -->
+    <!-- View Mappings -->
+    <!-- ============= -->
+
+    <view-map name="error" page="/error/error.jsp"/>
+    <view-map name="login" type="screen" page="component://dataimport/widget/dataimport/CommonScreens.xml#login"/>
+
+    <!-- main screens for each section -->
+    <view-map name="main" type="screen" page="component://dataimport/widget/dataimport/MyHomeScreens.xml#myHome"/>
+    <view-map name="ProductImportSheet" type="screen" page="component://dataimport/widget/dataimport/MyHomeScreens.xml#ProductImportSheet"/>   
+    <view-map name="imageUploadMain" type="screen" page="component://dataimport/widget/dataimport/MyHomeScreens.xml#imageUploadMain"/>
+   
+   
+    <view-map name="uploadCustomers" type="screen" page="component://dataimport/widget/dataimport/MyHomeScreens.xml#myHome"/>
+    <view-map name="uploadOrders" type="screen" page="component://dataimport/widget/dataimport/MyHomeScreens.xml#myHome"/>
+      <view-map name="uploadExcelProducts" type="screen" page="component://dataimport/widget/dataimport/MyHomeScreens.xml#myHome"/>
+       <view-map name="uploadAisleProducts" type="screen" page="component://dataimport/widget/dataimport/MyHomeScreens.xml#myHome"/>
+    
+	<view-map name="report" type="screen" page="component://dataimport/widget/dataimport/MyHomeScreens.xml#report"/>
+	<view-map name="variantProduct" type="screen" page="component://dataimport/widget/dataimport/MyHomeScreens.xml#variantProduct"/>
+	<view-map name="dataimport" type="screen" page="component://dataimport/widget/dataimport/MyHomeScreens.xml#dataimport"/>
+	<view-map name="ExportVariantProduct" type="screentext" page="component://dataimport/widget/dataimport/MyHomeScreens.xml#ExportVariantProduct" content-type="text/csv" encoding="none"/>
+    
+	<view-map name="ExportCatalogReport" type="screentext" page="component://dataimport/widget/dataimport/MyHomeScreens.xml#ExportCatalogReport" content-type="text/csv" encoding="none"/>
+	<view-map name="ExportCategoryReport" type="screentext" page="component://dataimport/widget/dataimport/MyHomeScreens.xml#ExportCategoryReport" content-type="text/csv" encoding="none"/>
+	<view-map name="ExportFeatureReport" type="screentext" page="component://dataimport/widget/dataimport/MyHomeScreens.xml#ExportFeatureReport" content-type="text/csv" encoding="none"/>
+	<view-map name="ExportProductReport" type="screentext" page="component://dataimport/widget/dataimport/MyHomeScreens.xml#ExportProductReport" content-type="text/csv" encoding="none"/>
+	<view-map name="ExportVariantProductReport" type="screentext" page="component://dataimport/widget/dataimport/MyHomeScreens.xml#ExportVariantProductReport" content-type="text/csv" encoding="none"/>
+	
+	<view-map name="LookupProduct" type="screen" page="component://emartcatalog/widget/catalog/LookupScreens.xml#LookupProduct"/>
+    <view-map name="LookupVariantProduct" type="screen" page="component://emartcatalog/widget/catalog/LookupScreens.xml#LookupVariantProduct"/>
+    <view-map name="LookupVirtualProduct" type="screen" page="component://emartcatalog/widget/catalog/LookupScreens.xml#LookupVirtualProduct"/>
+</site-conf>

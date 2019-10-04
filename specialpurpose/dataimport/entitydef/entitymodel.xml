@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2006 - 2007 Open Source Strategies, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the Honest Public License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Honest Public License for more details.
+ *
+ * You should have received a copy of the Honest Public License
+ * along with this program; if not, write to Funambol,
+ * 643 Bair Island Road, Suite 305 - Redwood City, CA 94063, USA
+-->
+
+<entitymodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://www.ofbiz.org/dtds/entitymodel.xsd">
+  <!-- ========================================================= -->
+  <!-- ======================== Defaults ======================= -->
+  <!-- ========================================================= -->
+    <title>Data Import Entities</title>
+    <description>Defines intermediate entities for importing data</description>
+    <copyright>Copyright (c) 2006 - 2007 Open Source Strategies, Inc.</copyright>
+    <author>Leon Torres (leon@opensourcestrategies.com)</author>
+    <version>1.0</version>
+
+    <!-- ================================= -->
+    <!-- org.ofbiz.dataimport.products -->  
+    <!-- ================================= -->
+	
+    <entity entity-name="DataImportCustomer"
+        package-name="org.ofbiz.dataimport.customers"
+        title="Intermediate import entity for customer data.">
+        <field name="customerId" type="id-ne"/>
+        <field name="companyName" type="name"/>
+        <field name="firstName" type="name"/>
+        <field name="lastName" type="name"/>
+        <field name="attnName" type="name"/>
+        <field name="address1" type="long-varchar"/>
+        <field name="address2" type="long-varchar"/>
+        <field name="city" type="name"></field>
+        <field name="stateProvinceGeoId" type="id">
+            <description>Must match OFBiz Geo.geoId</description>
+        </field>
+        <field name="postalCode" type="short-varchar"/>
+        <field name="postalCodeExt" type="short-varchar"/>
+        <field name="countryGeoId" type="id">
+            <description>Must match OFBiz Geo.geoId</description>
+        </field>
+        
+        <field name="primaryPhoneCountryCode" type="very-short"/>
+        <field name="primaryPhoneAreaCode" type="very-short"/>
+        <field name="primaryPhoneNumber" type="short-varchar"/>
+        <field name="primaryPhoneExtension" type="long-varchar"/>
+        <field name="secondaryPhoneCountryCode" type="very-short"/>
+        <field name="secondaryPhoneAreaCode" type="very-short"/>
+        <field name="secondaryPhoneNumber" type="short-varchar"/>
+        <field name="secondaryPhoneExtension" type="long-varchar"/>
+        <field name="faxCountryCode" type="very-short"/>
+        <field name="faxAreaCode" type="very-short"/>
+        <field name="faxNumber" type="short-varchar"/>
+        <field name="didCountryCode" type="very-short"/>
+        <field name="didAreaCode" type="very-short"/>
+        <field name="didNumber" type="short-varchar"/>
+        <field name="didExtension" type="long-varchar"/>
+        <field name="emailAddress" type="long-varchar"/>
+        <field name="webAddress" type="long-varchar"/>
+        <field name="discount" type="fixed-point"/>
+        <field name="partyClassificationTypeId" type="id"/>
+        <field name="creditCardNumber" type="short-varchar">
+            <description>All numeric no spaces</description>
+        </field>
+        <field name="creditCardExpDate" type="short-varchar">
+            <description>MMYY format</description>
+        </field>
+        <field name="outstandingBalance" type="currency-amount">
+            <description>Current balance on customer account</description>
+        </field>
+        <field name="creditLimit" type="currency-amount">
+            <description>Maximum amount customer is allowed to charge on credit</description>
+        </field>
+        <field name="currencyUomId" type="very-short"/>
+        <field name="disableShipping" type="indicator"><description>If set to Y, customer will be put into the "do not ship" classification.</description></field>
+        <field name="netPaymentDays" type="numeric"><description>Net payment days, ie 30 60 90</description></field>
+        <field name="shipToCompanyName" type="name"/>
+        <field name="shipToFirstName" type="name"/>
+        <field name="shipToLastName" type="name"/>
+        <field name="shipToAttnName" type="name"/>
+        <field name="shipToAddress1" type="long-varchar"/>
+        <field name="shipToAddress2" type="long-varchar"/>
+        <field name="shipToCity" type="name"></field>
+        <field name="shipToStateProvinceGeoId" type="id">
+            <description>Must match OFBiz Geo.geoId</description>
+        </field>
+        <field name="shipToPostalCode" type="short-varchar"/>
+        <field name="shipToPostalCodeExt" type="short-varchar"/>
+        <field name="shipToStateProvGeoName" type="id"/>
+        <field name="shipToCountryGeoId" type="id">
+            <description>Must match OFBiz Geo.geoId</description>            
+        </field>
+        <field name="note" type="very-long"/>
+        <field name="partyRoleTypeId" type="id-long"/>
+        
+        <field name="importStatusId" type="id-ne"><description>Status of record import.  Null is the same as DATAIMP_NOT_PROC.</description></field>
+        <field name="importError" type="very-long"><description>Error report for failed imports.</description></field>
+        <field name="processedTimestamp" type="date-time">
+            <description>Special field for system to record when entry was successfully imported.  
+                Do not use for any other purpose.</description>
+        </field>
+        <field name="primaryPartyId" type="id">
+            <description>Special field for system to record the primary party created against this customer record. 
+                Do not use for any other purpose.</description>
+        </field>
+        <field name="companyPartyId" type="id">
+            <description>Special field for system to record the company party created against this customer record. 
+                Do not use for any other purpose.</description>
+        </field>
+        <field name="personPartyId" type="id">
+            <description>Special field for system to record the person party created against this customer record. 
+                Do not use for any other purpose.</description>
+        </field>
+         <field name="message" type="description"></field>
+        <prim-key field="customerId"/>
+    </entity>
+
+    <entity entity-name="DataImportCustomerPassword"
+        package-name="org.ofbiz.dataimport.customers"
+        title="Intermediate import entity for UserLogin password data.">
+        <field name="userLoginId" type="id-vlong-ne"/>
+        <field name="textPassword" type="short-varchar"/>
+         <field name="message" type="description"></field>
+        <prim-key field="userLoginId"/>
+    </entity>
+    
+      <!--  <entity entity-name="DataImportOrderHeader"
+            package-name="org.ofbiz.dataimport.orders"
+            title="Intermediate import entity for order header data.">
+        <field name="orderId" type="id-ne"></field>
+        <field name="orderTypeId" type="id"></field>
+        <field name="customerPartyId" type="id"></field>
+        <field name="supplierPartyId" type="id"></field>
+        <field name="orderDate" type="date-time"></field>
+        <field name="currencyUomId" type="id"></field>
+        <field name="shippingTotal" type="currency-amount"></field>
+        <field name="orderTax" type="currency-amount">
+            <description>Whole order tax. The total order tax is the sum of this and the line item taxes.</description>
+        </field>
+        <field name="taxAuthPartyId" type="id">
+            <description>The partyId of the tax authority in TaxAuthority. Recommended for invoicing and financials.
+            </description>
+        </field>
+        <field name="adjustmentsTotal" type="currency-amount"></field>
+        <field name="grandTotal" type="currency-amount"></field>
+        <field name="comments" type="comment"></field>
+        <field name="productStoreId" type="id"/>
+        <field name="salesChannelEnumId" type="id">
+            <description>The salesChannelEnumId maps to a specific the order type: store 1,pos, web etc</description>
+        </field>
+        <field name="productStoreShipMethId" type="id">
+            <description>The ProductStoreShipmentMeth corresponding to the shipment method the customer selected.
+            </description>
+        </field>
+        <field name="orderClosed" type="indicator">
+            <description>If set to N or n, the order will be created in the Approved state.</description>
+        </field>
+        <field name="shippingFirstName" type="name"/>
+        <field name="shippingLastName" type="name"/>
+        <field name="shippingCompanyName" type="name"/>
+        <field name="shippingStreet" type="long-varchar"/>
+        <field name="shippingCity" type="name"/>
+        <field name="shippingRegion" type="id"/>
+        <field name="shippingPostcode" type="short-varchar"/>
+        <field name="shippingCountry" type="id"/>
+        <field name="shippingPhone" type="short-varchar"/>
+        <field name="shippingFax" type="short-varchar"/>
+        
+        <field name="billingFirstName" type="name"/>
+        <field name="billingLastName" type="name"/>
+        <field name="billingCompanyName" type="name"/>
+        <field name="billingStreet" type="long-varchar"/>
+        <field name="billingCity" type="name"/>
+        <field name="billingRegion" type="id"/>
+        <field name="billingPostcode" type="short-varchar"/>
+        <field name="billingCountry" type="id"/>
+        <field name="billingPhone" type="short-varchar"/>
+        <field name="billingFax" type="short-varchar"/>
+                                       
+        <field name="importStatusId" type="id-ne">
+            <description>Status of record import. Null is the same as DATAIMP_NOT_PROC.</description>
+        </field>
+        <field name="importError" type="very-long">
+            <description>Error report for failed imports.</description>
+        </field>
+        <field name="processedTimestamp" type="date-time">
+            <description>Special field for system to record when entry was successfully imported.
+                Do not use for any other purpose.
+            </description>
+        </field>
+         <field name="message" type="description"></field>
+        <prim-key field="orderId"/>
+        <relation type="one-nofk" fk-name="IMPT_ORDERHDR_TYPE" rel-entity-name="OrderType">
+            <key-map field-name="orderTypeId"/>
+        </relation>
+        <relation type="one-nofk" fk-name="IMPT_ORDERHDR_PTY" rel-entity-name="Party" title="Customer">
+            <key-map field-name="customerPartyId" rel-field-name="partyId"/>
+        </relation>
+        <relation type="one-nofk" fk-name="IMPT_ORDERHDR_SUPL" rel-entity-name="Party" title="Supplier">
+            <key-map field-name="supplierPartyId" rel-field-name="partyId"/>
+        </relation>
+        <relation type="one-nofk" fk-name="IMPT_ORDERHDR_CUOM" rel-entity-name="Uom">
+            <key-map field-name="currencyUomId" rel-field-name="uomId"/>
+        </relation>
+        <relation type="one-nofk" fk-name="IMPT_ORDERHDR_PSSM" rel-entity-name="ProductStoreShipmentMeth">
+            <key-map field-name="productStoreShipMethId"/>
+        </relation>
+    </entity>
+
+    <entity entity-name="DataImportOrderItem"
+            package-name="org.ofbiz.dataimport.orders"
+            title="Intermediate import entity for order item data.">
+        <field name="orderId"               type="id-ne" />
+        <field name="productId"             type="id" />
+        <field name="goodIdentificationTypeId"  type="id" />
+        <field name="productName"           type="description" />
+        <field name="productSku"            type="id"/>
+        <field name="quantity"              type="fixed-point" />
+        <field name="quantityShipped"       type="fixed-point">
+            <description>Quantity of this order item already shipped, meaningful only for not closed orders.
+            </description>
+        </field>
+        <field name="price"                 type="currency-amount" />
+        <field name="itemTax"               type="currency-amount">
+            <description>Line item tax. Recommended for invoicing and financials.</description>
+        </field>
+        <field name="taxAuthPartyId"        type="id">
+            <description>The partyId of the tax authority in TaxAuthority. Recommended for invoicing and financials.
+            </description>
+        </field>
+        <field name="itemAdjustmentsTotal"  type="currency-amount" />
+        <field name="customerPo"            type="id" />
+        <field name="comments"              type="comment" />
+        <field name="importStatusId"        type="id-ne">
+            <description>Status of record import. Null is the same as DATAIMP_NOT_PROC.</description>
+        </field>
+        <field name="importError"           type="very-long">
+            <description>Error report for failed imports.</description>
+        </field>
+        <field name="processedTimestamp"    type="date-time">
+            <description>Special field for system to record when entry was successfully imported.
+                Do not use for any other purpose.
+            </description>
+        </field>
+        <field name="orderItemSeqId"        type="id">
+            <description>Special field for system to record the primary orderItemSeqId created against this order item
+                record.
+                Do not use for any other purpose.
+            </description>
+        </field>
+         <field name="message" type="description"></field>
+        <prim-key field="orderId"/>
+        <prim-key field="productId"/>
+        <prim-key field="quantity"/>
+        <prim-key field="price"/>
+        <prim-key field="itemAdjustmentsTotal"/>  This field is not on the service. what does it do ?
+        <relation type="one-nofk" fk-name="IMPT_ORDERITEM_HDR" rel-entity-name="DataImportOrderHeader">
+            <key-map field-name="orderId"/>
+        </relation>
+        removing this as we may import a product in the same batch
+        <relation type="one-nofk" fk-name="IMPT_ORDERITEM_PRD" rel-entity-name="Product">
+        <key-map field-name="productId"/>
+        </relation>
+    </entity>
+
+    <entity entity-name="DataImportOrderPayment"
+            package-name="org.ofbiz.dataimport.orders"
+            title="Intermediate import entity for order payment data.">
+        <field name="orderPaymentPreferenceId" type="id-ne"></field>
+        <field name="orderId" type="id"></field>
+        <field name="paymentMethodTypeId" type="id"></field>
+        <field name="maxAmount" type="currency-amount"></field>
+        <field name="statusId" type="id"></field>
+
+        <field name="paymentTypeId" type="id-ne"></field>
+        <field name="effectiveDate" type="date-time"></field>
+        <field name="paymentRefNum" type="short-varchar"></field>
+        <field name="amount" type="currency-amount"></field>
+        <field name="currencyUomId" type="id"></field>
+        <field name="comments" type="comment"></field>
+
+        <field name="importStatusId" type="id-ne">
+            <description>Status of record import. Null is the same as DATAIMP_NOT_PROC.</description>
+        </field>
+        <field name="importError" type="very-long">
+            <description>Error report for failed imports.</description>
+        </field>
+        <field name="processedTimestamp" type="date-time">
+            <description>Special field for system to record when entry was successfully imported.
+                Do not use for any other purpose.
+            </description>
+        </field>
+     <field name="message" type="description"></field>
+        <prim-key field="orderId"/>
+        <prim-key field="orderPaymentPreferenceId"/>
+
+        <relation type="one-nofk" fk-name="DIOP_PMETH_TP" rel-entity-name="PaymentMethodType">
+            <key-map field-name="paymentMethodTypeId"/>
+        </relation>
+    </entity>
+	 -->
+	<entity entity-name="DataImportCatalog"
+            package-name="org.ofbiz.dataimport.products"
+            title="Intermediate import entity for Catalog data.">
+      <field name="exportCatalogSeqId" type="id-ne"></field>
+	  <field name="prodCatalogId" type="id-ne"></field>
+      <field name="catalogName" type="name"></field>
+      <field name="useQuickAdd" type="indicator"></field>
+      <field name="productStoreId" type="id-ne"></field>
+      <field name="fromDate" type="date-time"></field>
+	  <field name="processedTimestamp" type="date-time"></field>
+	  <field name="message" type="description"></field>
+	  <field name="allowProductCompare" type="indicator"></field>
+      <prim-key field="exportCatalogSeqId"/>
+    </entity>
+	
+	<entity entity-name="DataImportCategory"
+            package-name="org.ofbiz.dataimport.products"
+            title="Intermediate import entity for Category data.">
+	  <field name="exportCategorySeqId" type="id-ne"></field>
+      <field name="productCategoryId" type="id-ne"></field>
+      <field name="productCategoryTypeId" type="id"></field>
+      <field name="primaryParentCategoryId" type="id"></field>
+	  <field name="categoryName" type="name"></field>
+	  <field name="description" type="description"></field>
+	  <field name="longDescription" type="very-long"></field>
+	  <field name="categoryImageUrl" type="url"></field>
+      <field name="linkOneImageUrl" type="url"></field>
+	  <field name="prodCatalogId" type="id-ne"></field>
+      <field name="prodCatalogCategoryTypeId" type="id"></field>
+	  <field name="rollUpCategoryId" type="id-ne"></field>
+	  <field name="productView" type="name"></field>
+	  <field name="optionEnabledForUser" type="indicator"></field>
+      <field name="fromDate" type="date-time"></field>
+	  <field name="processedTimestamp" type="date-time"></field>
+	  <field name="message" type="description"></field>
+      <prim-key field="exportCategorySeqId"/>
+    </entity>
+	
+	<entity entity-name="DataImportProductFeature"
+            package-name="org.ofbiz.dataimport.products"
+            title="Intermediate import entity for Product Feature data.">
+	  <field name="exportFeatureCategorySeqId" type="id-ne"></field>
+	  <field name="productFeatureCategoryId" type="id-ne"></field>
+	  <field name="productFeatureCategoryDescription" type="description"></field>
+      <field name="productFeatureTypeId" type="id-ne"></field>
+	  <field name="productFeatureDescription" type="description"></field>
+	  <field name="processedTimestamp" type="date-time"></field>
+	  <field name="message" type="description"></field>
+      <prim-key field="exportFeatureCategorySeqId"/>
+    </entity>
+    
+    <entity entity-name="DataImportProduct"
+        package-name="org.ofbiz.dataimport.products"
+        title="Intermediate import entity for product data.">
+		<field name="exportProductSeqId" type="id-ne"></field>
+        <field name="productId" type="id-ne"/>
+		<field name="isVirtual" type="long-varchar"></field>
+        <field name="isVariant" type="indicator"></field>
+        <field name="productTypeId" type="id-ne"/>
+        <field name="internalName" type="description"></field>
+        <field name="brandName" type="long-varchar"></field>
+        <field name="productName" type="long-varchar"></field>
+        <field name="description" type="long-varchar"></field>
+		<field name="longDescription" type="very-long"></field>
+		<field name="smallImageUrl" type="url"></field>
+        <field name="largeImageUrl" type="url"></field>
+        <field name="detailImageUrl" type="url"></field>
+         <field name="defaultPrice" type="currency-precise"></field>
+        <field name="listPrice" type="currency-precise"></field>
+        <field name="categoryOne" type="long-varchar"></field>
+        <field name="priceToTake" type="id-ne"></field>
+        <field name="productFeatureCategoryId" type="long-varchar"></field>
+        <field name="isExternal" type="indicator"></field>
+        <field name="barcode" type="long-varchar"/>
+        <field name="virtualStock" type="long-varchar"/>
+        <field name="qoh" type="long-varchar"/>
+        <field name="vatPercent" type="currency-precise"/>
+  	 	<field name="sequenceNum" type="long-varchar"/>
+        <field name="unitPrice" type="currency-precise"/>
+        
+        <field name="message" type="very-long"/>
+        <prim-key field="exportProductSeqId"/>
+    </entity>
+ 
+    <entity entity-name="DataImportOriginalProduct"
+        package-name="org.ofbiz.dataimport.products"
+        title="Intermediate import entity for product data.">
+        <field name="uploadProductSeqId" type="id-ne"></field>
+		 	<field name="productTypeId" type="id-ne"/>
+         	<field name="artGroupNo" type="id-ne"/>
+            <field name="description" type="very-long"></field>
+        	<field name="artGroupSubNo" type="id-ne"/>
+        	<field name="longDescription" type="very-long"></field>
+        	<field name="productId" type="id-ne"/>
+        	 <field name="productName" type="name"></field>
+        	 <field name="brandName" type="name"></field>
+         	 <field name="categoryOne" type="name"></field>
+         	 
+          	 <field name="sellUnit" type="currency-precise"/>
+              <field name="packType" type="id-ne"/>
+       		<field name="defaultPrice" type="currency-precise"></field>
+            <field name="vatPerc" type="currency-precise"/>
+        	<field name="listPrice" type="currency-precise"></field>
+         	 <field name="stock" type="floating-point"/>
+ 			 <field name="articleStatus" type="id-ne"/>	
+  			 <field name="extraInfo" type="id-ne"/>
+       		 <field name="blockInd" type="id-ne"/>
+        	<field name="barcode" type="id-ne"/>	
+        	<field name="message" type="description"></field>
+		 <prim-key field="uploadProductSeqId"/>
+    </entity>
+    
+     <entity entity-name="DataImportFromExcel"
+        package-name="org.ofbiz.dataimport.products"
+        title="Intermediate import entity for product data.">
+        <field name="uploadDataImportSeqId" type="id-ne"></field>
+		<field name="articleNumber" type="id-ne"/>
+		<field name="sellPrice" type="currency-precise"></field>
+		<field name="vatPerc" type="currency-precise"/>
+		<field name="mrpPrice" type="currency-precise"></field>
+		<field name="stock" type="floating-point"/>
+		<field name="qoh" type="floating-point"/>
+		<field name="message" type="description"></field>
+		<field name="status" type="description"></field>
+		<prim-key field="uploadDataImportSeqId"/>
+    </entity>
+    
+	<entity entity-name="DataImportVariantProduct"
+        package-name="org.ofbiz.dataimport.products"
+        title="Intermediate import entity for variant product data.">
+		<field name="exportVariantProdSeqId" type="id-ne"></field>
+        <field name="productId" type="id-ne"/>
+        <field name="productTypeId" type="id-ne"/>
+        <field name="artGroupNo" type="id-ne"/>
+        <field name="longDescription" type="very-long"></field>
+        <field name="artGroupSubNo" type="id-ne"/>
+        <field name="description" type="very-long"></field>
+        <field name="productName" type="name"></field>
+        <field name="internalName" type="description"></field>
+        <field name="sellUnit" type="currency-precise"/>
+        <field name="packType" type="id-ne"/>
+        <field name="defaultPrice" type="currency-precise"></field>
+        <field name="vatPerc" type="currency-precise"/>
+        <field name="listPrice" type="currency-precise"></field>
+       <field name="stock" type="floating-point"/>
+        <field name="articleStatus" type="id-ne"/>
+        <field name="extraInfo" type="id-ne"/>
+        <field name="blockInd" type="id-ne"/>
+        <field name="barcode" type="very-long"/>
+        <field name="smallImageUrl" type="url"></field>
+        <field name="largeImageUrl" type="url"></field>
+        <field name="detailImageUrl" type="url"></field>
+      	<field name="processedTimestamp" type="date-time"></field>
+		<field name="message" type="description"></field>
+        <prim-key field="exportVariantProdSeqId"/>
+    </entity>
+    <entity entity-name="DataImportProductInventory"
+        package-name="org.ofbiz.dataimport.products"
+        title="Intermediate import entity for product inventory data.">
+		<field name="exportInventorySeqId" type="id-ne"></field>
+        <field name="productId" type="id-ne"/>
+		<field name="skuId" type="id-ne"/>
+        <field name="alternateType" type="name"></field>
+		<field name="alternateValue" type="name"></field>
+        <field name="productName" type="name"></field>
+        <field name="facilityId" type="name"></field>
+		<field name="locationSeqId" type="description"></field>
+        <field name="facilityName" type="name"></field>
+        <field name="supplierProductId" type="id"></field>
+        <field name="supplierId" type="id"></field>
+		<field name="supplierName" type="name"></field>
+		<field name="serializedInventory" type="indicator"></field>
+        <field name="serialNumber" type="name"></field>
+		<field name="purchaseOrderNumber" type="name"></field>
+        <field name="quantityAccepted" type="floating-point"></field>
+        <field name="quantityRejected" type="floating-point"></field>
+        <field name="expiryDate" type="date-time"></field>
+		<field name="perUnitPrice" type="currency-precise"></field>
+		<field name="currency" type="name"></field>
+		<field name="stockAllocation" type="indicator"></field>
+        <field name="processedTimestamp" type="date-time"></field>
+		<field name="message" type="description"></field>
+        <prim-key field="exportInventorySeqId"/>
+    </entity>
+    
+     <entity entity-name="DataImportProductsupplier"
+        package-name="org.ofbiz.dataimport.products"
+        title="Intermediate import entity for product supplier data.">
+		<field name="exportSupplierSeqId" type="id-ne"></field>
+        <field name="productId" type="id-ne"></field>
+      	<field name="partyId" type="id-ne"></field>
+      	<field name="availableFromDate" type="date-time"></field>
+      	<field name="availableThruDate" type="date-time"></field>
+      	<field name="supplierPrefOrderId" type="id"></field>
+      	<field name="supplierRatingTypeId" type="id"></field>
+      	<field name="standardLeadTimeDays" type="fixed-point"></field>
+      	<field name="minimumOrderQuantity" type="fixed-point"></field>
+      	<field name="orderQtyIncrements" type="fixed-point"></field>
+      	<field name="unitsIncluded" type="fixed-point"></field>
+      	<field name="quantityUomId" type="id"></field>
+      	<field name="agreementId" type="id"></field>
+      	<field name="agreementItemSeqId" type="id"></field>
+      	<field name="lastPrice" type="currency-precise"></field>
+      	<field name="currencyUomId" type="id"></field>
+      	<field name="supplierProductName" type="name"></field>
+      	<field name="supplierProductId" type="id"></field>
+      	<field name="canDropShip" type="indicator"></field>
+      	<field name="supplierCommissionPerc" type="fixed-point"></field>
+      	<field name="comments" type="comment"></field>
+      	<field name="processedTimestamp" type="date-time"></field>
+		<field name="message" type="description"></field>
+      	<prim-key field="exportSupplierSeqId"/>
+    </entity>
+    
+    <entity entity-name="DataimportOrderHeader"
+        package-name="org.ofbiz.dataimport.products"
+        title="Data Import For order Header">
+        
+        <field name="dataimportOrderHeaderId" type="id-ne"></field>
+		<field name="orderId" type="id"></field>
+        <field name="backDateOrder" type="id"></field>
+      	<field name="deliveryDate" type="id"></field>
+      	<field name="partyId" type="id"></field>
+      	<field name="shipPartyId" type="id"></field>
+      	<field name="isGift" type="indicator"></field>
+      	<field name="giftMessage" type="long-varchar"></field>
+      	<field name="processedTimestamp" type="date-time"></field>
+		<field name="message" type="description"></field>
+		
+      	<prim-key field="dataimportOrderHeaderId"/>
+    </entity>
+    <entity entity-name="DataimportOrderItem"
+        package-name="Data Import For order Item"
+        title="Intermediate import entity for product supplier data.">
+        
+        <field name="dataimportOrderItemId" type="id-ne"></field>
+		<field name="orderId" type="id"></field>
+        <field name="productId" type="id"></field>
+      	<field name="quantity" type="fixed-point"></field>
+      	<field name="changePrice" type="short-varchar"></field>
+      	<field name="processedTimestamp" type="date-time"></field>
+		<field name="message" type="description"></field>
+		
+      	<prim-key field="dataimportOrderItemId"/>
+    </entity>
+    <entity entity-name="DataimportOrderPaymentPreference"
+        package-name="org.ofbiz.dataimport.products"
+        title="Data Import For order Payment Preference">
+        <field name="dataimportOrderPaymentPreferenceId" type="id-ne"></field>
+		<field name="orderId" type="id-ne"></field>
+        <field name="paymentMethod" type="id"></field>
+      	<field name="maxAmount" type="short-varchar"></field>
+      	<field name="processedTimestamp" type="date-time"></field>
+		<field name="message" type="description"></field>
+      	<prim-key field="dataimportOrderPaymentPreferenceId"/>
+    </entity>
+    
+    
+    <extend-entity entity-name="OrderHeader">
+    	<field name="promoCode" type="short-varchar"/>
+    </extend-entity>
+    
+    
+    <extend-entity entity-name="UserLogin">
+    	<field name="firstName" type="short-varchar"/>
+    	<field name="lastName" type="short-varchar"/>
+    	<field name="contactNumber" type="short-varchar"/>
+    </extend-entity>
+</entitymodel>

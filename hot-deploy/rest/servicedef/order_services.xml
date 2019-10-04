@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/services.xsd">
+    <description>RestfulComponent Services</description>
+    <vendor></vendor>
+    <version>1.0</version>
+
+
+
+    <!--  order info -->
+   <service name="getOrder" engine="java" location="com.ilinks.restful.service.OrderInfoServices" invoke="getOrder" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Order Info</description>
+        <attribute name="orderID"           type="String" mode="INOUT"  optional="false"/>
+        <attribute name="creditCard"        type="GenericValue" mode="OUT" optional="false"/>
+        <attribute name="orderDate"         type="String" mode="OUT" optional="false"/>
+        <attribute name="shippingAddress"   type="GenericValue" mode="OUT" optional="false"/>
+        <attribute name="billingAddress"    type="GenericValue" mode="OUT" optional="false"/>
+        <attribute name="orderStatus"       type="String" mode="OUT"  optional="false"/> 
+        <attribute name="completedDate"     type="String" mode="OUT" optional="false"/>
+        <attribute name="total"             type="BigDecimal" mode="OUT" optional="false"/>
+        <attribute name="items"             type="java.util.List" mode="OUT" optional="false"/>
+        <attribute name="tax"               type="BigDecimal" mode="OUT" optional="false"/>
+        <attribute name="adjustments"       type="BigDecimal" mode="OUT" optional="false"/>
+        <attribute name="deliveryEstimate"  type="String" mode="OUT" optional="false"/>
+        <attribute name="shipping"          type="BigDecimal" mode="OUT" optional="false"/>
+        <attribute name="subTotal"          type="BigDecimal" mode="OUT" optional="false"/>
+        <attribute name="firstName"         type="String" mode="OUT"  optional="false"/> 
+        <attribute name="lastName"          type="String" mode="OUT"  optional="false"/> 
+    </service>
+   
+   <service name="calculateOrderTax" engine="java" location="com.ilinks.restful.service.RESTfulServices" invoke="calculateOrderTax" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Calculate Tax</description>
+        <attribute name="cart"  type="org.ofbiz.order.shoppingcart.ShoppingCart" mode="IN"  optional="false"/>
+        <attribute name="tax"   type="BigDecimal" mode="OUT" optional="false"/>
+    </service>
+    
+     <service name="updateOrderItemInventoryInfo" engine="java" location="com.ilinks.restful.service.OrderInfoServices" invoke="updateOrderItemInventoryInfo" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Update Order Item With Inventory Price</description>
+        <attribute name="orderId"           type="String" mode="IN" optional="false" />
+    </service>
+    
+    <service name="createOrderStats" engine="java" location="com.ilinks.restful.service.OrderInfoServices" invoke="createOrderStats" auth="true" transaction-timeout="120" max-retry="0">
+        <description>All Orders Not In The Order Stats Table</description>
+    </service>
+    
+     <service name="createOrderStatsRecord" engine="java" location="com.ilinks.restful.service.OrderInfoServices" invoke="createOrderStatsRecord" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Create Order Stats Record</description>
+        <attribute name="orderId"   type="String" mode="IN" optional="false" />
+    </service>
+    
+     <service name="updateOrderStatsFrequency" engine="java" location="com.ilinks.restful.service.OrderInfoServices" invoke="updateOrderStatsFrequency" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Update Order Stats Frequency</description>
+        <attribute name="shoppingListId"  type="String" mode="IN" optional="false" />
+    </service>
+    
+    <service name="orderShipmentProducts" engine="java" location="com.ilinks.restful.service.OrderInfoServices" invoke="orderShipmentProducts" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Products Included With Shipment</description>
+        <attribute name="orderID"       type="String" mode="IN" optional="false" />
+        <attribute name="shipmentID"    type="String" mode="IN" optional="false" />
+        <attribute name="productList"   type="java.util.List" mode="OUT" optional="false" />
+        <attribute name="trackingCode"  type="String" mode="OUT" optional="false" />
+    </service>
+	
+	 <service name="createOrderInfo" engine="java" location="com.ilinks.restful.service.OrderInfoServices" invoke="createOrderInfo" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Create Order Info</description>
+        <attribute name="orderId"  type="String" mode="IN" optional="false" />
+    </service>
+
+	 <service name="updateOrderInfo" engine="java" location="com.ilinks.restful.service.OrderInfoServices" invoke="updateOrderInfo" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Update Back Order Info and In Processing</description>
+        <attribute name="orderId"  type="String" mode="IN" optional="false" />
+        <attribute name="attrValue"  type="String" mode="IN" optional="true" />
+    </service>
+
+	<service name="getOrderInfo" engine="java" location="com.ilinks.restful.service.OrderInfoServices" invoke="getOrderInfo" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Retrieve Order Info</description>
+        <attribute name="autoShip"  		type="String" mode="IN" optional="true" default-value="N"/>
+        <attribute name="orderStatuses"  	type="java.util.List" mode="IN" optional="true" />
+        <attribute name="backOrder"  		type="String" mode="IN" optional="true" default-value="N"/>
+        <attribute name="inProcessing"  	type="String" mode="IN" optional="true"  default-value="N"/>
+        <attribute name="start"  			type="String" mode="IN" optional="true" default-value="0"/>
+       	<attribute name="size"  			type="String" mode="IN" optional="true" default-value="200"/>
+       	<attribute name="orderInfo"  		type="java.util.List" mode="OUT" optional="true" />
+    </service>
+
+</services>

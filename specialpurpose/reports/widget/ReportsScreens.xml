@@ -1,0 +1,2288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+
+    <screen name="main">
+        <section>
+            <actions>
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/main.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+						<platform-specific><html><html-template location="component://reports/webapp/reports/main.ftl"/></html></platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+ <screen name="dashboard">
+        <section>
+            <actions>
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/defaultDashBoard.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="dashBoardDegarator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+						<platform-specific><html><html-template location="component://reports/webapp/reports/dashBoardView.ftl"/></html></platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+<!-- <screen name="dashBoard">
+        <section>
+            <actions>
+                <set field="headerItem2" value="reports"/>
+				<set field="headerItem" value="Apmain"/>
+                <set field="titleProperty" value="AccountingArPageTitleListReports"/>
+                <script location="component://reports/webapp/reports/WEB-INF/actions/reports/dashboard.groovy"/>
+            </actions>
+            <widgets>
+                 <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <screenlet title="${uiLabelMap.AccountingReports}" navigation-form-name="ListReports">
+                          <platform-specific>
+                            <html>
+                              <html-template location="component://reports/webapp/reports/report/dashboard.ftl"/>
+                            </html>
+                          </platform-specific>
+                            
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+        </screen> -->
+        <screen name="InventoryReportsxls">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Inventory Report"/>
+                <set field="headerItem" value="InventoryReports"/>            
+                <set field="tabButtonItem" value="Reports"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="10000"/>
+                <entity-one entity-name="Facility" value-field="facility"/>
+                <set field="title" value="${uiLabelMap.PageTitleEditFacilityInventoryItems}"/>
+                <set field="viewReport" from-field="parameters.viewReport" type="String" default-value="false"/>
+                <set field="reportView" value="true" type="String" />
+<!-- 				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/getInventoryInfo.groovy"/>
+ -->           
+                  </actions>
+            <widgets>
+                <include-form  name="ListFacilityInventoryItemsCSV" location="component://reports/widget/ReportsForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+
+
+
+	<screen name="reportingVal">
+        <section>
+            <actions>
+                <set field="headerItem" value="${parameters.typeVal}"/>
+				<set field="tabButtonItem" value="Reports"/>            
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/salesReports.groovy"/>
+            </actions>        
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                    
+                                <container style="mainscreenlet">
+                                <container style="screenlet-title-bar">
+                                    <container style="h3">
+                                        <label text="${parameters.typeVal} Channel Reports"/>
+                                    </container>
+								</container>
+                                    <section>
+                                        <widgets>
+                                           <include-form name="reportingVal"  location="component://reports/widget/ReportsForms.xml"/>
+                                        </widgets>
+                                    </section>
+                                
+                                </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+	<screen name="dashBoradReport">
+        <section>
+            <actions>
+                <set field="headerItem" value="dashBoradReport"/>
+<!-- 				<set field="tabButtonItem" value="Reports"/>            
+ 				
+    <script location="component://reports/webapp/reports/WEB-INF/actions/reports/salesReports.groovy"/>-->
+            </actions>        
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                    
+                                <container style="mainscreenlet">
+                                <container style="screenlet-title-bar">
+                                    <container style="h3">
+                                        <label text="DashBorad Report"/>
+                                    </container>
+								</container>
+                                    <section>
+                                        <widgets>
+                                <platform-specific><html><html-template location="component://reports/webapp/reports/report/dashBoradReport.ftl"/></html></platform-specific>
+                                        </widgets>
+                                    </section>
+                                
+                                </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+	<screen name="DSRCashSummary">
+        <section>
+            <actions>
+                <set field="headerItem" value="DSR"/>
+				<set field="tabButtonItem" value="CashSummary"/> 
+				<set field="startDate" value="${groovy: request.getAttribute('fromDateStr');}"/>           
+				<set field="endDate" value="${groovy: request.getAttribute('thruDateStr');}"></set>           
+            </actions>        
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                    <include-menu location="component://reports/widget/ReportsMenus.xml" name="DSRTABBAR"/>
+                                <container style="mainscreenlet">
+                                    <section>
+                                        <widgets>
+                                <platform-specific><html><html-template location="component://reports/webapp/reports/report/DSRCashSummary.ftl"/></html></platform-specific>
+                                        </widgets>
+                                    </section>
+                                
+                                </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+
+
+	<screen name="freshReport">
+        <section>
+            <actions>
+                <set field="headerItem" value="freshReport"/>
+				<set field="tabButtonItem" value="Reports"/>            
+ 				
+    <script location="component://reports/webapp/reports/WEB-INF/actions/reports/freshReport.groovy"/>
+            </actions>        
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                    
+                                <container style="mainscreenlet">
+                                <container style="screenlet-title-bar">
+                                    <container style="h3">
+                                        <label text="DashBorad Report"/>
+                                    </container>
+								</container>
+                                    <section>
+                                        <widgets>
+                                <platform-specific><html><html-template location="component://reports/webapp/reports/report/freshReport.ftl"/></html></platform-specific>
+                                        </widgets>
+                                    </section>
+                                
+                                </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+<screen name="SalesManReport">
+        <section>
+            <actions>
+                <set field="headerItem" value="SalesManReport"/>
+				<set field="tabButtonItem" value="Reports"/>            
+ 				
+    <script location="component://reports/webapp/reports/WEB-INF/actions/reports/salesmanReport.groovy"/>
+            </actions>        
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                    
+                                <container style="mainscreenlet">
+                                <container style="screenlet-title-bar">
+                                    <container style="h3">
+                                        <label text="SalesMan Report"/>
+                                    </container>
+								</container>
+                                    <section>
+                                        <widgets>
+                                <platform-specific><html><html-template location="component://reports/webapp/reports/report/salesmanReport.ftl"/></html></platform-specific>
+                                        </widgets>
+                                    </section>
+                                
+                                </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+<screen name="orderSummaryReport">
+        <section>
+            <actions>
+                <set field="headerItem" value="orderSummaryReport"/>
+				<set field="tabButtonItem" value="Reports"/>            
+ 				
+    <script location="component://reports/webapp/reports/WEB-INF/actions/reports/orderSummaryReport.groovy"/>
+            </actions>        
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                    
+                                <container style="mainscreenlet">
+                                <container style="screenlet-title-bar">
+                                    <container style="h3">
+                                        <label text="SalesMan Report"/>
+                                    </container>
+								</container>
+                                    <section>
+                                        <widgets>
+                                <platform-specific><html><html-template location="component://reports/webapp/reports/report/orderSummaryReport.ftl"/></html></platform-specific>
+                                        </widgets>
+                                    </section>
+                                
+                                </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+
+<screen name="cashonhand">
+        <section>
+            <actions>
+                <set field="headerItem" value="cashonhand"/>
+				<set field="tabButtonItem" value="Reports"/>            
+ 				
+            </actions>        
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                    
+                                <container style="mainscreenlet">
+                                <container style="screenlet-title-bar">
+                                    
+								</container>
+                                    <section>
+                                        <widgets>
+                                <platform-specific><html><html-template location="component://reports/webapp/reports/report/cashonhand.ftl"/></html></platform-specific>
+                                        </widgets>
+                                    </section>
+                                
+                                </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+<screen name="dailyDashboard">
+        <section>
+            <actions>
+                <set field="headerItem" value="cashonhand"/>
+				<set field="tabButtonItem" value="Reports"/>            
+ 				
+            </actions>        
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                    
+                                <container style="mainscreenlet">
+                                <container style="screenlet-title-bar">
+                                    
+								</container>
+                                    <section>
+                                        <widgets>
+                                <platform-specific><html><html-template location="component://reports/webapp/reports/report/cashonhand.ftl"/></html></platform-specific>
+                                        </widgets>
+                                    </section>
+                                
+                                </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+	<screen name="DSR">
+        <section>
+            <actions>
+                <set field="headerItem" value="DSR"/>
+<!-- 				<set field="tabButtonItem" value="Reports"/>            
+ 				
+    <script location="component://reports/webapp/reports/WEB-INF/actions/reports/salesReports.groovy"/>-->
+            </actions>        
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                    <include-menu location="component://reports/widget/ReportsMenus.xml" name="DSRTABBAR"/>
+                                <container style="mainscreenlet">
+                                    <section>
+                                        <widgets>
+                                <platform-specific><html><html-template location="component://reports/webapp/reports/report/DSR.ftl"/></html></platform-specific>
+                                        </widgets>
+                                    </section>
+                                
+                                </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+	<screen name="DSRPrint">
+        <section>
+            <actions>
+            </actions>        
+            <widgets>
+                                <container style="mainscreenlet">
+                                <container style="screenlet-title-bar">
+                                    <container style="h3">
+                                        <label text="DSR Report"/>
+                                    </container>
+								</container>
+                                    <section>
+                                        <widgets>
+                                <platform-specific><html><html-template location="component://reports/webapp/reports/report/DSRPrint.ftl"/></html></platform-specific>
+                                        </widgets>
+                                    </section>
+                                </container>
+            </widgets>
+        </section>
+    </screen>
+
+	<screen name="DSRCashSummaryPrint">
+        <section>
+            <actions>
+             </actions>        
+            <widgets>
+                                <container style="mainscreenlet">
+                                <container style="screenlet-title-bar">
+                                    <container style="h3">
+                                        <label text="DSR Report"/>
+                                    </container>
+								</container>
+                                    <section>
+                                        <widgets>
+                                <platform-specific><html><html-template location="component://reports/webapp/reports/report/DSRCashSummaryPrint.ftl"/></html></platform-specific>
+                                        </widgets>
+                                    </section>
+                                
+                                </container>
+            </widgets>
+        </section>
+    </screen>
+
+
+	<screen name="freshReport">
+        <section>
+            <actions>
+                <set field="headerItem" value="freshReport"/>
+				<set field="tabButtonItem" value="Reports"/><!--            
+ 		  <script location="component://reports/webapp/reports/WEB-INF/actions/reports/freshReport.groovy"/>
+ 		   <script location="component://reports/webapp/reports/WEB-INF/actions/reports/listCategoryProducts.groovy"/>-->
+            </actions>        
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                    
+                                <container style="mainscreenlet">
+                                <container style="screenlet-title-bar">
+                                    <container style="h3">
+                                        <label text="DashBorad Report"/>
+                                    </container>
+								</container>
+                                    <section>
+                                        <widgets>
+                                <platform-specific><html><html-template location="component://reports/webapp/reports/report/freshReport.ftl"/></html></platform-specific>
+                                        </widgets>
+                                    </section>
+                                
+                                </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+
+
+<screen name="cashwindow">
+<section>
+   <widgets>
+       <platform-specific><html><html-template location="component://reports/webapp/reports/report/cashwindow.ftl"/></html></platform-specific>
+   </widgets>
+</section>
+</screen>
+
+
+<screen name="creditwindow">
+<section>
+   <widgets>
+       <platform-specific><html><html-template location="component://reports/webapp/reports/report/creditwindow.ftl"/></html></platform-specific>
+   </widgets>
+</section>
+</screen>
+
+<screen name="creditcardwindow">
+<section>
+   <widgets>
+       <platform-specific><html><html-template location="component://reports/webapp/reports/report/creditcardwindow.ftl"/></html></platform-specific>
+   </widgets>
+</section>
+</screen>
+
+
+
+
+
+<screen name="orderitemwindow">
+<section>
+   <widgets>
+       <platform-specific><html><html-template location="component://reports/webapp/reports/report/orderItems.ftl"/></html></platform-specific>
+   </widgets>
+</section>
+</screen>
+
+<screen name="otherPuchase">
+<section>
+   <widgets>
+       <platform-specific><html><html-template location="component://reports/webapp/reports/report/otherPuchase.ftl"/></html></platform-specific>
+   </widgets>
+</section>
+</screen>
+
+
+
+
+<screen name="cutomerwindow">
+        <section>
+            <actions>
+                <set field="partyId" from-field="parameters.partyId" default-value="${userLogin.partyId}"/>
+                <script location="component://party/webapp/partymgr/WEB-INF/actions/party/GetContactMechs.groovy"/>
+                <script location="component://party/webapp/partymgr/WEB-INF/actions/party/GetUserLoginPrimaryEmail.groovy"/>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html>
+                        <html-template location="component://reports/webapp/reports/report/customerDetail.ftl"/>
+                    </html>
+                </platform-specific>
+            </widgets>
+        </section>
+</screen>
+
+
+
+
+	<screen name="reportingValuepdf">
+        <section>
+        	<actions>
+                <set field="titleProperty" value="OrderReportSalesByStore"/>
+                  <entity-condition entity-name="OrderHeader" list="productReportList">
+                    <condition-list combine="and">
+                        
+                        <!-- possible bug: using from-field="parameters.orderStatusId" did not work for the following line -->
+                        <condition-expr field-name="salesChannelEnumId" operator="equals" from-field="parameters.salesChannelEnumId"  ignore-if-empty="true"/>
+                        <condition-expr field-name="orderDate" operator="greater-equals" from-field="parameters.fromOrderDate" ignore-if-null="true"/>
+                        <condition-expr field-name="orderDate" operator="less" from-field="parameters.thruOrderDate" ignore-if-null="true"/>
+                    </condition-list>
+                    <!-- note that we need to explicitly identify the fields to select, otherwise the query will include fields that can't logically be grouped -->
+                    <select-field field-name="orderId" />
+                    <select-field field-name="orderDate" />
+                     <select-field field-name="billToPartyId"/>
+                    <select-field field-name="statusId"/>
+                    <select-field field-name="grandTotal"/>
+                    <order-by field-name="orderId"/>
+                </entity-condition>
+            </actions>
+            <widgets>
+                <platform-specific>
+						<xsl-fo><html-template location="component://reports/webapp/reports/report/reportingValuepdf.fo.ftl"/></xsl-fo>
+				</platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    
+    <screen name="reportingValueCSV">
+        <section>
+        	<actions>
+                <set field="titleProperty" value="OrderReportSalesByStore"/>
+                   <script location="component:/reports/webapp/reports/WEB-INF/actions/reports/reportingValueCSV.groovy"/>
+            </actions>
+            <widgets>
+                <include-form name="reportingValueCSV" location="component://reports/widget/ReportsForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+
+    <!--<screen name="salesreports">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Sales Reports"/>
+                <set field="headerItem" value="SalesReports"/>
+				<set field="tabButtonItem" value="salesreports"/>            
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/salesReports.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                    <include-menu name="SalesReports"  location="component://reports/widget/ReportsMenus.xml"/>
+                    <container style="screenlet">
+                        <container style="screenlet-title-bar">
+                            <container style="h3">
+                                <label text="Sales Reports"/>
+                            </container>
+                        </container>
+                        <container style="screenlet-body">
+                            <section>
+                                <widgets>
+									<include-form name="salesReport" location="component://reports/widget/ReportsForms.xml"/>
+                                </widgets>
+                            </section>
+                        </container>
+                    </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>-->
+
+    <screen name="OrderReports">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Order Reports"/>
+                <set field="headerItem" value="OrderReports"/>            
+                <set field="tabButtonItem" value="CustomerOrdersReport"/>
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/salesReports.groovy"/>				
+                <script location="component://order/webapp/ordermgr/WEB-INF/actions/order/FindOrders.groovy"/>
+                <set field="minDate" value="${fromDate}"  />
+                <set field="maxDate" value="${thruDate}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+						<include-menu name="OrderReportsBar" location="component://reports/widget/ReportsMenus.xml"/>
+						<section>
+			            <widgets>
+	                        <container style="screenlet">
+	                            <container style="screenlet-title-bar">
+	                                <container style="h3">
+	                                    <label text="Order Reports"/>
+	                                </container>
+	                            </container>
+	                            <container style="screenlet-body">
+									<include-form  name="lookuporder" location="component://reports/widget/ReportsForms.xml"/>
+									<section>
+										<condition>
+										<if-compare-field  field="parameters.viewReport" operator="equals" to-field="true" />
+										</condition>
+										<widgets>
+				                        <platform-specific>
+				                            <html><html-template location="component://reports/webapp/reports/report/CustomerOrdersReport.ftl"/></html>
+				                        </platform-specific>
+				                        </widgets>
+			                        </section>
+	                            </container>
+	                        </container>
+			            </widgets>
+						</section>                              
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>            
+        </section>
+    </screen>
+
+
+     <screen name="salesSummary">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Sales Summary"/>
+                <set field="headerItem" value="SalesReports"/>
+				<set field="headerItem2" value="SalesSummary"/>
+				<set field="tabButtonItem" value="SalesSummary"/>
+				 <script location="component://reports/webapp/reports/WEB-INF/actions/reports/salesSummaryReport.groovy"/>
+            </actions>
+            <widgets>
+             <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+								<!-- <include-menu name="SalesReports"  location="component://reports/widget/ReportsMenus.xml"/> -->	
+								<container style="screenlet-body">									
+									                            
+                                <platform-specific>
+                                    <html><html-template location="component://reports/webapp/reports/report/salesSummaryOrder.ftl"/></html>
+                                </platform-specific>
+									</container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+      <screen name="purchaseSummary">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Purchase Summary"/>
+                <set field="headerItem" value="purchaseReports"/>
+            </actions>
+            <widgets>
+             <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+								<!-- <include-menu name="SalesReports"  location="component://reports/widget/ReportsMenus.xml"/> -->	
+								<container style="screenlet-body">									
+									                            
+                                <platform-specific>
+                                    <html><html-template location="component://reports/webapp/reports/report/purchaseSummaryOrder.ftl"/></html>
+                                </platform-specific>
+									</container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    <screen name="youDailyDispatchReport">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Purchase Summary"/>
+                <set field="headerItem" value="youDailyDispatchReport"/>
+            </actions>
+            <widgets>
+             	<decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+					<decorator-section name="body">
+						<section>
+                 			<widgets>
+							<container style="screenlet-body">									
+                       			<platform-specific>
+                       				<html><html-template location="component://reports/webapp/reports/report/youDailyDispatchReport.ftl"/></html>
+                       			</platform-specific>
+							</container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    <screen name="packingReport">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Purchase Summary"/>
+                <set field="headerItem" value="packingReport"/>
+            </actions>
+            <widgets>
+             	<decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+					<decorator-section name="body">
+						<section>
+                 			<widgets>
+							<container style="screenlet-body">									
+                       			<platform-specific>
+                       				<html><html-template location="component://reports/webapp/reports/report/packingReport.ftl"/></html>
+                       			</platform-specific>
+							</container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    <screen name="customerData">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Purchase Summary"/>
+                <set field="headerItem" value="customerData"/>
+            </actions>
+            <widgets>
+             	<decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+					<decorator-section name="body">
+						<section>
+                 			<widgets>
+							<container style="screenlet-body">									
+                       			<platform-specific>
+                       				<html><html-template location="component://reports/webapp/reports/report/customerData.ftl"/></html>
+                       			</platform-specific>
+							</container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    <screen name="dailyPurchaseSummary">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Purchase Summary"/>
+                <set field="headerItem" value="dailyPurchaseReports"/>
+            </actions>
+            <widgets>
+             <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+								<!-- <include-menu name="SalesReports"  location="component://reports/widget/ReportsMenus.xml"/> -->	
+								<container style="screenlet-body">									
+                                <platform-specific>
+                                    <html><html-template location="component://reports/webapp/reports/report/dailyPurchaseReport.ftl"/></html>
+                                </platform-specific>
+									</container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+	<screen name="stockInHand">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Stock In Hand"/>
+                <set field="headerItem" value="stockInHand"/>
+			
+				<set field="tabButtonItem" value="stockInHand"/>
+				<!--<script location="component://reports/webapp/reports/WEB-INF/actions/reports/salesSummaryReport.groovy"/>  --> 
+            </actions>
+            <widgets>
+             <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+								<!-- <include-menu name="SalesReports"  location="component://reports/widget/ReportsMenus.xml"/> -->	
+								<container style="screenlet-body">									
+									                            
+                                <platform-specific>
+                                    <html><html-template location="component://reports/webapp/reports/report/stockInHand.ftl"/></html>
+                                </platform-specific>
+									</container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+   
+  <!--  <screen name="purchaseSummary">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Purchase Summary Reports"/>
+                <set field="headerItem" value="PurchaseReports"/>
+				<set field="tabButtonItem" value="PurchaseSummary"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+							<decorator-section name="menu-bar">
+									<include-menu name="PurchaseReports"  location="component://reports/widget/ReportsMenus.xml"/>
+							</decorator-section>                        
+                            <decorator-section name="search-options">
+                                <include-form name="purchaseSummaryReport" location="component://reports/widget/ReportsForms.xml"/>
+                            </decorator-section>
+		                    <decorator-section name="search-results">
+		                        <section>
+									<condition>
+									<if-compare-field  field="parameters.viewReport" operator="equals" to-field="true" />
+									</condition>
+		                            <widgets>
+										<include-form name="ListPurchaseOrders" location="component://reports/widget/ReportsForms.xml"/>
+		                            </widgets>
+		                        </section>
+		                    </decorator-section>                            
+                        </decorator-screen> 
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>-->
+    
+    
+    <screen name="purchaseDetail">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Purchase Detail Reports"/>
+                <set field="headerItem" value="PurchaseReports"/>
+				<set field="tabButtonItem" value="PurchaseDetail"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+							<decorator-section name="menu-bar">
+									<include-menu name="PurchaseReports"  location="component://reports/widget/ReportsMenus.xml"/>
+							</decorator-section>                        
+                            <decorator-section name="search-options">
+                                <include-form name="purchaseDetailReport" location="component://reports/widget/ReportsForms.xml"/>
+                            </decorator-section>
+		                    <decorator-section name="search-results">
+		                        <section>
+									<condition>
+									<if-compare-field  field="parameters.viewReport" operator="equals" to-field="true" />
+									</condition>
+		                            <widgets>
+										<include-form name="viewPurchaseDetailReport" location="component://reports/widget/ReportsForms.xml"/>
+		                            </widgets>
+		                        </section>
+		                    </decorator-section>                            
+                        </decorator-screen> 
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+
+    <screen name="viewSalesreport">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Sales Reports"/>
+                <set field="headerItem" value="SalesReports"/>
+				<set field="tabButtonItem" value="salesreports"/>
+				<set field="headerItem2" value="salesreports"/>
+				<!--<script location="component://reports/webapp/reports/WEB-INF/actions/reports/salesreportPDF.bsh"/>-->
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+							<decorator-section name="menu-bar">
+									<include-menu name="SalesReports"  location="component://reports/widget/ReportsMenus.xml"/>
+							</decorator-section>                        
+                            <decorator-section name="search-options">
+                                <include-form name="salesReport" location="component://reports/widget/ReportsForms.xml"/>
+                            </decorator-section>
+		                    <decorator-section name="search-results">
+		                        <section>
+		                            <widgets>
+										<include-form name="ListSalesOrders" location="component://reports/widget/ReportsForms.xml"/>
+		                            </widgets>
+		                        </section>
+		                    </decorator-section>                            
+                        </decorator-screen> 
+	                    <!--<container style="screenlet">
+	                        <container style="screenlet-title-bar">
+	                            <container style="h3">
+	                                <label text="Sales Reports"/>
+	                            </container>
+	                        </container>
+	                        <container style="screenlet-body">
+	                            <section>
+	                                <widgets>
+	                              <include-form name="salesReport" location="component://reports/widget/ReportsForms.xml"/>
+	                              <include-form name="ListSalesOrders" location="component://reports/widget/ReportsForms.xml"/>
+	                                <platform-specific>
+	                                    <html><html-template location="component://reports/webapp/reports/report/viewSalesreport.ftl"/></html>
+	                                </platform-specific>
+	                                </widgets>
+	                            </section>
+	                        </container>
+	                    </container>-->                    	
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    <screen name="viewPurchaseReport">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Purchase Summary Reports"/>
+                <set field="headerItem" value="PurchaseReports"/>
+				<set field="tabButtonItem" value="PurchaseSummary"/>
+				<!-- <set field="minDate" value="${fromDate}"  />
+                <set field="maxDate" value="${thruDate}"/> -->
+				<!--<script location="component://reports/webapp/reports/WEB-INF/actions/reports/salesreportPDF.bsh"/>-->
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+							<decorator-section name="menu-bar">
+									<include-menu name="PurchaseReports"  location="component://reports/widget/ReportsMenus.xml"/>
+							</decorator-section>                        
+                            <decorator-section name="search-options">
+                                <include-form name="purchaseSummaryReport" location="component://reports/widget/ReportsForms.xml"/>
+                            </decorator-section>
+		                    <decorator-section name="search-results">
+		                        <section>
+		                            <widgets>
+										<include-form name="ListPurchaseOrders" location="component://reports/widget/ReportsForms.xml"/>
+		                            </widgets>
+		                        </section>
+		                    </decorator-section>                            
+                        </decorator-screen> 
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    <screen name="viewPurchaseDetailReport">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Purchase Detail Reports"/>
+                <set field="headerItem" value="PurchaseReports"/>
+				<set field="tabButtonItem" value="PurchaseDetail"/>
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/storePurchaseDetail.groovy"/>
+				
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+							<decorator-section name="menu-bar">
+									<include-menu name="PurchaseReports"  location="component://reports/widget/ReportsMenus.xml"/>
+							</decorator-section>                        
+                            <decorator-section name="search-options">
+                                <include-form name="purchaseDetailReport" location="component://reports/widget/ReportsForms.xml"/>
+                            </decorator-section>
+		                    <decorator-section name="search-results">
+		                        <section>
+		                            <widgets>
+										<include-form name="viewPurchaseDetailReport" location="component://reports/widget/ReportsForms.xml"/>
+		                            </widgets>
+		                        </section>
+		                    </decorator-section>                            
+                        </decorator-screen> 
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+     <screen name="billProductWiseReports">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Bill-Product Wise Sales Reports"/>
+                <set field="headerItem" value="SalesReports"/>
+				<set field="tabButtonItem" value="billProductWise"/>
+				<set field="headerItem2" value="billProductWise"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+							<decorator-section name="menu-bar">
+									<include-menu name="SalesReports"  location="component://reports/widget/ReportsMenus.xml"/>
+							</decorator-section>                        
+                            <decorator-section name="search-options">
+                                <include-form name="FindBillProductWiseSalesReports" location="component://reports/widget/ReportsForms.xml"/>
+                            </decorator-section>
+		                    <decorator-section name="search-results">
+		                        <section>
+									<condition>
+										<if-compare-field  field="parameters.viewReport" operator="equals" to-field="true" />
+									</condition>
+		                            <widgets>
+										<include-form name="ListBillProductWiseSalesReports" location="component://reports/widget/ReportsForms.xml"/>
+		                            </widgets>
+		                        </section>
+		                    </decorator-section>                            
+                        </decorator-screen> 
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ViewBillProductWiseSalesReports">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Bill-Product Wise Sales Reports"/>
+                <set field="headerItem" value="SalesReports"/>
+				<set field="tabButtonItem" value="billProductWise"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+							<decorator-section name="menu-bar">
+									<include-menu name="SalesReports"  location="component://reports/widget/ReportsMenus.xml"/>
+							</decorator-section>                        
+                            <decorator-section name="search-options">
+                                <include-form name="FindBillProductWiseSalesReports" location="component://reports/widget/ReportsForms.xml"/>
+                            </decorator-section>
+		                    <decorator-section name="search-results">
+		                        <section>
+		                            <widgets>
+										<include-form name="ListBillProductWiseSalesReports" location="component://reports/widget/ReportsForms.xml"/>
+		                            </widgets>
+		                        </section>
+		                    </decorator-section>                            
+                        </decorator-screen> 
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+	<screen name="itemWiseReports">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Item Wise Sales Reports"/>
+                <set field="headerItem" value="SalesReports"/>
+				<set field="tabButtonItem" value="itemWiseReports"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+							<decorator-section name="menu-bar">
+									<include-menu name="SalesReports"  location="component://reports/widget/ReportsMenus.xml"/>
+							</decorator-section>                        
+                            <decorator-section name="search-options">
+                                <include-form name="FindItemWiseSalesReports" location="component://reports/widget/ReportsForms.xml"/>
+                            </decorator-section>
+		                    <decorator-section name="search-results">
+		                        <section>
+									<condition>
+										<if-compare-field  field="parameters.viewReport" operator="equals" to-field="true" />
+									</condition>
+		                            <widgets>
+										<include-form name="ListItemWiseSalesReports" location="component://reports/widget/ReportsForms.xml"/>
+		                            </widgets>
+		                        </section>
+		                    </decorator-section>                            
+                        </decorator-screen> 
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ViewItemWiseSalesReports">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Item Wise Sales Reports"/>
+                <set field="headerItem" value="SalesReports"/>
+				<set field="tabButtonItem" value="itemWiseReports"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+							<decorator-section name="menu-bar">
+									<include-menu name="SalesReports"  location="component://reports/widget/ReportsMenus.xml"/>
+							</decorator-section>                        
+                            <decorator-section name="search-options">
+                                <include-form name="FindItemWiseSalesReports" location="component://reports/widget/ReportsForms.xml"/>
+                            </decorator-section>
+		                    <decorator-section name="search-results">
+		                        <section>
+		                            <widgets>
+										<include-form name="ListItemWiseSalesReports" location="component://reports/widget/ReportsForms.xml"/>
+		                            </widgets>
+		                        </section>
+		                    </decorator-section>                            
+                        </decorator-screen> 
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="SalesDetailItemWiseReports">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Sales Detail Item Wise Reports"/>
+                <set field="headerItem" value="SalesReports"/>
+				<set field="tabButtonItem" value="salesDetailItemWiseReports"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+							<decorator-section name="menu-bar">
+									<include-menu name="SalesReports"  location="component://reports/widget/ReportsMenus.xml"/>
+							</decorator-section>                        
+                            <decorator-section name="search-options">
+                                <include-form name="FindSalesDetailItemWiseReports" location="component://reports/widget/ReportsForms.xml"/>
+                            </decorator-section>
+		                    <decorator-section name="search-results">
+		                        <section>
+									<condition>
+										<if-compare-field  field="parameters.viewReport" operator="equals" to-field="true" />
+									</condition>
+		                            <widgets>
+										<include-form name="ListSalesDetailItemWiseReports" location="component://reports/widget/ReportsForms.xml"/>
+		                            </widgets>
+		                        </section>
+		                    </decorator-section>                            
+                        </decorator-screen> 
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ViewSalesDetailItemWiseReports">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Sales Detail Item Wise Reports"/>
+                <set field="headerItem" value="SalesReports"/>
+				<set field="tabButtonItem" value="salesDetailItemWiseReports"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+							<decorator-section name="menu-bar">
+									<include-menu name="SalesReports"  location="component://reports/widget/ReportsMenus.xml"/>
+							</decorator-section>                        
+                            <decorator-section name="search-options">
+                                <include-form name="FindSalesDetailItemWiseReports" location="component://reports/widget/ReportsForms.xml"/>
+                            </decorator-section>
+		                    <decorator-section name="search-results">
+		                        <section>
+		                            <widgets>
+										<include-form name="ListSalesDetailItemWiseReports" location="component://reports/widget/ReportsForms.xml"/>
+		                            </widgets>
+		                        </section>
+		                    </decorator-section>                            
+                        </decorator-screen> 
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    <screen name="counterWiseReports">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Counter Wise Sales Reports"/>
+                <set field="headerItem" value="SalesReports"/>
+				<set field="tabButtonItem" value="counterWiseReports"/>
+				<set field="headerItem2" value="billCounterWise"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+							<decorator-section name="menu-bar">
+									<include-menu name="SalesReports"  location="component://reports/widget/ReportsMenus.xml"/>
+							</decorator-section>                        
+                            <decorator-section name="search-options">
+                                <include-form name="FindCounterWiseSalesReports" location="component://reports/widget/ReportsForms.xml"/>
+                            </decorator-section>
+		                    <decorator-section name="search-results">
+		                        <section>
+									<condition>
+										<if-compare-field  field="parameters.viewReport" operator="equals" to-field="true" />
+									</condition>
+		                            <widgets>
+										<include-form name="ListCounterWiseSalesReports" location="component://reports/widget/ReportsForms.xml"/>
+		                            </widgets>
+		                        </section>
+		                    </decorator-section>                            
+                        </decorator-screen> 
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ViewCounterWiseSalesReports">
+        <section>
+            <actions>
+               <set field="titleProperty" value="Counter Wise Sales Reports"/>
+                <set field="headerItem" value="SalesReports"/>
+				<set field="tabButtonItem" value="counterWiseReports"/>
+				<set field="headerItem2" value="billCounterWise"/>
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/storeCounterSalesDetail.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+							<decorator-section name="menu-bar">
+									<include-menu name="SalesReports"  location="component://reports/widget/ReportsMenus.xml"/>
+							</decorator-section>                        
+                            <decorator-section name="search-options">
+                                <include-form name="FindCounterWiseSalesReports" location="component://reports/widget/ReportsForms.xml"/>
+                            </decorator-section>
+		                    <decorator-section name="search-results">
+		                        <section>
+		                            <widgets>
+										<include-form name="ListCounterWiseSalesReports" location="component://reports/widget/ReportsForms.xml"/>
+		                            </widgets>
+		                        </section>
+		                    </decorator-section>                            
+                        </decorator-screen> 
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+
+    <screen name="ReturnsReport">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Returns Report"/>
+                <set field="headerItem" value="OrderReports"/>
+				<set field="tabButtonItem" value="ReturnsReport"/>                
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="10"/>
+                <script location="component://reports/webapp/reports/WEB-INF/actions/reports/salesReports.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                    
+                        <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+							<decorator-section name="menu-bar">
+									<include-menu name="OrderReportsBar"  location="component://reports/widget/ReportsMenus.xml"/>
+							</decorator-section>                        
+                            <decorator-section name="search-options">
+                                <include-form name="FindReturns" location="component://reports/widget/ReportsForms.xml"/>
+                            </decorator-section>
+		                    <decorator-section name="search-results">
+		                        <section>
+		                        <condition>
+		                        <if-compare type="String" operator="equals" value="true" field="viewReport"/>
+		                        </condition>
+		                            <widgets>
+										<include-form name="ListReturns" location="component://reports/widget/ReportsForms.xml"/>
+		                            </widgets>
+		                        </section>
+		                    </decorator-section>                            
+                        </decorator-screen>                    
+                    
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="returnsCSV">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Returns Report"/>
+                <set field="headerItem" value="SalesReports"/>
+				<set field="tabButtonItem" value="ReturnsReport"/>                
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="1000"/>
+            </actions>
+			<widgets>
+				<include-form name="ListReturnsCSV" location="component://reports/widget/ReportsForms.xml"/>
+			</widgets>
+            </section>
+    </screen>
+
+    <screen name="InventoryReports">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Inventory Report"/>
+                <set field="headerItem" value="InventoryReports"/>            
+                <set field="tabButtonItem" value="Reports"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="10"/>
+                <entity-one entity-name="Facility" value-field="facility"/>
+                <set field="title" value="${uiLabelMap.PageTitleEditFacilityInventoryItems}"/>
+                <set field="viewReport" from-field="parameters.viewReport" type="String" default-value="false"/>
+                <set field="reportView" value="true" type="String" />
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/getInventoryInfo.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+                            <decorator-section name="search-options">
+                                <include-form name="SearchInventoryItemsParams" location="component://reports/widget/ReportsForms.xml"/>
+                            </decorator-section>
+		                    <decorator-section name="search-results">
+		                        <section>
+		                            <condition>
+		                                <if-compare-field to-field="reportView" operator="equals" field="viewReport"  />
+		                            </condition>
+		                            <widgets>
+										<include-form  name="ListFacilityInventoryItems" location="component://reports/widget/ReportsForms.xml"/>
+		                            </widgets>
+		                        </section>
+		                    </decorator-section>                            
+                        </decorator-screen>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>  
+
+    <screen name="InventoryReportsCSV">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Inventory Report"/>
+                <set field="headerItem" value="InventoryReports"/>            
+                <set field="tabButtonItem" value="Reports"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="10000"/>
+                <entity-one entity-name="Facility" value-field="facility"/>
+                <set field="title" value="${uiLabelMap.PageTitleEditFacilityInventoryItems}"/>
+                <set field="viewReport" from-field="parameters.viewReport" type="String" default-value="false"/>
+                <set field="reportView" value="true" type="String" />
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/getInventoryInfo.groovy"/>
+            </actions>
+            <widgets>
+             <include-form  name="ListFacilityInventoryItemsCSV" location="component://reports/widget/ReportsForms.xml"/> 
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="CustomerReports">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Customer Reports"/>
+                <set field="headerItem" value="CustomerReports"/>            
+                <set field="tabButtonItem" value="CustomerReports"/>
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/CustomerReports.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                    	<include-menu name="CustomerReportsBar" location="component://reports/widget/ReportsMenus.xml"/>
+						<section>
+							<widgets>
+								<platform-specific><html><html-template location="component://reports/webapp/reports/report/CustomerReports.ftl"/></html></platform-specific>
+							</widgets>
+						</section>	 
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>            
+        </section>
+    </screen>
+    <screen name="CustomerCreditReports">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Customer Reports"/>
+                <set field="headerItem" value="CustomerReports"/>            
+                <set field="tabButtonItem" value="CustomerCreditReports"/>
+				<!-- <script location="component://reports/webapp/reports/WEB-INF/actions/reports/CustomerReports.groovy"/> -->
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                    	<include-menu name="CustomerReportsBar" location="component://reports/widget/ReportsMenus.xml"/>
+						<section>
+							<widgets>
+								    <platform-specific><html><html-template location="component://reports/webapp/reports/report/pendingCredits.ftl"/></html></platform-specific>
+							</widgets>
+						</section>	 
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>            
+        </section>
+    </screen>
+      
+    <screen name="SubscriptionReports">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Newsletter Subscription Reports"/>
+                <set field="headerItem" value="CustomerReports"/>
+				<set field="tabButtonItem" value="NewsLetterReports"/>
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/SubscriptionReports.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                    <include-menu name="CustomerReportsBar" location="component://reports/widget/ReportsMenus.xml" />
+                        <section>
+                            <widgets>
+                                <platform-specific>
+									<html><html-template location="component://reports/webapp/reports/report/SubscriptionReports.ftl"/></html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    <screen name="NewsLetterReportCSV">
+        <section>
+            <actions>
+                <set field="parameters.viewIndex" type="String" value="0"/>
+                <set field="parameters.viewSize" type="String" value="1000"/>            
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/SubscriptionReports.groovy"/>
+            </actions>
+            <widgets>
+				<include-form name="NewsLetterReportCSV" location="component://reports/widget/ReportsForms.xml" />
+            </widgets>
+        </section>
+    </screen>     
+    
+    <screen name="registrationreportCSV">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Customer Reports"/>
+                <set field="headerItem" value="CustomerReports"/>            
+                <set field="tabButtonItem" value="CustomerReports"/>
+                <set field="parameters.VIEW_INDEX" value="0"/>
+                <set field="parameters.VIEW_SIZE"  value="2000"/>           
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/CustomerReports.groovy"/>
+            </actions>
+            <widgets>
+				<section>
+					<widgets>
+						<include-form name="CustomerRegistrationReportCSV"  location="component://reports/widget/ReportsForms.xml" />
+						<!--<platform-specific><html><html-template location="component://reports/webapp/reports/report/CustomerReports.ftl"/></html></platform-specific>-->
+					</widgets>
+				</section>
+            </widgets>            
+        </section>
+    </screen>
+
+    <screen name="CustomerOrdersReport">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Order Reports"/>
+                <set field="headerItem" value="OrderReports"/>            
+                <set field="tabButtonItem" value="CustomerOrdersReport"/>
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/salesReports.groovy"/>				
+                <script location="component://order/webapp/ordermgr/WEB-INF/actions/order/FindOrders.groovy"/>
+                <set field="minDate" value="${fromDate}"  />
+                <set field="maxDate" value="${thruDate}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+						<decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+							<decorator-section name="menu-bar">
+									<include-menu name="OrderReportsBar" location="component://reports/widget/ReportsMenus.xml"/>
+							</decorator-section>
+							<decorator-section name="search-options">
+								<include-form name="lookuporder" location="component://reports/widget/ReportsForms.xml"/>
+							</decorator-section>
+							<decorator-section name="search-results">
+								<section>
+		                            <condition>
+		                            <if-compare type="String" operator="equals" value="true" field="parameters.viewReport"/>
+		                            </condition>
+								<widgets>
+		                        <platform-specific>
+		                            <html><html-template location="component://reports/webapp/reports/report/CustomerOrdersReport.ftl"/></html>
+		                        </platform-specific>
+		                        </widgets>
+		                        </section>
+							</decorator-section>
+						</decorator-screen>  						
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>     
+ <screen name="CustOrdersReport">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Order Reports"/>
+               <set field="tabButtonItem" value="CustomerOrderReports"/>          
+                 <set field="headerItem" value="CustomerReports"/>  
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/salesReports.groovy"/>				
+                <script location="component://order/webapp/ordermgr/WEB-INF/actions/order/FindOrders.groovy"/>
+                <set field="minDate" value="${fromDate}"  />
+                <set field="maxDate" value="${thruDate}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+						<decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+							<decorator-section name="menu-bar">
+									<include-menu name="CustomerReportsBar" location="component://reports/widget/ReportsMenus.xml"/>
+							</decorator-section>
+							<decorator-section name="search-options">
+								<include-form name="lookupcustorder" location="component://reports/widget/ReportsForms.xml"/>
+							</decorator-section>
+							<decorator-section name="search-results">
+								<section>
+		                            <condition>
+		                            <if-compare type="String" operator="equals" value="true" field="parameters.viewReport"/>
+		                            </condition>
+								<widgets>
+		                        <platform-specific>
+		                            <html><html-template location="component://reports/webapp/reports/report/CustomerOrdersReport.ftl"/></html>
+		                        </platform-specific>
+		                        </widgets>
+		                        </section>
+							</decorator-section>
+						</decorator-screen>  						
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>     
+
+    <screen name="CustomerOrdersReportCSV">
+        <section>
+            <actions>
+                <script location="component://reports/webapp/reports/WEB-INF/actions/reports/orderscsv.groovy"/>		
+            </actions>
+            <widgets>
+            <container>
+           <label>,,,,,ORDER REPORT</label>
+           <label>,</label>
+          <include-form name="CustomerOrdersReportCSV" location="component://reports/widget/ReportsForms.xml"/>
+           </container>
+            </widgets>            
+        </section>
+    </screen>  
+<screen name="CustOrdersReportCSV">
+        <section>
+            <actions>
+                <script location="component://reports/webapp/reports/WEB-INF/actions/reports/orderscsv.groovy"/>		
+            </actions>
+            <widgets>
+            <container>
+           <label>,,,,,ORDER REPORT</label>
+           <label>,</label>
+          <include-form name="CustomerOrdersReportCSV" location="component://reports/widget/ReportsForms.xml"/>
+           </container>
+            </widgets>            
+        </section>
+    </screen>  
+    <screen name="revenueReports">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Revenue Report"/>
+                <set field="headerItem" value="RevenueReports"/>
+				<!--<set field="tabButtonItem" value="RevenueReports"/>-->
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/salesReports.groovy"/>	
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html><html-template location="component://reports/webapp/reports/report/revenuereport.ftl"/></html>
+                                </platform-specific>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <!-- <screen name="salesSummary">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Sales Summary"/>
+                <set field="headerItem" value="SalesReports"/>
+				<set field="headerItem2" value="SalesSummary"/>
+				<set field="tabButtonItem" value="SalesSummary"/>
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/salesReports.groovy"/>	
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/salesSummary.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+							<include-menu name="SalesReports"  location="component://reports/widget/ReportsMenus.xml"/>
+								<container style="screenlet-body">									
+									                            
+                                <platform-specific>
+                                    <html><html-template location="component://reports/webapp/reports/report/salesSummary.ftl"/></html>
+                                </platform-specific>
+									</container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen> -->
+    
+    
+    <screen name="salesTaxReport">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Sales Tax Reports"/>
+                <set field="headerItem" value="SalesTaxReport"/>
+				<set field="tabButtonItem" value="SalesTaxReport"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+							<decorator-section name="menu-bar">
+									<include-menu name="SalesTaxReports"  location="component://reports/widget/ReportsMenus.xml"/>
+							</decorator-section>                        
+                            <decorator-section name="search-options">
+                                <include-form name="salesTaxReport" location="component://reports/widget/ReportsForms.xml"/>
+                            </decorator-section>
+		                    <decorator-section name="search-results">
+		                        <section>
+									<condition>
+									<if-compare-field  field="parameters.viewReport" operator="equals" to-field="true" />
+									</condition>
+		                            <widgets>
+										<include-form name="viewSalesTaxReport" location="component://reports/widget/ReportsForms.xml"/>
+		                            </widgets>
+		                        </section>
+		                    </decorator-section>                        
+                        </decorator-screen> 
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    <screen name="viewSalesTaxReport">
+        <section>
+            <actions>
+               <set field="titleProperty" value="Sales Tax Reports"/>
+                <set field="headerItem" value="SalesTaxReport"/>
+				<set field="tabButtonItem" value="SalesTaxReport"/>
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/calculateSalesTax.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+							<decorator-section name="menu-bar">
+									<include-menu name="SalesTaxReports"  location="component://reports/widget/ReportsMenus.xml"/>
+							</decorator-section>                        
+                            <decorator-section name="search-options">
+                                <include-form name="salesTaxReport" location="component://reports/widget/ReportsForms.xml"/>
+                            </decorator-section>
+		                    <decorator-section name="search-results">
+		                        <section>
+									<condition>
+									<if-compare-field  field="parameters.viewReport" operator="equals" to-field="true" />
+									</condition>
+		                            <widgets>
+										<include-form name="viewSalesTaxReport" location="component://reports/widget/ReportsForms.xml"/>
+		                            </widgets>
+		                        </section>
+		                    </decorator-section>                        
+                        </decorator-screen> 
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    <screen name="purchaseReports">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Purchase Reports"/>
+                <set field="headerItem" value="PurchaseReports"/>
+				<set field="headerItem2" value="PurchaseReports"/>
+				<set field="tabButtonItem" value="PurchaseReports"/>
+				<!-- <script location="component://reports/webapp/reports/WEB-INF/actions/reports/salesReports.groovy"/>	
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/salesSummary.groovy"/> -->
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+								<include-menu name="PurchaseReports"  location="component://reports/widget/ReportsMenus.xml"/>	
+								<container style="screenlet-body">									
+									</container>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="productReports">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Product Reports"/>
+                <set field="headerItem" value="ProductReports"/>
+				<set field="tabButtonItem" value="ProductsReport"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+								<include-menu name="ProductReportsBar"  location="component://reports/widget/ReportsMenus.xml"/>		                            
+                                <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+                                    <decorator-section name="search-options">
+                                        <include-form name="FindProduct" location="component://reports/widget/ReportsForms.xml"/>
+                                    </decorator-section>
+                                    <decorator-section name="search-results">
+                                        <include-form name="ListProducts" location="component://reports/widget/ReportsForms.xml"/>
+                                    </decorator-section>
+                                </decorator-screen>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="productReportsCSV">
+        <section>
+            <actions>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="2000"/>            
+            </actions>
+            <widgets>
+				<include-form name="ListProductsCSV" location="component://reports/widget/ReportsForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="productPriceReport">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Product Price Report"/>
+                <set field="headerItem" value="ProductReports"/>
+				<set field="tabButtonItem" value="ProductPriceReport"/>
+                <!--<set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="20"/>-->
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+						<decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+							<decorator-section name="menu-bar">
+									<include-menu name="ProductReportsBar"  location="component://reports/widget/ReportsMenus.xml"/>
+							</decorator-section>
+							<decorator-section name="search-options">
+								<include-form name="FindProductPrices" location="component://reports/widget/ReportsForms.xml"/>
+							</decorator-section>
+							<decorator-section name="search-results">
+								<include-form name="ListProductPrices" location="component://reports/widget/ReportsForms.xml"/>
+							</decorator-section>
+						</decorator-screen>                    
+					</decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="productPriceReportCSV">
+        <section>
+            <actions>
+            </actions>
+            <widgets>
+				<include-form name="ListProductPrices.csv" location="component://reports/widget/ReportsForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="promotionListReport">
+        <section>
+            <actions>
+                <set field="titleProperty" value="PageTitleFindProductPromos"/>
+                <set field="headerItem" value="ProductReports"/>
+                <set field="tabButtonItem" value="PromotionListReport"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="10"/>
+                <script location="component://reports/webapp/reports/WEB-INF/actions/reports/productStorePromos.groovy"/>
+                <!--<entity-condition entity-name="ProductPromo" list="productPromos">
+                    <condition-expr field-name="userEntered" from-field="userEntered" ignore-if-empty="true"/>
+                    <order-by field-name="-createdDate"/>
+                </entity-condition>-->
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+						<section>
+							<widgets>
+	                            <include-menu name="ProductReportsBar"  location="component://reports/widget/ReportsMenus.xml"/>
+	                        	<container style="screenlet">
+	                        	<!--include-menu name="promosCSVBar"  location="component://reports/widget/ReportsMenus.xml"/-->
+								
+	                            <container style="screenlet-title-bar">
+	                                <container style="h3">
+										<container style="createButton">
+											<link target="promoList.csv" text="${uiLabelMap.CommonCSVReport}" style="buttontext"></link>
+										</container>
+	                                    <label text="${uiLabelMap.ProductProductPromotionsList}"/>
+										
+	                                </container>
+	                            </container>
+	                            <container style="screenlet-body">
+	                                <section>
+	                                    <widgets>
+	                                        <include-form name="ListProductPromos" location="component://reports/widget/ReportsForms.xml"/>
+	                                    </widgets>
+	                                </section>
+	                            </container>
+	                           </container>
+							</widgets>	
+						  <fail-widgets>
+							 <label style="h3">${uiLabelMap.DonotPermission}</label>
+						  </fail-widgets>
+					</section> 
+				</decorator-section>
+ 			</decorator-screen>
+		</widgets>
+        </section>
+    </screen>
+
+    <screen name="promoList.csv">
+        <section>
+            <actions>
+                <set field="parameters.viewIndex" type="Integer" default-value="0"/>
+                <set field="parameters.viewSize" type="Integer" default-value="1000"/>
+                <script location="component://reports/webapp/reports/WEB-INF/actions/reports/productStorePromos.groovy"/>				
+               <!--<entity-condition entity-name="ProductPromo"  list="productPromos">
+                    <condition-expr field-name="userEntered" from-field="userEntered" ignore-if-empty="true"/>
+                    <order-by field-name="-createdDate"/>
+                </entity-condition>-->
+            </actions>
+            <widgets>
+				<include-form name="promosListFormCsv" location="component://reports/widget/ReportsForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="giftCertificatesReport">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Gift Card Payments Report"/>
+                <set field="headerItem" value="ProductReports"/>
+                <set field="tabButtonItem" value="GiftCertificatesReport"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="10"/>                
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+                                    <decorator-section name="menu-bar">
+										<include-menu name="ProductReportsBar"  location="component://reports/widget/ReportsMenus.xml"/>
+                                    </decorator-section>
+                                    <decorator-section name="search-options">
+                                        <include-form name="FindGCPayments" location="component://reports/widget/ReportsForms.xml"/>
+                                    </decorator-section>
+                                    <decorator-section name="search-results">
+                                        <include-form name="ListPayments"  location="component://reports/widget/ReportsForms.xml"/>
+                                    </decorator-section>
+                                </decorator-screen>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="GiftCardReports.csv">
+        <section>
+            <actions>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="1000"/>                
+            </actions>
+            <widgets>
+				<include-form name="GiftCardReports.csv"  location="component://reports/widget/ReportsForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="promotionBasisSaleReport">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Promo Basis Sales Report"/>
+                <set field="headerItem" value="ProductReports"/>
+                <set field="tabButtonItem" value="PromotionBasisSaleReport"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="10"/>                
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+                                    <decorator-section name="menu-bar">
+										<include-menu name="ProductReportsBar"  location="component://reports/widget/ReportsMenus.xml"/>
+                                    </decorator-section>
+                                    <decorator-section name="search-options">
+                                        <include-form name="FindPromoSalesReport" location="component://reports/widget/ReportsForms.xml"/>
+                                    </decorator-section>
+                                    <decorator-section name="search-results">
+                                        <include-form name="ListPromoSales"  location="component://reports/widget/ReportsForms.xml"/>
+                                    </decorator-section>
+                                </decorator-screen>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="ListPromoSales.csv">
+        <section>
+            <actions>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="1000"/>                
+            </actions>
+            <widgets>
+				<include-form name="ListPromoSales.csv"  location="component://reports/widget/ReportsForms.xml"/>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="productOptionsReport">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Product Options Report"/>
+                <set field="headerItem" value="ProductReports"/>
+				<set field="tabButtonItem" value="ProductOptionsReport"/>
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/productOptionsReport.groovy" />
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+								<include-menu name="ProductReportsBar"  location="component://reports/widget/ReportsMenus.xml"/>
+							<container style="screenlet">
+	                        <container style="screenlet-title-bar">
+	                            <container style="h3">
+	                                <label text="Product Options Report"/>
+	                            </container>
+	                        </container>
+                                        <include-form name="FindProductOprions" location="component://reports/widget/ReportsForms.xml"/>
+                             </container>
+                               <!--<platform-specific>
+                                    <html><html-template location="component://reports/webapp/reports/report/test.ftl"/></html>
+                                </platform-specific>-->
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="LookupProduct">
+        <section>
+            <actions>
+                <property-map resource="ProductUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="${uiLabelMap.PageTitleLookupProduct}"/>
+                <set field="queryString" from-field="result.queryString"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-options">
+                        <include-form name="lookupProduct" location="component://reports/widget/ReportsForms.xml"/>
+                    </decorator-section>
+                    <decorator-section name="search-results">
+                        <include-form name="listLookupProduct" location="component://reports/widget/ReportsForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+      <screen name="LookupBrand">
+        <section>
+            <actions>
+                <property-map resource="ProductUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="${uiLabelMap.PageTitleLookupProduct}"/>
+                <set field="queryString" from-field="result.queryString"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-options">
+                        <include-form name="lookupBrand" location="component://reports/widget/ReportsForms.xml"/>
+                    </decorator-section>
+                    <decorator-section name="search-results">
+                        <include-form name="listLookupBrand" location="component://reports/widget/ReportsForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="LookupPartyName">
+        <section>
+            <condition>
+                <if-service-permission service-name="partyBasePermissionCheck" main-action="VIEW"/>
+            </condition>
+            <actions>
+                <property-map resource="PartyUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="${uiLabelMap.PartyLookupPartyByName}"/>
+                <set field="queryString" from-field="result.queryString"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="20"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-options">
+                        <include-form name="lookupPartyName" location="component://reports/widget/ReportsForms.xml"/>
+                    </decorator-section>
+                    <decorator-section name="search-results">
+                        <include-form name="listLookupPartyName" location="component://reports/widget/ReportsForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+ <screen name="LookupPinCode">
+        <section>
+              <condition>
+                <if-service-permission service-name="partyBasePermissionCheck" main-action="VIEW"/>
+            </condition>
+            <actions>
+                <property-map resource="PartyUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" value="${uiLabelMap.PartyLookupPartyByName}"/>
+                <set field="queryString" from-field="result.queryString"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer" default-value="0"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="20"/>
+             
+                      
+            </actions>
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-options">
+                        <include-form name="LookupPinCode" location="component://reports/widget/ReportsForms.xml"/>
+                    </decorator-section>
+                    <decorator-section name="search-results">
+                        <include-form name="listLookupPinCode" location="component://reports/widget/ReportsForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    <screen name="staffActivity">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Staff Activity Reports"/>
+                <set field="headerItem" value="StaffActivity"/>
+				<set field="tabButtonItem" value="StaffActivity"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+                                    <decorator-section name="search-options">
+                                        <include-form name="FindStaffActivities" location="component://reports/widget/ReportsForms.xml"/>
+                                    </decorator-section>
+                                    <decorator-section name="search-results">
+                                        <include-form name="ListStaffActivities" location="component://reports/widget/ReportsForms.xml"/>
+                                    </decorator-section>
+                                </decorator-screen>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+ <screen name="CustomerOrderReports">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Order Reports"/>
+              	<set field="tabButtonItem" value="CustomerOrderReports"/>          
+                 <set field="headerItem" value="CustomerReports"/>  
+				<script location="component://reports/webapp/reports/WEB-INF/actions/reports/salesReports.groovy"/>				
+                <script location="component://order/webapp/ordermgr/WEB-INF/actions/order/FindOrders.groovy"/>
+                <set field="minDate" value="${fromDate}"  />
+                <set field="maxDate" value="${thruDate}"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+				<include-menu name="CustomerReportsBar" location="component://reports/widget/ReportsMenus.xml"/>
+						<section>
+			            <widgets>
+	                        <container style="screenlet">
+	                            <container style="screenlet-title-bar">
+	                                <container style="h3">
+	                                    <label text="Order Reports"/>
+	                                </container>
+	                            </container>
+	                            <container style="screenlet-body">
+									<include-form  name="lookupcustorder" location="component://reports/widget/ReportsForms.xml"/>
+									<section>
+										<condition>
+										<if-compare-field  field="parameters.viewReport" operator="equals" to-field="true" />
+										</condition>
+										<widgets>
+				                        <platform-specific>
+				                            <html><html-template location="component://reports/webapp/reports/report/CustomerOrdersReport.ftl"/></html>
+				                        </platform-specific>
+				                        </widgets>
+			                        </section>
+	                            </container>
+	                        </container>
+			            </widgets>
+						</section>                              
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>            
+        </section>
+    </screen>
+    <screen name="customerCredit">
+        <section>
+            <actions>
+                <set field="titleProperty" value="Customer Credits"/>
+              <set field="tabButtonItem" value="CustCreditReports"/>          
+                 <set field="headerItem" value="CustomerReports"/>  
+            </actions>
+                    <widgets>
+                       <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                            <decorator-section name="body">
+                            <include-menu name="CustomerReportsBar" location="component://reports/widget/ReportsMenus.xml"/>
+ <!--  					         <include-menu name="MessageTabBar" location="component://product/widget/facility/FacilityMenus.xml"/>
+ -->  					          <platform-specific><html><html-template location="component://reports/webapp/reports/report/customerCredit.ftl"/></html></platform-specific>
+  							</decorator-section>
+ 							</decorator-screen>
+ 				    </widgets>
+ 		 </section>
+  </screen>
+    
+    
+      <screen name="dailySlot">
+        <section>
+        <condition>
+                <if-service-permission service-name="partyBasePermissionCheck" main-action="VIEW"/>
+            </condition>
+            <actions>
+                <set field="headerItem2" value="reports"/>
+				<set field="headerItem" value="dailySlot"/>
+                <set field="titleProperty" value="AccountingArPageTitleListReports"/>
+                  <script location="component://reports/webapp/reports/WEB-INF/actions/reports/orderSummaryReport.groovy"/>
+            </actions>
+            <widgets>
+                 <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <screenlet title="${uiLabelMap.AccountingReports}" navigation-form-name="ListReports">
+                          <platform-specific>
+                            <html>
+                              <html-template location="component://reports/webapp/reports/report/dailySlot.ftl"/>
+                            </html>
+                          </platform-specific>
+                            
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+        </screen>
+
+	<screen name="stockInOutReport">
+        <section>
+            <actions>
+                <set field="headerItem" value="stockInOutReport"/>
+				<set field="tabButtonItem" value="Reports"/>      
+				<set field="titleProperty" value="Stock In Out Report"/>
+            </actions>        
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <section>
+                             <widgets>
+                             	<platform-specific>
+                             		<html>
+                             			<html-template location="component://reports/webapp/reports/report/stockInOutReport.ftl"/>
+                             		</html>
+                             	</platform-specific>
+           					</widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="comparativeProductReports">
+        <section>
+            <actions>
+                <set field="headerItem" value="comparativeProductReports"/>
+				<set field="tabButtonItem" value="Reports"/>      
+				<set field="titleProperty" value="Period-to-period comparative reports"/>
+            </actions>        
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <section>
+                             <widgets>
+                             	<platform-specific>
+                             		<html>
+                             			<html-template location="component://reports/webapp/reports/report/comparativeProductReports.ftl"/>
+                             		</html>
+                             	</platform-specific>
+           					</widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="offersDiscountsReports">
+        <section>
+            <actions>
+                <set field="headerItem" value="offersDiscountsReports"/>
+				<set field="tabButtonItem" value="Reports"/>      
+				<set field="titleProperty" value="Period-to-period comparative reports"/>
+            </actions>        
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <section>
+                             <widgets>
+                             	<platform-specific>
+                             		<html>
+                             			<html-template location="component://reports/webapp/reports/report/offersDiscountsReports.ftl"/>
+                             		</html>
+                             	</platform-specific>
+           					</widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="customerOrderHistoryReports">
+        <section>
+            <actions>
+                <set field="headerItem" value="customerOrderHistoryReports"/>
+				<set field="tabButtonItem" value="Reports"/>      
+				<set field="titleProperty" value="Period-to-period comparative reports"/>
+            </actions>        
+            <widgets>
+                <decorator-screen name="reportsCommonDecorator" location="component://reports/widget/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <section>
+                             <widgets>
+                             	<platform-specific>
+                             		<html>
+                             			<html-template location="component://reports/webapp/reports/report/customerOrderHistoryReports.ftl"/>
+                             		</html>
+                             	</platform-specific>
+           					</widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+</screens>
+
+
+    

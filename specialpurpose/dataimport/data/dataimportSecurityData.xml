@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <SecurityPermission description="View operations in the dataimport Component." permissionId="dataimport_VIEW"/>
+    <SecurityPermission description="Create operations in the dataimport Component." permissionId="dataimport_CREATE"/>
+    <SecurityPermission description="Update operations in the dataimport Component." permissionId="dataimport_UPDATE"/>
+    <SecurityPermission description="Delete operations in the dataimport Component." permissionId="dataimport_DELETE"/>
+    <SecurityPermission description="ALL operations in the dataimport Component." permissionId="dataimport_ADMIN"/>
+    <SecurityGroupPermission groupId="FULLADMIN" permissionId="dataimport_ADMIN"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="dataimport_CREATE"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="dataimport_DELETE"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="dataimport_UPDATE"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="dataimport_VIEW"/>
+    <SecurityGroupPermission groupId="VIEWADMIN" permissionId="dataimport_VIEW"/>
+    <SecurityGroupPermission groupId="BIZADMIN" permissionId="dataimport_ADMIN"/>
+</entity-engine-xml>

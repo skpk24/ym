@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+<EnumerationType description="Banner Position" enumTypeId="BANNER_POSSITION" hasTable="N" parentTypeId=""/>
+<Enumeration description="Home" enumCode="HOME" enumId="HOME" sequenceId="01" enumTypeId="BANNER_POSSITION"/>
+<Enumeration description="Left" enumCode="LEFT" enumId="LEFT" sequenceId="02" enumTypeId="BANNER_POSSITION"/>
+<Enumeration description="Right" enumCode="RIGHT" enumId="RIGHT" sequenceId="03" enumTypeId="BANNER_POSSITION"/>
+<Enumeration description="Category" enumCode="CATEGORY" enumId="CATEGORY" sequenceId="04" enumTypeId="BANNER_POSSITION"/>
+	
+</entity-engine-xml>

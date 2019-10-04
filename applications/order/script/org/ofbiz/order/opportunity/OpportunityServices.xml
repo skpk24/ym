@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<!--
+This file contains basic services for SalesOpportunity and SalesForecast.
+-->
+
+<simple-methods xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/simple-methods.xsd">
+
+    <simple-method method-name="createSalesForecast" short-description="Creates a sales forecast and stores a copy in sales forecast history.">
+
+        <!-- make the value and set the fields from the parameters -->
+        <make-value value-field="salesForecast" entity-name="SalesForecast"/>
+        <sequenced-id sequence-name="SalesForecast" field="salesForecastId"/>
+        <set field="salesForecast.salesForecastId" from-field="salesForecastId"/>
+        <set-nonpk-fields map="parameters" value-field="salesForecast"/>
+
+        <!-- set the creation info -->
+        <set field="salesForecast.createdByUserLoginId" from-field="userLogin.userLoginId"/>
+        <set field="salesForecast.modifiedByUserLoginId" from-field="userLogin.userLoginId"/>
+
+        <!-- create the value -->
+        <create-value value-field="salesForecast"/>
+
+        <!-- save a copy to history -->
+        <call-simple-method method-name="saveSalesForecastHistory"/>
+
+        <!-- return the ID -->
+        <field-to-result result-name="salesForecastId" field="salesForecastId"/>
+    </simple-method>
+
+    <simple-method method-name="updateSalesForecast" short-description="Updates a sales forecast and stores a copy in sales forecast history.">
+
+        <!-- get the forecast -->
+        <entity-one entity-name="SalesForecast" auto-field-map="true" value-field="salesForecast"/>
+
+        <!-- set the fields from the parameters -->
+        <set-nonpk-fields map="parameters" value-field="salesForecast"/>
+
+        <!-- store the value -->
+        <store-value value-field="salesForecast"/>
+
+        <!-- save a copy to history -->
+        <call-simple-method method-name="saveSalesForecastHistory"/>
+    </simple-method>
+
+    <simple-method method-name="saveSalesForecastHistory" short-description="Given a salesForecast map, saves the data in the history.">
+
+        <!-- make the value and set the fields from the salesForecast map -->
+        <make-value value-field="salesForecastHistory" entity-name="SalesForecastHistory"/>
+        <sequenced-id sequence-name="SalesForecastHistory" field="salesForecastHistoryId"/>
+        <set field="salesForecastHistory.salesForecastHistoryId" from-field="salesForecastHistoryId"/>
+        <set-nonpk-fields value-field="salesForecastHistory" map="salesForecast"/>
+
+        <!-- get the change note from the parameters -->
+        <set field="salesForecastHistory.changeNote" from-field="parameters.changeNote"/>
+
+        <!-- set the modified info -->
+        <now-timestamp field="nowTimestamp"/>
+        <set field="salesForecastHistory.modifiedTimestamp" from-field="nowTimestamp"/>
+        <set field="salesForecast.modifiedByUserLoginId" from-field="userLogin.userLoginId"/>
+
+        <!-- create the value -->
+        <create-value value-field="salesForecastHistory"/>
+    </simple-method>
+
+    <!-- Sales Forecast Detail -->
+    <simple-method method-name="createSalesForecastDetail" short-description="Creates a sales forecast detail">
+        <make-value entity-name="SalesForecastDetail" value-field="newEntity"/>
+        <sequenced-id sequence-name="SalesForecastDetail" field="newEntity.salesForecastDetailId"/>
+        <field-to-result field="newEntity.salesForecastDetailId" result-name="salesForecastDetailId"/>
+        <set-pk-fields map="parameters" value-field="newEntity"/>
+        <set-nonpk-fields map="parameters" value-field="newEntity"/>
+        <create-value value-field="newEntity"/>
+    </simple-method>
+    <simple-method method-name="updateSalesForecastDetail" short-description="Updates a sales forecast detail">
+        <entity-one entity-name="SalesForecastDetail" value-field="lookedUpValue"/>
+        <set-nonpk-fields value-field="lookedUpValue" map="parameters"/>
+        <store-value value-field="lookedUpValue"/>
+    </simple-method>
+    <simple-method method-name="deleteSalesForecastDetail" short-description="Delete a Sales Forecast Detail">
+        <entity-one entity-name="SalesForecastDetail" value-field="lookedUpValue"/>
+        <remove-value value-field="lookedUpValue"/>
+    </simple-method>
+    
+    <simple-method method-name="createSalesOpportunity" short-description="Create Sales Opportunity">
+     
+        <make-value entity-name="SalesOpportunity" value-field="newEntity"/>
+        <if-empty field="parameters.salesOpportunityId">
+            <sequenced-id sequence-name="SalesOpportunity" field="parameters.salesOpportunityId"/>
+        </if-empty>
+        <set-nonpk-fields map="parameters" value-field="newEntity"/>
+        <set-pk-fields map="parameters" value-field="newEntity"/>
+        <set from-field="userLogin.userLoginId" field="newEntity.createdByUserLogin"/>
+         <set from-field="parameters.leadPartyId" field="newEntity.leadPartyId"/>
+        <field-to-result field="parameters.salesOpportunityId" result-name="salesOpportunityId"/>
+        <create-value value-field="newEntity"/>
+  
+  
+             <call-class-method class-name="org.ofbiz.content.data.DataResourceWorker" method-name="getDataResourceContentUploadPath" ret-field="uploadPath"/>
+             <log level="always" message="[createPartyContent] - Found Subdir : ${uploadPath}"/>
+            <if-not-empty field="parameters.documentId">
+              <call-class-method class-name="org.ofbiz.content.data.DataResourceWorker" method-name="getMimeTypeWithByteBuffer" ret-field="mimeTypeId">
+                  <field field="parameters.documentId" type="java.nio.ByteBuffer"/>
+              </call-class-method>
+              </if-not-empty>
+        
+            <if-not-empty field="parameters.documentId">
+              <call-class-method class-name="org.ofbiz.content.data.DataResourceWorker" method-name="getMimeTypeWithByteBuffer" ret-field="mimeTypeId">
+                  <field field="parameters.documentId" type="java.nio.ByteBuffer"/>
+              </call-class-method>
+               <set from-field="mimeTypeId" field="extenLookup.mimeTypeId"/>
+              <find-by-and entity-name="FileExtension" map="extenLookup" list="extensions"/>
+              <first-from-list entry="extension" list="extensions"/>
+              <set field="ext" value="${extension.fileExtensionId}"/>
+              <set field="contextMap.dataCategoryId" value="PERSONAL"/>
+                 <call-bsh >
+             <![CDATA[
+						
+		
+						import java.io.*;
+						import java.nio.ByteBuffer;
+						import java.sql.Timestamp;
+						import java.text.NumberFormat;
+						import java.text.ParseException;
+						import java.util.HashMap;
+						import java.util.Iterator;
+						import java.util.List;
+						import java.util.Locale;
+						import java.util.Map;
+						import java.util.TimeZone;
+						import javolution.util.FastMap;
+                       
+                       
+                        ByteBuffer byteBuffer = (ByteBuffer) parameters.get("documentId");
+                        String accountPartyId = parameters.get("leadPartyId");
+		                byte [] inputByteArray = byteBuffer.array();
+		                InputStream in = new ByteArrayInputStream(inputByteArray);
+		                String fNameFinal =  uploadPath+"/"+accountPartyId+"."+ext ;
+		                contextMap.put("uploadedFile",byteBuffer);
+		                contextMap.put("_uploadedFile_fileName",fNameFinal);
+			                try
+							  {
+							  File f=new File(fNameFinal);
+							  OutputStream out=new FileOutputStream(f);
+							  byte []buf=new byte[1024];
+							  int len;
+							  while((len=in.read(buf))>0)
+							  out.write(buf,0,len);
+							  out.close();
+							  in.close();
+							  }
+							  catch (IOException e){}
+                  ]]>
+                 </call-bsh>
+			            
+					   
+					    <set field="contextMap.statusId" value="CTNT_PUBLISHED"/>
+					    <set field="contextMap.partyId" value="${parameters.leadPartyId}"/>
+					    <set field="contextMap.partyContentTypeId" value="USERDEF"/> 
+					    <set field="contextMap.roleTypeId" value="SFA_ROLE"/>
+<!-- 					<set field="contextMap.uploadedFile" value="${parameters.documentId}"  /> -->
+					    <call-service service-name="uploadPartyContentFile" in-map-name="contextMap"/>
+        </if-not-empty>
+            
+    </simple-method>
+    <simple-method method-name="updateSalesOpportunity" short-description="Update an Sales opportunity">
+        <entity-one entity-name="SalesOpportunity" value-field="lookedUpValue"/>
+        <set-pk-fields value-field="lookedUpValue"  map="parameters"/>
+        <set-nonpk-fields value-field="lookedUpValue" map="parameters"/>
+        <store-value value-field="lookedUpValue"/>
+        <log level="always" message="=================================================888888888888888888888888    ${lookedUpValue.statusId} cccccccccccccccccccccccccccc"></log>
+        
+        
+    <if-compare operator="equals" value="SFA_CLOSED" field="parameters.statusId" >  
+    <entity-and entity-name="PartyRelationship" list="partyRelationships" >
+			<field-map field-name="partyIdFrom" value="${lookedUpValue.leadPartyId}" />
+<!-- 			<field-map field-name="partyRelationshipTypeId" value="CONTACT_REL" /> -->
+<!-- 			<order-by field-name="-fromDate" /> -->
+		</entity-and>
+		
+   
+   <if-not-empty field="partyRelationships">
+   <iterate entry="partyRelationship" list="partyRelationships">
+    <set field="partyRelationship.partyRelationshipTypeId" value="SFA_OPP_CLOSE"/>
+        <store-value value-field="partyRelationship" />
+    </iterate>
+    <set field="createPartyRoleCtx.partyId" value="${parameters.leadPartyId}" />
+		<set field="createPartyRoleCtx.statusId" value="SFA_CLOSED" />
+		<call-service service-name="setPartyStatus" in-map-name="createPartyRoleCtx" />
+    </if-not-empty>
+    
+    </if-compare>
+    
+   </simple-method>
+    
+    <simple-method method-name="createSalesOpportunityRole" short-description="Create Sales Opportunity Role">
+        <make-value value-field="newEntity" entity-name="SalesOpportunityRole"/>
+        <set-nonpk-fields map="parameters" value-field="newEntity"/>
+        <set-pk-fields map="parameters" value-field="newEntity"/>
+        <create-value value-field="newEntity"/>
+    </simple-method>
+    <simple-method method-name="createSalesOpportunityAccountRole" short-description="Create Sales Opportunity Account Role">
+        <entity-and list="salesOpportunityRoles" entity-name="SalesOpportunityRole">
+            <field-map field-name="salesOpportunityId" from-field="parameters.salesOpportunityId"/>
+            <field-map field-name="roleTypeId" value="ACCOUNT"/>
+        </entity-and>
+        <first-from-list entry="lookedUpValue" list="salesOpportunityRoles"/>
+        <if-compare-field operator="not-equals" field="lookedUpValue.partyId" to-field="parameters.accountPartyId">
+            <if-not-empty field="lookedUpValue">
+                <remove-value value-field="lookedUpValue"/>
+            </if-not-empty>
+            <!-- Check party role for create Account Role -->
+            <if-not-empty field="parameters.accountPartyId">
+                <set field="roleMap.roleTypeId" value="ACCOUNT"/>
+                <set field="roleMap.partyId" from-field="parameters.accountPartyId"/>
+                <call-service service-name="createPartyRole" in-map-name="roleMap"/>
+            </if-not-empty>
+            <set field="salesOpportunityRole.roleTypeId" value="ACCOUNT"/>
+            <set field="salesOpportunityRole.salesOpportunityId" from-field="parameters.salesOpportunityId"/>
+            <set field="salesOpportunityRole.partyId" from-field="parameters.accountPartyId"/>
+            <call-service service-name="createSalesOpportunityRole" in-map-name="salesOpportunityRole"/>
+        </if-compare-field>
+    </simple-method>
+    <simple-method method-name="createSalesOpportunityLeadRole" short-description="Create Sales Opportunity Lead Role">
+        <entity-and list="salesOpportunityRoles" entity-name="SalesOpportunityRole">
+            <field-map field-name="salesOpportunityId" from-field="parameters.salesOpportunityId"/>
+            <field-map field-name="roleTypeId" value="LEAD"/>
+        </entity-and>
+        <first-from-list entry="lookedUpValue" list="salesOpportunityRoles"/>
+        <if-compare-field operator="not-equals" field="lookedUpValue.partyId" to-field="parameters.leadPartyId">
+            <if-not-empty field="lookedUpValue">
+                <remove-value value-field="lookedUpValue"/>
+            </if-not-empty>
+            <!-- Check party role for create Lead Role -->
+            <if-not-empty field="parameters.leadPartyId">
+                <set field="roleMap.roleTypeId" value="LEAD"/>
+                <set field="roleMap.partyId" from-field="parameters.leadPartyId"/>
+                <call-service service-name="createPartyRole" in-map-name="roleMap"/>
+            </if-not-empty>
+            <set field="salesOpportunityRole.roleTypeId" value="LEAD"/>
+            <set field="salesOpportunityRole.salesOpportunityId" from-field="parameters.salesOpportunityId"/>
+            <set field="salesOpportunityRole.partyId" from-field="parameters.leadPartyId"/>
+            <call-service service-name="createSalesOpportunityRole" in-map-name="salesOpportunityRole"/>
+        </if-compare-field>
+    </simple-method>
+    <simple-method method-name="findPartyInSalesOpportunityRole" short-description="find party in role specified by in parameter">
+        <entity-and list="salesOpportunityRoles" entity-name="SalesOpportunityRole">
+            <field-map field-name="roleTypeId" from-field="parameters.roleTypeId"/>
+            <field-map field-name="salesOpportunityId" from-field="parameters.salesOpportunityId"/>
+        </entity-and>
+        <first-from-list entry="lookedUpValue" list="salesOpportunityRoles"/>
+        <field-to-result field="lookedUpValue.partyId" result-name="partyId"/>
+    </simple-method>
+</simple-methods>

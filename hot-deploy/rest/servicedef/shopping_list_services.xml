@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/services.xsd">
+    <description>RestfulComponent Services</description>
+    <vendor></vendor>
+    <version>1.0</version>
+ 
+   
+    <service name="updateShoppingListNextOrderDate" engine="java" location="com.ilinks.restful.service.ShoppingListServices" invoke="updateShoppingListNextOrderDate" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Update Next Order Date</description>
+        <attribute name="shoppingListID"    type="String" mode="IN" optional="false"/>
+        <attribute name="startDateTime"     type="Timestamp" mode="IN" optional="false"/>
+    </service>
+    
+    <service name="expireShoppingList" engine="java" location="com.ilinks.restful.service.ShoppingListServices" invoke="expireShoppingList" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Expire Shopping List</description>
+        <attribute name="shoppingListID"    type="String" mode="IN" optional="false"/>
+    </service>
+    
+    <service name="updateShoppingListFrequency" engine="java" location="com.ilinks.restful.service.ShoppingListServices" invoke="updateShoppingListFrequency" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Update Frequency</description>
+        <attribute name="shoppingListID"    type="String" mode="IN" optional="false"/>
+        <attribute name="frequency"         type="Long" mode="IN" optional="false"/>
+    </service>
+    
+    <service name="updateShoppingListPaymentMethod" engine="java" location="com.ilinks.restful.service.ShoppingListServices" invoke="updateShoppingListPaymentMethod" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Update Payment</description>
+        <attribute name="shoppingListID"    type="String" mode="IN" optional="false"/>
+        <attribute name="paymentMethodID"   type="String" mode="IN" optional="false"/>
+    </service>
+    
+ 
+    <service name="updateShoppingListAddress" engine="java" location="com.ilinks.restful.service.ShoppingListServices" invoke="updateShoppingListAddress" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Update Address</description>
+        <attribute name="shoppingListID"    type="String" mode="IN" optional="false"/>
+        <attribute name="contactMechID"   type="String" mode="IN" optional="false"/>
+    </service>
+    
+    
+     <service name="retrieveShoppingListInfo" engine="java" location="com.ilinks.restful.service.ShoppingListServices" invoke="retrieveShoppingListInfo" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Retrieve Shopping List Info All</description>
+        <attribute name="shoppingListID"             type="String" mode="IN" optional="true"/>
+        <attribute name="shoppingListInfo"           type="java.util.List" mode="OUT" optional="false"/>
+    </service>
+    
+    
+    <service name="updateFreqFromOrderItem" engine="java" location="com.ilinks.restful.service.ShoppingListServices" invoke="updateFreqFromOrderItem" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Set Comments Field To Freq From Order Item</description>
+        <attribute name="orderId"             type="String" mode="IN" optional="false"/>
+        <attribute name="orderItemSeqId"      type="String" mode="IN" optional="false"/>
+        <attribute name="productId"           type="String" mode="IN" optional="false"/>
+        <attribute name="frequency"           type="Long" mode="OUT" optional="true"/>
+    </service>
+    
+    
+    <service name="updateFreqFromShoppingListItem" engine="java" location="com.ilinks.restful.service.ShoppingListServices" invoke="updateFreqFromShoppingListItem" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Set Comments Field To Freq From ShoppingList Item</description>
+        <attribute name="shoppingListId"    type="String" mode="IN" optional="false"/>
+        <attribute name="productId"         type="String" mode="IN" optional="false"/>
+        <attribute name="quantity"          type="BigDecimal" mode="IN" optional="false"/>
+        <attribute name="frequency"         type="Long" mode="OUT" optional="true"/>
+    </service>
+</services>

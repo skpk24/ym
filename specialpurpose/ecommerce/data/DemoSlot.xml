@@ -1,0 +1,24 @@
+<entity-engine-xml>
+<!-- <OrderSlotType slotTypeId="1001" slotType="SLOT1" slotTiming="7 AM TO 10 AM" maxDelivery="10"/>
+<OrderSlotType slotTypeId="1002" slotType="SLOT2" slotTiming="11 AM TO 2 PM" maxDelivery="10"/> -->
+<OrderSlotType slotTypeId="1003" slotType="SLOT1" slotTiming="3 PM TO 6 PM" maxDelivery="40" />
+<OrderSlotType  slotTypeId="1004" slotType="SLOT2" slotTiming="7 PM TO 10 PM" maxDelivery="40"/>
+
+
+
+<!-- Real cdata
+<OrderSlotType slotTypeId="1001" slotType="SLOT1" slotTiming="7 AM TO 10 AM" maxDelivery="40"/>
+<OrderSlotType slotTypeId="1002" slotType="SLOT2" slotTiming="11 AM TO 2 PM" maxDelivery="40"/> -->
+<OrderSlotType slotTypeId="1003" slotType="SLOT1" slotTiming="3 PM TO 6 PM" maxDelivery="40" />
+<OrderSlotType  slotTypeId="1004" slotType="SLOT2" slotTiming="7 PM TO 10 PM" maxDelivery="40" />
+
+
+ <StatusType description="Slot Status" hasTable="N" parentTypeId="" statusTypeId="SLOT_STATUS"/>
+
+ <StatusItem description="Requested" sequenceId="01" statusCode="REQUESTED" statusId="SLOT_REQUESTED" statusTypeId="SLOT_STATUS"/>
+<StatusItem description="Accepted" sequenceId="02" statusCode="ACCEPTED" statusId="SLOT_ACCEPTED" statusTypeId="SLOT_STATUS"/>
+<StatusItem description="Completed" sequenceId="03" statusCode="COMPLETED" statusId="SLOT_COMPLETED" statusTypeId="SLOT_STATUS"/>
+
+
+
+</entity-engine-xml>

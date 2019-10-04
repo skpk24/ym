@@ -1,0 +1,675 @@
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+
+
+
+	<form name="FindTeam" type="single" target="FindTeamMembers">
+
+		<field name="groupName" title="Sales Team Name">
+			<text-find />
+		</field>
+		<field name="partyTypeId">
+			<hidden value="SALES_GROUP" />
+		</field>
+		<field name="groupNameLocal">
+			<hidden value="SALES_GROUP" />
+		</field>
+		<field name="submitButton" title="submit">
+			<submit />
+		</field>
+	</form>
+
+	<form name="CreateTeam" type="single" target="CreateTeamAction">
+		<actions>
+			<script
+				location="component://marketing/webapp/marketing/WEB-INF/actions/TeamPermissions.groovy" />
+
+			<set field="bestCost" value="${bestCost}" />
+		</actions>
+		<alt-target use-when="groupName!=null" target="EditTeam" />
+
+		<field name="groupName" title="Sales Team Name">
+			<text />
+		</field>
+		<field name="teamId" id-name="teamId" field-name="partyId"
+			title="Lead Name">
+			<drop-down allow-multiple="false" allow-empty="true">
+				<entity-options entity-name="PartyRoleAndPartyDetail"
+					description="${firstName} ${middleName} ${lastName} ${groupName}(${partyId})">
+					<entity-constraint name="roleTypeId" operator="equals"
+						value="PROSPECT_LEAD" />
+					<entity-constraint name="statusId" operator="not-equals"
+						value="SFA_CLOSED" />
+				</entity-options>
+			</drop-down>
+		</field>
+		<field name="partyTypeId">
+			<hidden value="SALES_GROUP" />
+		</field>
+		<field name="teamTypeId">
+			<hidden value="TEAM_TARGET" />
+		</field>
+
+		<field name="targetCost" title="Team Target Amount">
+			<text size="15" />
+		</field>
+		<field name="bestCaseCost" use-when="bestCost!=null">
+			<text size="15" />
+		</field>
+		<field name="closedCost" title="Closed Target">
+			<text size="15" />
+		</field>
+		<field name="currencyUomId" title="Currency" position="2"
+			widget-style="required">
+			<drop-down allow-empty="true" no-current-selected-key="INR">
+				<entity-options key-field-name="uomId"
+					description="${abbreviation} - ${description}" entity-name="Uom">
+					<entity-constraint name="uomTypeId" operator="equals"
+						value="CURRENCY_MEASURE" />
+					<entity-order-by field-name="abbreviation" />
+				</entity-options>
+			</drop-down>
+		</field>
+		<field name="fromDate" title="Sales Target From Date">
+			<date-time />
+		</field>
+		<field name="toDate" title="Sales Target to Date">
+			<date-time />
+		</field>
+
+
+		<field name="stateGeoId" title="state">
+			<drop-down allow-empty="true" no-current-selected-key="">
+				<entity-options entity-name="Geo" description="${geoName}"
+					key-field-name="geoId">
+					<entity-constraint name="geoTypeId" value="STATE" />
+				</entity-options>
+			</drop-down>
+		</field>
+
+		<field name="countryGeoId" title="Country">
+			<drop-down allow-empty="true" no-current-selected-key="IND">
+				<entity-options entity-name="Geo" description="${geoName}"
+					key-field-name="geoId">
+					<entity-constraint name="geoTypeId" value="COUNTRY" />
+				</entity-options>
+			</drop-down>
+		</field>
+		<field name="zoneId" title="Zone">
+			<drop-down allow-empty="true">
+				<option key="EAST_ZONE" description="East Zone" />
+				<option key="WEST_ZONE" description="West Zone" />
+				<option key="NORTH_ZONE" description="North Zone" />
+				<option key="SOUTH_ZONE" description="South Zone" />
+			</drop-down>
+		</field>
+
+		<field name="groupNameLocal">
+			<hidden value="SALES_GROUP" />
+		</field>
+		<field name="comments" title="${uiLabelMap.Description}">
+			<textarea />
+		</field>
+		<field name="submitButton" title="Create" event="onclick"
+			action="javascript:
+		 var leadParty =   document.getElementById('teamId').value;
+		 if(leadParty=''||leadParty.length==0){
+		 alert('Please Choose Lead');
+		 return false ;
+		 }
+		
+		">
+			<submit />
+		</field>
+	</form>
+
+	<form name="ListTeam" type="list" list-name="partyAndGroup"
+		odd-row-style="alternate-row" list-entry-name="partyAndGroup"
+		default-table-style="basic-table hover-bar" header-row-style="header-row">
+		<actions>
+
+			<script
+				location="component://marketing/webapp/sfa/WEB-INF/action/TeamPermissions.groovy" />
+		</actions>
+
+		<field name="partyId" title="partyId">
+			<hyperlink description="${partyAndGroup.partyId}" target="CreateTeam">
+
+				<parameter param-name="${uiLabelMap.GroupName}" />
+				<parameter param-name="${partyAndGroup.partyId}" />
+
+			</hyperlink>
+		</field>
+
+		<field name="groupName" title="Team Name">
+			<display description="${partyAndGroup.groupName}"></display>
+		</field>
+
+		<field name="comments" title="${uiLabelMap.Description}">
+			<display description="${partyAndGroup.comments}" />
+		</field>
+		<field name="removeButton" title="${uiLabelMap.CommonEmptyHeader}"
+			widget-style="buttontext">
+			<hyperlink description="${uiLabelMap.CommonRemove}" target="deleteTeam">
+				<parameter param-name="partyId" />
+			</hyperlink>
+		</field>
+	</form>
+
+
+	<form name="CreateTeamMember" type="single" target="CreateMemberMamberAction"
+		list-name="grouplist">
+
+		<actions>
+			<service service-name="FindGroup" result-map="result1"
+				result-map-list="grouplist"></service>
+			<set field="bestCost" value="${bestCost}" />
+
+			<script
+				location="component://marketing/webapp/marketing/WEB-INF/actions/TeamPermissions.groovy" />
+		</actions>
+
+		<field name="partyIdFrom" separate-column="true" title="Sales Team Name">
+
+			<drop-down allow-empty="false">
+				<entity-options description="${groupName}"
+					entity-name="PartyGroup" key-field-name="partyId">
+					<entity-constraint name="groupNameLocal"
+						operator="equals" value="SALES_GROUP" />
+				</entity-options>
+			</drop-down>
+
+		</field>
+
+		<field name="firstName" title="${uiLabelMap.Name}">
+			<text></text>
+		</field>
+		<field name="roleTypeIdTo" title="${uiLabelMap.Role}">
+			<drop-down>
+				<option key="MANAGER" description="Manager" />
+				<option key="TEAMLEADER" description="Team Lead" />
+				<option key="TEAMMEMBER" description="Team Member" />
+			</drop-down>
+		</field>
+
+		<field name="teamTypeId">
+			<hidden value="INDIVIDUAL_TARGET" />
+		</field>
+
+		<field name="targetCost" title="Team Target Amount">
+			<text size="15" />
+		</field>
+		<field name="bestCaseCost" use-when="bestCost!=null">
+			<text size="15" />
+		</field>
+		<field name="closedCost" title="Closed Target">
+			<text size="15" />
+		</field>
+		<field name="currencyUomId" title="Currency" position="2"
+			widget-style="required">
+			<drop-down allow-empty="true" no-current-selected-key="INR">
+				<entity-options key-field-name="uomId"
+					description="${abbreviation} - ${description}" entity-name="Uom">
+					<entity-constraint name="uomTypeId" operator="equals"
+						value="CURRENCY_MEASURE" />
+					<entity-order-by field-name="abbreviation" />
+				</entity-options>
+			</drop-down>
+		</field>
+		<field name="fromDate" title="Sales Target From Date">
+			<date-time />
+		</field>
+		<field name="toDate" title="Sales Target to Date">
+			<date-time />
+		</field>
+
+
+		<field name="stateGeoId" title="state">
+			<drop-down allow-empty="true" no-current-selected-key="">
+				<entity-options entity-name="Geo" description="${geoName}"
+					key-field-name="geoId">
+					<entity-constraint name="geoTypeId" value="STATE" />
+				</entity-options>
+			</drop-down>
+		</field>
+
+		<field name="countryGeoId" title="Country">
+			<drop-down allow-empty="true" no-current-selected-key="IND">
+				<entity-options entity-name="Geo" description="${geoName}"
+					key-field-name="geoId">
+					<entity-constraint name="geoTypeId" value="COUNTRY" />
+				</entity-options>
+			</drop-down>
+		</field>
+		<field name="zoneId" title="Zone">
+			<drop-down allow-empty="true">
+				<option key="EAST_ZONE" description="East Zone" />
+				<option key="WEST_ZONE" description="West Zone" />
+				<option key="NORTH_ZONE" description="North Zone" />
+				<option key="SOUTH_ZONE" description="South Zone" />
+			</drop-down>
+		</field>
+
+		<field name="userLoginId" title="${uiLabelMap.UserName}">
+			<text></text>
+		</field>
+		<field name="currentPassword" title="${uiLabelMap.Password}">
+			<password></password>
+		</field>
+		<field name="currentPasswordVerify" title="${uiLabelMap.confirmedPassword}">
+			<password></password>
+		</field>
+		<field name="requirePasswordChange">
+			<drop-down allow-empty="false" no-current-selected-key="N">
+				<option key="Y" description="${uiLabelMap.CommonY}" />
+				<option key="N" description="${uiLabelMap.CommonN}" />
+			</drop-down>
+		</field>
+		<field name="submitButton" title="Create">
+			<submit />
+		</field>
+	</form>
+	<form name="CreateTeamLeader" type="single" target="CreateMemberMamberAction"
+		list-name="grouplist">
+		<actions>
+			<service service-name="FindGroup" result-map="result1"
+				result-map-list="grouplist"></service>
+
+		</actions>
+		<field name="groupName" separate-column="true"
+			title="${uiLabelMap.GroupName}">
+			<drop-down allow-empty="false">
+
+				<list-options key-name="partyId" list-name="grouplist"
+					description="${groupName}" />
+			</drop-down>
+		</field>
+
+		<field name="Name" title="Name">
+			<text></text>
+		</field>
+		<field name="roleTypeId" title="${uiLabelMap.Role}">
+			<drop-down>
+				<!--
+					<option key="MANAGER" description="MANAGER"/> <option
+					key="TEAMLEADER" description="TEAMLEADER"/>
+				-->
+				<option key="TEAMMEMBER" description="TEAMMEMBER" />
+			</drop-down>
+		</field>
+		<field name="USERNAME" title="${uiLabelMap.UserName}">
+			<text></text>
+		</field>
+		<field name="PASSWORD" title="${uiLabelMap.Password}">
+			<password></password>
+		</field>
+		<field name="CONFIRM_PASSWORD" title="${uiLabelMap.confirmedPassword}">
+			<password></password>
+		</field>
+		<field name="submitButton" title="Create">
+			<submit />
+		</field>
+	</form>
+	<form name="CreateTeamManager" type="single" target="CreateMemberMamberAction"
+		list-name="grouplist">
+		<actions>
+			<service service-name="FindGroup" result-map="result1"
+				result-map-list="grouplist"></service>
+
+		</actions>
+		<field name="groupName" title="${uiLabelMap.GroupName}">
+			<drop-down allow-empty="false">
+
+				<list-options key-name="partyId" list-name="grouplist"
+					description="${groupName}" />
+			</drop-down>
+		</field>
+
+		<field name="Name" title="${uiLabelMap.Name}">
+			<text></text>
+		</field>
+		<field name="roleTypeId" title="${uiLabelMap.Role}">
+			<drop-down>
+				<!-- <option key="MANAGER" description="MANAGER"/> -->
+				<option key="TEAMLEADER" description="TEAMLEADER" />
+				<option key="TEAMMEMBER" description="TEAMMEMBER" />
+			</drop-down>
+		</field>
+		<field name="USERNAME" title="${uiLabelMap.UserName}">
+			<text></text>
+		</field>
+		<field name="PASSWORD" title="${uiLabelMap.Password}">
+			<password></password>
+		</field>
+		<field name="CONFIRM_PASSWORD" title="${uiLabelMap.confirmedPassword}">
+			<password></password>
+		</field>
+		<field name="submitButton" title="Create">
+			<submit />
+		</field>
+	</form>
+
+	<form name="ListTeamMember1" type="list" list-name="listteammember"
+		default-entity-name="PartyRelationship" odd-row-style="alternate-row"
+		default-table-style="basic-table hover-bar" header-row-style="header-row">
+		<actions>
+			<entity-condition entity-name="PartyRelationship"
+				list="listteammember">
+
+				<condition-list>
+					<condition-expr field-name="roleTypeIdFrom"
+						operator="equals" value="TEAM" ignore-if-null="true" />
+				</condition-list>
+
+			</entity-condition>
+		</actions>
+
+		<field name="partyIdFrom" title="${uiLabelMap.PartyIdFrom}">
+			<display></display>
+		</field>
+		<field name="partyIdTo" title="${uiLabelMap.PartyIdTo}">
+			<display></display>
+		</field>
+		<field name="roleTypeIdTo" title="${uiLabelMap.roleTypeIdTo}">
+			<display></display>
+		</field>
+		<!--
+			<field name="updateButton" title="${uiLabelMap.CommonUpdate}"><submit
+			button-type="button"/></field> <field name="removeButton"
+			title="${uiLabelMap.CommonEmptyHeader}" widget-style="buttontext">
+			<hyperlink description="${uiLabelMap.CommonRemove}" target="delete">
+			<parameter param-name="groupName"/> </hyperlink> </field>
+		-->
+
+	</form>
+
+	<form name="FindTeamMember" type="single" target="FindTeamMembers">
+
+		<field name="firstName" title="Sales Team Member Name">
+			<text-find />
+		</field>
+		<field name="roleTypeId">
+			<hidden value="TEAMMEMBER" />
+		</field>
+		<field name="partyRelationshipTypeId">
+			<hidden value="TEAM_MEM_ASSIGN" />
+		</field>
+		<field name="submitButton" title="submit">
+			<submit />
+		</field>
+	</form>
+
+	<form name="ListTeamMember" type="list" paginate-target="FindTeamMembers"
+		title="" list-name="listIt" odd-row-style="alternate-row"
+		default-table-style="basic-table hover-bar" use-row-submit="true"
+		header-row-style="header-row-2">
+		<actions>
+			<service service-name="performFind" result-map="result"
+				result-map-list="listIt">
+				<field-map field-name="inputFields" from-field="parameters" />
+				<field-map field-name="entityName" value="PartyRelationshipAndDetail" />
+				<field-map field-name="orderBy" value="partyId" />
+				<field-map field-name="noConditionFind" value="Y" />
+			</service>
+
+		</actions>
+		<row-actions>
+			<entity-one entity-name="PartyGroup" value-field="party">
+				<field-map field-name="partyId" value="${partyIdFrom}" />
+			</entity-one>
+
+		</row-actions>
+
+		<field name="firstName" title="Team Name">
+			<display description="${firstName}  [${partyIdTo}]"></display>
+		</field>
+
+		<field name="partyIdFrom" title="Assigned To Team">
+			<display description="${party.groupName} [${partyIdFrom}]" />
+		</field>
+		<field name="fromDate" title="Assigned Date">
+			<display description="${fromDate}" />
+		</field>
+
+	</form>
+
+	<form name="CreateCompanyTarget" type="single" target="CreateLeadTarget">
+		<actions>
+			<script
+				location="component://marketing/webapp/marketing/WEB-INF/actions/TeamPermissions.groovy" />
+
+			<set field="bestCost" value="${bestCost}" />
+		</actions>
+
+		<field name="partyId" id-name="partyId" field-name="partyId"
+			title="Lead Name">
+			<drop-down allow-multiple="false" allow-empty="true">
+				<entity-options entity-name="PartyRoleAndPartyDetail"
+					description="${firstName} ${middleName} ${lastName} ${groupName}(${partyId})">
+					<entity-constraint name="roleTypeId" operator="equals"
+						value="PROSPECT_LEAD" />
+					<entity-constraint name="statusId" operator="not-equals"
+						value="SFA_CLOSED" />
+				</entity-options>
+			</drop-down>
+		</field>
+		<field name="teamTypeId">
+			<hidden value="COMPANY_TARGET" />
+		</field>
+
+		<field name="targetCost" title="Team Target Amount">
+			<text size="15" />
+		</field>
+		<field name="bestCaseCost" use-when="bestCost!=null">
+			<text size="15" />
+		</field>
+		<field name="closedCost" title="Closed Target">
+			<text size="15" />
+		</field>
+		<field name="currencyUomId" title="Currency" position="2"
+			widget-style="required">
+			<drop-down allow-empty="true" no-current-selected-key="INR">
+				<entity-options key-field-name="uomId"
+					description="${abbreviation} - ${description}" entity-name="Uom">
+					<entity-constraint name="uomTypeId" operator="equals"
+						value="CURRENCY_MEASURE" />
+					<entity-order-by field-name="abbreviation" />
+				</entity-options>
+			</drop-down>
+		</field>
+		<field name="fromDate" title="Sales Target From Date">
+			<date-time />
+		</field>
+		<field name="thruDate" title="Sales Target to Date">
+			<date-time />
+		</field>
+
+
+		<field name="stateGeoId" title="state">
+			<drop-down allow-empty="true" no-current-selected-key="">
+				<entity-options entity-name="Geo" description="${geoName}"
+					key-field-name="geoId">
+					<entity-constraint name="geoTypeId" value="STATE" />
+				</entity-options>
+			</drop-down>
+		</field>
+
+		<field name="countryGeoId" title="Country">
+			<drop-down allow-empty="true" no-current-selected-key="IND">
+				<entity-options entity-name="Geo" description="${geoName}"
+					key-field-name="geoId">
+					<entity-constraint name="geoTypeId" value="COUNTRY" />
+				</entity-options>
+			</drop-down>
+		</field>
+		<field name="zoneId" title="Zone">
+			<drop-down allow-empty="true">
+				<option key="EAST_ZONE" description="East Zone" />
+				<option key="WEST_ZONE" description="West Zone" />
+				<option key="NORTH_ZONE" description="North Zone" />
+				<option key="SOUTH_ZONE" description="South Zone" />
+			</drop-down>
+		</field>
+
+		<field name="submitButton" title="Create" event="onclick"
+			action="javascript:
+		 var leadParty =   document.getElementById('partyId').value;
+		 if(leadParty=''||leadParty.length==0){
+		 alert('Please Choose Lead');
+		 return false ;
+		 }
+		
+		">
+			<submit />
+		</field>
+	</form>
+	<form name="ListTeamTargets" type="list" paginate-target="FindTeamMembers"
+		title="" list-name="listIt" odd-row-style="alternate-row"
+		default-table-style="basic-table hover-bar" use-row-submit="true"
+		header-row-style="header-row-2">
+		<actions>
+			<service service-name="performFind" result-map="result"
+				result-map-list="listIt">
+				<field-map field-name="inputFields" from-field="parameters" />
+				<field-map field-name="entityName" value="SalesTarget" />
+				<field-map field-name="orderBy" value="partyId" />
+				<field-map field-name="noConditionFind" value="Y" />
+			</service>
+
+		</actions>
+		<row-actions>
+			<entity-one entity-name="PartyGroup" value-field="party">
+				<field-map field-name="partyId" value="${partyId}" />
+			</entity-one>
+
+		</row-actions>
+
+		<field name="firstName" title="Team Name">
+			<display description="${party.groupName}"></display>
+		</field>
+
+		<field name="createdByUserLogin" title="CreatedBy">
+			<display />
+		</field>
+		<field name="fromDate" title="Assigned Date">
+			<display />
+		</field>
+		<field name="thruDate" title="Estimated Close Date">
+			<display description="${thruDate}" />
+		</field>
+
+	</form>
+
+
+	<form name="TargetReports" type="single" target="TargetReports">
+
+		<field name="enumId" title="Choose Target Report">
+			<drop-down>
+				<option description="-Select-" key="--"></option>
+				<option description="Company Target Reports" key="COMPANY_TARGET"></option>
+				<option description="Team Target Reports" key="TEAM_TARGET"></option>
+				<option description="Individual Target Reports" key="INDIVIDUAL_TARGET"></option>
+			</drop-down>
+		</field>
+		<field name="submitButton" title="Find Report">
+			<submit />
+		</field>
+	</form>
+
+
+	<form name="CompanyTargetsReportForm" type="list"
+		list-name="companyTargetsReportList" odd-row-style="alternate-row"
+		list-entry-name="companyTargetsReportList" default-table-style="basic-table hover-bar"
+		header-row-style="header-row" default-map-name="companyTargetsReportList">
+		<actions>
+
+			<script
+				location="component://marketing/webapp/sfa/WEB-INF/action/CompanyTargetsReport.groovy" />
+		</actions>
+		<field name="targetCost">
+			<display />
+		</field>
+		<field name="bestCaseCost">
+			<display />
+		</field>
+		<field name="closedCost">
+			<display />
+		</field>
+		<field name="currencyUomId">
+			<display />
+		</field>
+		<field name="fromDate">
+			<display />
+		</field>
+		<field name="thruDate">
+			<display />
+		</field>
+
+	</form>
+
+
+	<form name="TeamTargetsReportForm" type="list"
+		list-name="companyTargetsReportList" odd-row-style="alternate-row"
+		list-entry-name="companyTargetsReportList" default-table-style="basic-table hover-bar"
+		header-row-style="header-row" default-map-name="companyTargetsReportList">
+		<actions>
+
+<script
+				location="component://marketing/webapp/sfa/WEB-INF/action/TeamTargetsReport.groovy" />
+		</actions>
+
+		<field name="targetCost">
+			<display />
+		</field>
+		<field name="bestCaseCost">
+			<display />
+		</field>
+		<field name="closedCost">
+			<display />
+		</field>
+		<field name="currencyUomId">
+			<display />
+		</field>
+		<field name="fromDate">
+			<display />
+		</field>
+		<field name="thruDate">
+			<display />
+		</field>
+
+	</form>
+
+
+
+	<form name="IndividualTargetsReportForm" type="list"
+		list-name="companyTargetsReportList" odd-row-style="alternate-row"
+		list-entry-name="companyTargetsReportList" default-table-style="basic-table hover-bar"
+		header-row-style="header-row" default-map-name="companyTargetsReportList">
+		<actions>
+
+<script
+				location="component://marketing/webapp/sfa/WEB-INF/action/IndividualTargetsReport.groovy" />
+		</actions>
+
+		<field name="targetCost">
+			<display />
+		</field>
+		<field name="bestCaseCost">
+			<display />
+		</field>
+		<field name="closedCost">
+			<display />
+		</field>
+		<field name="currencyUomId">
+			<display />
+		</field>
+		<field name="fromDate">
+			<display />
+		</field>
+		<field name="thruDate">
+			<display />
+		</field>
+
+	</form>
+
+</forms>

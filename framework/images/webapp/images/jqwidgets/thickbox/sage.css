@@ -1,0 +1,91 @@
+
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+.outer {
+	background: -moz-linear-gradient(center top , #FBFBFB, #F0F0F0, #EDEDED, #EDEDED, #EDEDED) repeat scroll 0 0 rgba(218, 218, 218, 0);
+	border: 4px solid #FFFFFF ;
+	border-radius: 20px 20px 40px 40px;
+	box-shadow: 0 4px 8px #555555;
+	padding: 30px 20px;
+	width:400px;
+}
+.outer1 {
+	border: 1px solid #c2c2c2;
+	border-radius: 10px 10px 20px 20px;
+	padding: 10px ;
+
+}
+.addButtonDiv{
+	border: 1px solid #C2C2C2;
+	border-radius: 10px 10px 10px 10px;
+	height: 18px;
+	padding: 6px 0px 0px 5px;
+	background-color: #fff;
+	text-align:center;
+}
+.inner {
+    background-color: white;
+    border: 1px solid #C2C2C2;
+    border-radius: 15px 15px 15px 15px;
+    margin-bottom: 15px;
+    padding: 15px;
+ 
+}
+.inner2 {
+    background-color: #f4f4f4;
+    border-radius: 5px ;
+    padding: 10px;
+	height:20px;
+ 
+}
+.inner3 {
+    background-color: #e9f3c0;
+    padding: 5px;
+	border:0px solid #54a048;
+}
+.inner3 input[type="text"], input[type="password"] {
+	margin: 0px;
+   
+}
+#weekly_pay_pattern_btn{
+	 
+ }
+	
+.Primary Button right{
+ 	background: -moz-linear-gradient(center top , #B9D157, #89C15C) repeat scroll 0 0 #89C15C;
+    border: 2px solid #FFFFFF !important;
+    box-shadow: 0 1px 3px #777777;
+    color: white;
+    font-family: Verdana,Arial,Helvetica,sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    text-decoration: none;
+	float:right;
+	width:60px;}
+.text{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	font-weight:bold;
+	text-decoration:none;
+	color:#27529f;
+		}
+	
+.text1{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	text-decoration:none;
+	color:#373737;
+	
+	}
+	
+	.text2{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	text-decoration:none;
+	color:#007f64;
+	
+	}

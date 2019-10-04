@@ -1,0 +1,145 @@
+
+.green_button_bg {
+	height:32px;
+	width:970px;
+	background-color:#2f8da7;
+	margin:0px 0px 0px 0px;
+	margin:0 auto;
+	border:0px solid red;
+	-moz-border-radius-bottomright: 10px 10px;
+	-moz-border-radius-bottomleft: 10px 10px;
+	border-bottom-right-radius: 10px 10px;
+	border-bottom-left-radius: 10px 10px;
+}
+
+.left_corve_img {
+	list-style:none;
+	background-color:#e3e2e2;
+	float:left;
+}
+.right_corve_img {
+	list-style:none;
+	float:right;
+	background-color:#e3e2e2;
+}
+
+.green_buttons_area {
+	width:880px;
+	border:0px solid red;
+}
+
+.green_buttons_top {
+	text-align: center;
+	overflow: visible;
+	height: 32px;
+	margin-top:0px;
+}
+
+.green_buttons_top li{
+	float:left;
+	text-decoration:none;
+}
+
+.green_buttons {
+	text-align: center;
+	overflow: visible;
+	height: 16px;
+	margin:5px 0px 0px 0px;
+	color: #ffffff;
+}
+
+.green_buttons li{
+	float:left;
+	padding:0px 15px 0px 15px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:11px;
+	line-height:20px;
+	text-transform: uppercase;
+	font-weight:normal;
+	border-right:0px solid #c5cc01;
+	text-decoration:none;
+}
+
+.green_buttons li.selected a{
+	color: #f5f587;
+    font-weight: bold;
+    text-decoration:none;
+}
+.green_buttons li a{
+	color: #ffffff;
+    font-weight:bold;
+}
+.green_buttons li a:hover{
+	color: #f5f587;
+    font-weight: bold;
+    text-decoration:none;
+}
+
+#ecom-mainarea .right {
+float: right;
+width: 185px;
+border:0px solid red;
+margin:0px 5px 0px 0px;
+}
+#ecom-mainarea .rightonly {
+margin-right: 197px;
+border:0px solid red;
+width:780px;
+}
+.productdetailMainbox {
+	background-color:#ffffff;
+	padding:0px;
+}
+#ecom-mainarea .left {
+float: left;
+width: 185px;
+margin:0px 0px 0px 5px;
+padding-left:0px;
+}
+#ecom-mainarea .center {
+margin: 0 auto;
+width:590px;
+border:0px solid red;
+}
+
+.catagory_top {
+margin:0px 0px 0px 0px;
+border:0px solid red;
+
+background-color:#FFFFFF;
+/*background-image:url(/enzecarttheme/box_background.gif);*/
+line-height:26px;
+}
+
+.grid_box_style {
+	float:left;
+	margin-right:1px;
+	height:320px;
+	margin-bottom:1px;
+	background-color:#ffffff;
+}
+.jcarousel-skin-tango .jcarousel4-item {
+	width:194px;
+	height:285px;
+	padding:0px 0px;
+	_padding:0px 0px;
+}
+.jcarousel-skin-tango .jcarousel4-clip-horizontal {
+    width:  774px;
+    height: 285px;
+}
+
+.jcarousel-skin-tango .jcarousel4-container-horizontal {
+    width: 770px;
+}
+.grid_icon {
+ background:url(/enzecarttheme/grid_icon.png) no-repeat 2px 3px;
+ width:25px;
+ border:none;
+}
+
+.list_icon {
+ background:url(/enzecarttheme/list_icon.png) no-repeat  2px 3px;
+ width:25px;
+ border:none;
+}

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<entity-engine-xml>
+	<StatusItem description="Fulfilled" sequenceId="10" statusCode="COMPLETED" statusId="ORDER_COMPLETED" statusTypeId="ORDER_STATUS"/>
+	<StatusValidChange condition="" statusId="ORDER_APPROVED" statusIdTo="ORDER_COMPLETED" transitionName="Transit Order"/>
+	<StatusValidChange condition="" statusId="ORDER_COMPLETED" statusIdTo="ORDER_FULFILLED" transitionName="Fulfill Order"/>
+	
+	<StatusValidChange condition="" statusId="ORDER_APPROVED" statusIdTo="ORDER_PACKED" transitionName="Packed Order"/>
+	<StatusValidChange condition="" statusId="ORDER_PACKED" statusIdTo="ORDER_DISPATCHED" transitionName="Dispatched Order"/>
+	<StatusValidChange condition="" statusId="ORDER_DISPATCHED" statusIdTo="ORDER_COMPLETED" transitionName="Completed Order"/>
+	
+	<StatusItem description="Packed" sequenceId="05" statusCode="ORDER_PACKED" statusId="ORDER_PACKED" statusTypeId="ORDER_STATUS"/>
+	<StatusItem description="In Transit" sequenceId="05" statusCode="ORDER_DISPATCHED" statusId="ORDER_DISPATCHED" statusTypeId="ORDER_STATUS"/>
+	<StatusItem description="Partially Dispatched" sequenceId="05" statusCode="ORDER_DISP_PARTIALLY" statusId="ORDER_DISP_PARTIALLY" statusTypeId="ORDER_STATUS"/>
+	
+	<StatusValidChange condition="" statusId="ORDER_APPROVED" statusIdTo="ORDER_DISP_PARTIALLY" transitionName="Partially Dispatched"/>
+	<StatusValidChange condition="" statusId="ORDER_DISP_PARTIALLY" statusIdTo="ORDER_PACKED" transitionName="Packed Order"/>
+	<StatusValidChange condition="" statusId="ORDER_DISP_PARTIALLY" statusIdTo="ORDER_DISPATCHED" transitionName="Dispatched Order"/>
+	
+	<PartyType description="Delivery Boy [Permanent]" hasTable="N" parentTypeId="" partyTypeId="DELIV_BOY_PERMANENT"/>
+	<PartyType description="Delivery Boy [Hired]" hasTable="N" parentTypeId="" partyTypeId="DELIV_BOY_HIRED"/>
+	<GoodIdentificationType description="Article Number" goodIdentificationTypeId="ARTICLE_ID_NO" hasTable="N" parentTypeId=""/>
+	
+	<OrderAdjustmentType description="Delivery Boy Adjustment" hasTable="N" orderAdjustmentTypeId="DELIVERY_ADJUSTMENT" parentTypeId=""/>
+	
+	<ProductAssocType description="Recipe Association" hasTable="N" parentTypeId="" productAssocTypeId="RECIPE_ASSOC"/>
+	
+	<PaymentMethodType description="Debit/Credit Card" paymentMethodTypeId="DEBIT_CREDIT_CARD" isCodPayment="Y"/>
+	<PaymentMethodType description="Voucher" paymentMethodTypeId="VOUCHER" isCodPayment="Y"/>
+	<PaymentMethodType description="Cash" paymentMethodTypeId="CASH" isCodPayment="Y"/>
+	
+	<Enumeration description="Inventory Adjustment" enumCode="VAR_INV_ADJUST" enumId="VAR_INV_ADJUST" sequenceId="11" enumTypeId="IID_REASON"/>
+	<VarianceReason varianceReasonId="VAR_INV_ADJUST" description="Inventory Adjustment"/>
+	
+	<Enumeration description="Order Email Report" enumCode="ORDER_EMAIL_REPORT" enumId="ORDER_EMAIL_REPORT" enumTypeId="PRDS_EMAIL" sequenceId="05"/>
+	<ProductStoreEmailSetting productStoreId="9000" emailType="ORDER_EMAIL_REPORT" 
+	bodyScreenLocation="component://ecommerce/widget/ecomclone/EmailOrderScreens.xml#orederEmailReport" subject="Order Email Report" 
+	xslfoAttachScreenLocation="" bccAddress="director@youmart.in" fromAddress="director@youmart.in"/>
+	
+	<Enumeration description="Recipe Response" enumCode="REC_RES_EMAIL" enumId="REC_RES_EMAIL" enumTypeId="PRDS_EMAIL" sequenceId="05"/>
+	<ProductStoreEmailSetting productStoreId="9000" emailType="REC_RES_EMAIL" 
+	bodyScreenLocation="component://ecommerce/widget/ecomclone/EmailProductScreens.xml#recipeResponseEmail" subject="Order Email Report" 
+	xslfoAttachScreenLocation="" bccAddress="director@youmart.in" fromAddress="" toAddress="director@youmart.in"/>
+	
+	<Enumeration description="Recipe Of The Week" enumCode="REC_WEEK_EMAIL" enumId="REC_WEEK_EMAIL" enumTypeId="PRDS_EMAIL" sequenceId="05"/>
+	<ProductStoreEmailSetting productStoreId="9000" emailType="REC_WEEK_EMAIL" 
+	bodyScreenLocation="component://ecommerce/widget/ecomclone/EmailProductScreens.xml#recipeOfTheWeekEmail" subject="Order Email Report" 
+	xslfoAttachScreenLocation="" bccAddress="director@youmart.in" fromAddress="director@youmart.in"/>
+	
+	<StatusValidChange condition="" statusId="RECIPE_OF_WEEK_REQ" statusIdTo="RECIPE_APPROVED" transitionName="Approve Recipe"/>
+	<StatusValidChange condition="" statusId="RECIPE_OF_WEEK_RES" statusIdTo="RECIPE_APPROVED" transitionName="Approve Recipe"/>
+	<StatusValidChange condition="" statusId="RECIPE_OF_WEEK" statusIdTo="RECIPE_APPROVED" transitionName="Approve Recipe"/>
+
+	<GoodIdentificationType description="Article Number" goodIdentificationTypeId="ARTICLE_ID_NO" hasTable="N" parentTypeId=""/>
+	<PartyType description="Delivery Boy [Permanent]" hasTable="N" parentTypeId="" partyTypeId="DELIV_BOY_PERMANENT"/>
+	<PartyType description="Delivery Boy [Hired]" hasTable="N" parentTypeId="" partyTypeId="DELIV_BOY_HIRED"/>
+	
+</entity-engine-xml>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-menu.xsd">
+    <menu name="MainAppBar" title="${uiLabelMap.accountApplication}" extends="CommonAppBarMenu" extends-resource="component://common/widget/CommonNewMenus.xml">
+         <menu-item name="Apmain" title="${uiLabelMap.accountPayable}"><link target="Apmain"/></menu-item>
+         <menu-item name="ARmain" title="${uiLabelMap.accountReceivable}"><link target="ARmain"/></menu-item>
+         <menu-item name="Credit" title="Credit"><link target="PendingCredits"/>
+         </menu-item>
+         <menu-item name="CreditReceive" title="Credit Received"><link target="ReceiveCredits"/>
+         </menu-item>
+         <menu-item name="customerCredit" title="Customer Wise Credit's"><link target="customerCredit"/>
+         </menu-item>
+         
+         
+         
+  </menu>
+</menus>

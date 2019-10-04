@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <form name="AddEmployee" type="single" target="createEmployee"
+        header-row-style="header-row" default-table-style="basic-table">
+        <field name="salutation" title="${uiLabelMap.CommonTitle}"><text size="10" maxlength="30"/></field>
+        <field name="firstName" tooltip="${uiLabelMap.CommonRequired}" widget-style="required"><text/></field>
+        <field name="middleName" title="${uiLabelMap.PartyMiddleInitial}"><text size="4" maxlength="4"/></field>
+        <field name="lastName" tooltip="${uiLabelMap.CommonRequired}" widget-style="required"><text/></field>
+        <field name="partyIdFrom" title="Department" tooltip="${uiLabelMap.CommonRequired}" widget-style="required">
+            <drop-down allow-empty="true">
+                <entity-options entity-name="PartyRoleNameDetail" key-field-name="partyId" description="${groupName}">
+                    <entity-constraint name="roleTypeId" operator="equals" value="INTERNAL_ORGANIZATIO"/>
+                </entity-options>
+                <option key="null" description="${uiLabelMap.HumanResEmplPartyIdFromNotSpecified}"/>
+            </drop-down>
+        </field>
+        <field name="fromDate" title="Start Date"><date-time/></field>
+       <!--  <field name="permanentAddress" title="${uiLabelMap.OrderAddress}" title-area-style="group-label"><display description=" " also-hidden="false"/></field> -->
+        <field name="postalAddContactMechPurpTypeId"><hidden value="PRIMARY_LOCATION"/></field>
+        <field name="address1" title="${uiLabelMap.CommonAddress1}" tooltip="${uiLabelMap.CommonRequired}" widget-style="required"><text size="30" maxlength="60"/></field>
+        <field name="address2" title="${uiLabelMap.CommonAddress2}"><text size="30" maxlength="60"/></field>
+        <field name="city" title="${uiLabelMap.CommonCity}" tooltip="${uiLabelMap.CommonRequired}" widget-style="required"><text size="30" maxlength="60"/></field>
+        <field name="stateProvinceGeoId" title="${uiLabelMap.CommonState}" tooltip="${uiLabelMap.CommonRequired}" widget-style="required">
+            <drop-down allow-empty="true">
+                <entity-options entity-name="Geo" key-field-name="geoId" description="${geoName} - ${geoId}">
+                    <entity-constraint name="geoTypeId" operator="in" value="STATE,PROVINCE"/>
+                    <entity-order-by field-name="geoName"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="postalCode" title="${uiLabelMap.CommonZipPostalCode}" tooltip="${uiLabelMap.CommonRequired}" widget-style="required"><text size="10" maxlength="30"/></field>
+        <field name="countryGeoId" title="${uiLabelMap.CommonCountry}" tooltip="${uiLabelMap.CommonRequired}" widget-style="required">
+            <drop-down allow-empty="false" no-current-selected-key="${defaultCountryGeoId}">
+                <entity-options entity-name="Geo" key-field-name="geoId" description="${geoName} - ${geoId}">
+                    <entity-constraint name="geoTypeId" value="COUNTRY"/>
+                    <entity-order-by field-name="geoName"/>
+                </entity-options>
+            </drop-down>
+        </field>
+      <!--   <field name="phoneTitle" title="${uiLabelMap.PartyPrimaryPhone}" title-area-style="group-label"><display/></field> -->
+        <field name="countryCode" title="${uiLabelMap.PartyCountryCode}"><text size="4" maxlength="10"/></field>
+        <field name="areaCode" title="${uiLabelMap.PartyAreaCode}"><text size="4" maxlength="10"/></field>
+        <field name="contactNumber" title="${uiLabelMap.PartyPhoneNumber}" tooltip="${uiLabelMap.CommonRequired}" widget-style="required"><text size="15" maxlength="15"/></field>
+        <field name="extension" title="${uiLabelMap.PartyContactExt}"><text size="6" maxlength="10"/></field>
+      <!--   <field name="emailAddressTitle" title="${uiLabelMap.PartyEmailAddress}" title-area-style="group-label"><display/></field> -->
+        <field name="emailAddress" title="${uiLabelMap.CommonEmail}"><text size="50" maxlength="60"/></field>
+        <field name="submitButton" title="${uiLabelMap.CommonCreate}" widget-style="smallSubmit"><submit button-type="button"/></field>
+    </form>
+    <form name="AddEmployeeSkills" type="single" target="createEmployeeSkill" default-map-name="partySkill">
+        <field name="partyId"><hidden/></field>
+        <field name="skillTypeId" tooltip="${uiLabelMap.CommonRequired}" widget-style="required" title="Skill Type">
+            <drop-down>
+                <entity-options description="${description}" entity-name="SkillType">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="yearsExperience" title="Experience in Months"><text/></field>
+        <field name="rating"><text/></field>
+        <field name="skillLevel"><text/></field>
+        <field name="submitButton" title="${uiLabelMap.CommonCreate}" widget-style="smallSubmit"><submit button-type="button"/></field>
+    </form>
+    <form name="ListEmployeeSkills" type="list" list-name="listIt" use-row-submit="true" separate-columns="true" target="updateEmployeeSkill" paginate-target="findPartySkills"
+        odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <entity-condition entity-name="PartySkill" >
+                <condition-expr field-name="partyId" from-field="partyId"/>
+                <order-by field-name="skillTypeId"/>
+            </entity-condition>
+        </actions>
+        <auto-fields-service default-field-type="hidden" service-name="updatePartySkill"/>
+        <field name="skillTypeId" title="Skill Type">
+            <display-entity entity-name="SkillType" description="${description}"/>
+        </field>
+        <field name="yearsExperience" title="Experience in Months"><text/></field>
+        <field name="rating"><text/></field>
+        <field name="skillLevel"><text/></field>
+        <field name="deleteLink" title="${uiLabelMap.CommonDelete}" widget-style="buttontext">
+            <hyperlink target="deleteEmployeeSkill" description="${uiLabelMap.CommonDelete}" also-hidden="false">
+                <parameter param-name="skillTypeId"/>
+                <parameter param-name="partyId"/>
+            </hyperlink>
+        </field>
+        <field name="submitButton" title="${uiLabelMap.CommonUpdate}"><submit button-type="button"/></field>
+    </form>
+    <form name="AddEmployeeQualification" type="single" target="createEmployeeQualification">
+        <auto-fields-service service-name="createPartyQual"/>
+        <field name="partyId"><hidden/></field>
+        <field name="partyQualTypeId" tooltip="${uiLabelMap.CommonRequired}" widget-style="required" title="Qualification Type">
+            <drop-down allow-empty="true">
+                <entity-options description="${description}" key-field-name="partyQualTypeId" entity-name="PartyQualType">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="title"><ignored/></field>
+        <field name="statusId" title="Status">
+            <drop-down allow-empty="true">
+                <entity-options description="${description}" key-field-name="statusId" entity-name="StatusItem">
+                    <entity-constraint name="statusTypeId" operator="equals" value="PARTY_INV_STATUS"/>
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="verifStatusId">
+            <drop-down allow-empty="true">
+                <entity-options description="${description}" key-field-name="statusId" entity-name="StatusItem">
+                    <entity-constraint name="statusTypeId" operator="equals" value="PARTYQUAL_VERIFY"/>
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="submitButton" title="${uiLabelMap.CommonCreate}" widget-style="smallSubmit"><submit button-type="button"/></field>
+    </form>
+    <form name="ListEmployeeQualification" type="list" list-name="listIt" use-row-submit="true" separate-columns="true" target="updateEmployeeQualification" paginate-target="FindPartyQuals"
+            odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <entity-condition entity-name="PartyQual">
+                <condition-expr field-name="partyId" from-field="partyId"/>
+                <order-by field-name="fromDate"/>
+            </entity-condition>
+        </actions>
+        <auto-fields-service service-name="updatePartyQual"/>
+        <field name="partyId"><hidden/></field>
+        <field name="partyQualTypeId" title="Qualification Type"><display-entity entity-name="PartyQualType" description="${description}"/></field>
+        <field name="fromDate"><display/></field>
+        <field name="qualificationDesc"><text/></field>
+        <field name="title"><text/></field> 
+        <field name="statusId" title="Status">
+            <drop-down allow-empty="true">
+                <entity-options description="${description}" key-field-name="statusId" entity-name="StatusItem">
+                    <entity-constraint name="statusTypeId" operator="equals" value="PARTY_INV_STATUS"/>
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="verifStatusId">
+            <drop-down allow-empty="true">
+                <entity-options description="${description}" key-field-name="statusId" entity-name="StatusItem">
+                    <entity-constraint name="statusTypeId" operator="equals" value="PARTYQUAL_VERIFY"/>
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="_rowSubmit" title="${uiLabelMap.CommonSelect}"><hidden value="Y"/></field>
+        <field name="deleteLink" title="${uiLabelMap.CommonDelete}" widget-style="buttontext">
+            <hyperlink target="deleteEmployeeQualification" also-hidden="false" description="${uiLabelMap.CommonDelete}">
+                <parameter param-name="partyId"/>
+                <parameter param-name="partyQualTypeId"/>
+                <parameter param-name="fromDate"/>
+            </hyperlink>
+        </field>
+        <field name="submitButton" title="${uiLabelMap.CommonSubmit}" widget-style="smallSubmit"><submit/></field>
+    </form>
+    <form name="AddEmployeeTraining" type="single" target="createEmployeeTraining">
+        <field name="partyId"><hidden/></field>
+        <field name="trainingClassTypeId" tooltip="${uiLabelMap.CommonRequired}" widget-style="required">
+            <drop-down allow-empty="false">
+                <entity-options description="${description}" entity-name="TrainingClassType">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="fromDate"><date-time type="timestamp"/></field>
+        <field name="thruDate"><date-time type="timestamp"/></field>
+        <field name="submitButton" title="${uiLabelMap.CommonCreate}" widget-style="smallSubmit"><submit button-type="button"/></field>
+    </form>
+    <form name="AddEmplLeave" type="single" target="createEmplLeave">
+        <auto-fields-service service-name="updateEmplLeave" map-name="leaveApp"/>
+        <field name="partyId" title="Employee Id"></field>
+        <field name="leaveTypeId" tooltip="${uiLabelMap.CommonRequired}" title="Leave Type">
+            <drop-down allow-empty="true">
+                <entity-options description="${description}" key-field-name="leaveTypeId" entity-name="EmplLeaveType"/>
+            </drop-down>
+        </field>
+        <field name="emplLeaveReasonTypeId" title="Leave Reason">
+            <drop-down allow-empty="true">
+                <entity-options description="${description}" key-field-name="emplLeaveReasonTypeId" entity-name="EmplLeaveReasonType"/>
+            </drop-down>
+        </field>
+        <field name="fromDate" tooltip="${uiLabelMap.CommonRequired}"><date-time type="timestamp"></date-time></field>
+        <field name="thruDate" tooltip="${uiLabelMap.CommonRequired}"><date-time type="timestamp"></date-time></field>
+        <field name="leaveStatus"><hidden value="LEAVE_CREATED"/></field>
+        <field name="approverPartyId" tooltip="${uiLabelMap.CommonRequired}" title="Approver Id"><lookup target-form-name="LookupPartyName"/></field>
+        <field name="submitButton" title="${uiLabelMap.CommonCreate}" widget-style="smallSubmit"><submit button-type="button"/></field>
+    </form>
+    <form name="ListEmplLeaves" type="list" list-name="listIt" separate-columns="true" target="updateEmplLeave" paginate-target="FindEmplLeaves"
+        odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <entity-condition entity-name="EmplLeave">
+                <condition-expr field-name="partyId" from-field="partyId"/>
+                <order-by field-name="fromDate"/>
+            </entity-condition>
+        </actions>
+        <auto-fields-service service-name="updateEmplLeave"/>
+        <field name="partyId"><hidden/></field>
+        <field name="approverPartyId" title="Approver Id"><lookup target-form-name="LookupPartyName"/></field>
+        <field name="leaveStatus"><display/></field>
+        <field name="emplLeaveReasonTypeId" title="Leave Reason"><display/></field>
+        <field name="leaveTypeId" title="Leave Type"><display-entity description="${description}" entity-name="EmplLeaveType"/></field>
+        <field name="fromDate"></field>
+        <field name="submitButton" title="${uiLabelMap.CommonUpdate}"><submit button-type="button"/></field>
+    </form>
+    <form name="CurrentEmploymentData" default-map-name="employmentData" type="single">
+        <field name="company" entry-name="employment.partyIdFrom">
+            <display-entity entity-name="PartyNameView" key-field-name="partyId" description="${groupName} ">
+                <sub-hyperlink target="/partymgr/control/viewprofile" description="[${employmentData.employment.partyIdFrom}]" target-type="inter-app">
+                    <parameter param-name="partyId" from-field="employmentData.employment.partyIdFrom"/>
+                </sub-hyperlink>
+            </display-entity>
+        </field>
+        <field name="position" entry-name="emplPositionType.emplPositionTypeId">
+            <hyperlink target="emplPositionView" description="${employmentData.emplPositionType.description} [${employmentData.emplPosition.emplPositionId}]">
+                <parameter param-name="emplPositionId" from-field="employmentData.emplPosition.emplPositionId"/>
+            </hyperlink>
+        </field>
+        <field name="salary" entry-name="emplPositionRateAmount.rateAmount">
+            <display type="currency" currency="${employmentData.emplPositionRateAmount.rateCurrencyUomId}"/>
+        </field>
+    </form>
+   <form name="allowanceList" type="list" list-name="listIt" use-row-submit="true" separate-columns="true" target="allowance" paginate-target="allowance"
+            odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+          <field name="allowanceId"><display/></field>
+          <field name="allowanceName"><display/></field>
+          <field name="description"><display/></field>
+          <field name="allowanceType"><display/></field>
+          <field name="amount"><display/></field>
+          <field name="editLink" title="${uiLabelMap.CommonEdit}" widget-style="buttontext">
+            <hyperlink target="editEmployeeAllowance" description="${uiLabelMap.CommonEdit}" also-hidden="false">
+                <parameter param-name="allowanceId"/>
+            </hyperlink>
+           </field> 
+           <field name="deleteLink" title="${uiLabelMap.CommonDelete}" widget-style="buttontext">
+            <hyperlink target="EditEmplAllowance" description="${uiLabelMap.CommonDelete}" also-hidden="false">
+                <parameter param-name="allowanceId"/>
+                <parameter param-name="action" value="delete"/>
+            </hyperlink>
+        </field>
+   </form>          
+    <form name="EditEmplAllowance" type="single" target="EditEmplAllowance"   default-map-name="allowance" >
+       
+        <field name="allowanceId" use-when="allowanceId!=null"><hidden value="${parameters.allowanceId}"/></field>
+        <field name="action" use-when="allowanceId!=null"><hidden value="update"/></field>
+        <field name="action" use-when="allowanceId==null"><hidden value="create"/></field>
+        <field name="allowanceName"  ><text  /></field>
+        <field name="description"><textarea   rows="3" cols="30"/></field>
+        <field name="allowanceType" use-when="allowanceId!=null">
+          <drop-down   no-current-selected-key="allowance.allowanceType">
+            <option key="FLAT" description="Flat"/>
+            <option key="PERCENTAGE" description="Percentage"/>
+         </drop-down>
+        </field>
+        <field name="allowanceType" use-when="allowanceId==null">
+          <drop-down >
+            <option key="FLAT" description="Flat"/>
+            <option key="PERCENTAGE" description="Percentage"/>
+         </drop-down>
+        </field>
+         <field name="amount"><text size="10" maxlength="10"/></field>
+         <field name="submitButton" use-when="allowanceId!=null" title="${uiLabelMap.CommonUpdate}"><submit button-type="button"/></field>
+        <field name="submitButton" use-when="allowanceId==null" title="${uiLabelMap.CommonAdd}"><submit button-type="button"/></field>
+    </form>
+    
+    <!--  deduction  -->
+     <form name="EditEmplDeduction" type="single" target="EditEmplDeduction"   default-map-name="deduction" >
+       
+        <field name="deductionId" use-when="deductionId!=null"><hidden value="${parameters.deductionId}"/></field>
+        <field name="action" use-when="deductionId!=null"><hidden value="update"/></field>
+        <field name="action" use-when="deductionId==null"><hidden value="create"/></field>
+        <field name="deductionName"  ><text  /></field>
+        <field name="description"><textarea   rows="3" cols="30"/></field>
+        <field name="deductionType" use-when="deductionId!=null">
+          <drop-down   no-current-selected-key="deduction.deductionType">
+            <option key="FLAT" description="Flat"/>
+            <option key="PERCENTAGE" description="Percentage"/>
+         </drop-down>
+        </field>
+        <field name="deductionType" use-when="deductionId==null">
+          <drop-down >
+            <option key="FLAT" description="Flat"/>
+            <option key="PERCENTAGE" description="Percentage"/>
+         </drop-down>
+        </field>
+         <field name="amount"><text size="10" maxlength="10"/></field>
+         <field name="submitButton" use-when="deductionId!=null" title="${uiLabelMap.CommonUpdate}"><submit button-type="button"/></field>
+        <field name="submitButton" use-when="deductionId==null" title="${uiLabelMap.CommonAdd}"><submit button-type="button"/></field>
+    </form>
+      <form name="deductionList" type="list" list-name="listIt" use-row-submit="true" separate-columns="true" target="deduction" paginate-target="deduction"
+            odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+          <field name="deductionId"><display/></field>
+          <field name="deductionName"><display/></field>
+          <field name="description"><display/></field>
+          <field name="deductionType"><display/></field>
+          <field name="amount"><display/></field>
+          <field name="editLink" title="${uiLabelMap.CommonEdit}" widget-style="buttontext">
+            <hyperlink target="editEmployeeDeduction" description="${uiLabelMap.CommonEdit}" also-hidden="false">
+                <parameter param-name="deductionId"/>
+            </hyperlink>
+           </field> 
+           <field name="deleteLink" title="${uiLabelMap.CommonDelete}" widget-style="buttontext">
+            <hyperlink target="EditEmplDeduction" description="${uiLabelMap.CommonDelete}" also-hidden="false">
+                <parameter param-name="deductionId"/>
+                <parameter param-name="action" value="delete"/>
+            </hyperlink>
+        </field>
+   </form>
+    <form name="empPayrollList" type="list"  list-name="listIt" use-row-submit="true" separate-columns="true" target="EditEmpPayroll" paginate-target="employeePay" 
+            odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+             
+            <actions>
+              <entity-one entity-name="Person" auto-field-map="true" value-field="person">
+               <select-field field-name="firstName" />
+               <select-field field-name="middleName" />
+               <select-field field-name="lastName" />
+             </entity-one>
+          
+             <entity-one entity-name="Person" auto-field-map="false" value-field="createdPerson">
+                <field-map field-name="partyId" from-field="createdByUserLogin"/>
+               <select-field field-name="firstName" />
+               <select-field field-name="middleName" />
+               <select-field field-name="lastName" />
+             </entity-one>
+   </actions>
+    <field name="partyId"><hidden value="${partyId}"/></field>
+              <field name="action"><hidden value="update"/></field>
+          <field name="partyId" title="Employee" ><display description="${person.firstName}  ${person.middleName} ${person.lastName}" /></field>
+          <field name="grossSalary" required-field="true"><text maxlength="10" size="10" /></field>
+          <field name="currencyUomId" title="Currency">
+             <drop-down no-current-selected-key="${currencyUomId}">
+              <list-options key-name="uomId" list-name="Uom" description="${description} - ${uomId}"/>
+             </drop-down>
+          </field>
+          <field name="timePeriod" title="${uiLabelMap.TimePeriod}">
+             <drop-down no-current-selected-key="${timePeriod}">
+                <option key="HOURLY" description="Hourly"/>
+                <option key="WEEKLY" description="Weekly"/>
+                <option key="MONTHLY" description="Monthly"/>
+               <option key="YEARLY" description="Yearly"/>
+             </drop-down>
+          </field>
+         <field name="createdByUserLogin" title="Created By"><display description="${createdPerson.firstName} ${createdPerson.middleName} ${createdPerson.lastName}" /></field>
+         <field name="submitButton"  title="${uiLabelMap.CommonUpdate}"><submit button-type="button"/></field>
+           <field name="deleteLink" title="${uiLabelMap.CommonDelete}" widget-style="buttontext">
+            <hyperlink target="EditEmpPayroll" description="${uiLabelMap.CommonDelete}" also-hidden="false">
+                <parameter param-name="partyId"/>
+                <parameter param-name="action" value="delete"/>
+            </hyperlink>
+         </field>
+     </form>
+     
+     <form name="Pay" type="single" target="Pay"   default-map-name="deduction" >
+         <field name="partyId" title="Employee"><lookup target-form-name="LookupPartyName"/></field>
+         <field name="Datefrom" title="${uiLabelMap.CommonFromDate}"><date-time/></field>
+         <field  name="DateThru" title="${uiLabelMap.CommonThruDate}"><date-time/></field>
+         <field name="submitButton" title="${uiLabelMap.CommonGo}"><submit button-type="button"/></field>
+    </form>
+      
+    <form name="PayrollHistoryList" type="list" list-name="payroll" extends="ListInvoices" extends-resource="component://accounting/widget/invoice/InvoiceForms.xml" paginate-target="PayrollHistory">
+        <field name="invoiceId" widget-style="buttontext" sort-field="true">
+            <hyperlink description="${invoiceId}" target="/accounting/control/invoiceOverview" target-type="inter-app">
+                <parameter param-name="invoiceId"/>
+            </hyperlink>
+        </field>
+    </form>
+   
+ </forms>
+

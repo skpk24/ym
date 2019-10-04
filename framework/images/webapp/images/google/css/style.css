@@ -1,0 +1,41 @@
+
+/* BASIC RESET */
+body, div, img, p { padding:0; margin:0; }
+a img { border:0 }
+
+
+/* COMMON CLASSES */
+.break { clear:both; }
+
+/* SEARCH FORM */
+#searchform { margin:50px 200px; font-size:18px; }
+#searchform div { color:#eeeeee; }
+#searchform div input {font-size:18px; padding:5px; width:320px; }
+#suggestions{ position: absolute;
+width: 435px;
+display: none;
+background-color: #ffffff;
+z-index: 99999999;
+margin-top: 3px; }
+
+/* SEARCHRESULTS */
+#searchresults { border-width:1px; border-color:#191919; border-style:solid; width:435px; max-height:400px; overflow:auto;  font-size:10px; line-height:14px; }
+.searchImgDiv{width:285px; overflow:hidden;float:left;}
+.searchQtyDiv{overflow:hidden;padding-top:10px;display:block;float:right;margin-right:5px;}
+.searchDiv { display:block; font-size:10px; line-height:14px;height:40px; clear:both;border-bottom: 1px solid #c2c2c2; }
+.searchInputBox{float:left;}
+#searchresults a {  background-color:#e4e4e4; clear:left; height:20px; width:100px; text-decoration:none; }
+#searchresults a:hover { background-color:#b7b7b7; color:#FF8000; }
+#searchresults a img { float:left; padding:5px 10px; }
+#searchresults a span.searchheading { display:block; font-weight:bold;margin:14px;color:#191919; width:274px; }
+#searchresults a:hover span.searchheading { color:#FF8000; }
+#searchresults a span { color:#555555; }
+#searchresults a:hover span { color:#FF8000; }
+#searchresults span.category { font-size:15px; margin:20px; display:block; color:#FFFFFF; background:#548B4D;padding:8px;text-align:center; }
+#searchresults span.seperator { float:right; padding-right:15px; margin-right:5px;
+			background-image:url(/images/google/images/shortcuts_arrow.gif); background-repeat:no-repeat; background-position:right; }
+#searchresults span.seperator a { background-color:transparent; display:block; margin:5px; height:auto; color:#ffffff; }
+.searchImg{
+	height:30px;
+	width:21px;
+}

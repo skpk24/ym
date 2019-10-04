@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/services.xsd">
+    <description>RestfulComponent Services</description>
+    <vendor></vendor>
+    <version>1.0</version>
+ 
+    
+     <service name="sendReferAFriendEmail" engine="java" location="com.ilinks.restful.service.ReferAFriendServices" invoke="sendReferAFriendEmail" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Send Refer A Friend Email</description>
+        <attribute name="trackingCode"      type="String" mode="IN" optional="false"/>
+        <attribute name="productStoreID"    type="String" mode="IN" optional="false"/>
+        <attribute name="sendToName"        type="String" mode="IN" optional="false"/>
+        <attribute name="sendTo"            type="String" mode="IN" optional="false"/>
+    </service>
+    
+    <service name="retrieveReferAFriendInfo" engine="java" location="com.ilinks.restful.service.ReferAFriendServices" invoke="retrieveReferAFriendInfo" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Refer A Friend Info, Creates RAF Code If Code Does Not Exists</description>
+        <attribute name="referAFriendList"  type="java.util.List" mode="OUT" optional="false"/>
+        <attribute name="startDate"         type="Timestamp" mode="IN" optional="false"/>
+        <attribute name="endDate"           type="Timestamp" mode="IN" optional="false"/>
+        <attribute name="trackingCode"      type="String" mode="OUT" optional="true"/>
+    </service>
+    
+    <service name="createReferAFriendCode" engine="java" location="com.ilinks.restful.service.ReferAFriendServices" invoke="createReferAFriendCode" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Create Refer A Friend Code</description>
+        <attribute name="trackingCode"    type="String" mode="OUT" optional="false"/>
+    </service>
+    
+</services>

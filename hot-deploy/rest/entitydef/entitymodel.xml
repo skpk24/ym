@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entitymodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/entitymodel.xsd">
+    <!-- ========================================================= -->
+    <!-- ======================== Defaults ======================= -->
+    <!-- ========================================================= -->
+    <title>Entity of RestfulComponent Component</title>
+    <description>Restful Model</description>
+    <copyright>2013</copyright>
+    <version>1</version>
+
+	<extend-entity entity-name="UserLogin">
+		<field name="firstName" type="short-varchar"/>
+		<field name="lastName" type="short-varchar"/>
+		<field name="mobileNumber" type="id"/>
+		<field name="uniqCode" type="id"/>
+		<field name="address1" type="long-varchar"/>
+		<field name="address2" type="long-varchar"/>
+		<field name="city" type="short-varchar"/>
+		<field name="state" type="short-varchar"/>
+		<field name="country" type="short-varchar"/>
+		<field name="flatNo" type="short-varchar"/>
+		<field name="area" type="short-varchar"/>
+		<field name="zipCode" type="short-varchar"/>
+		<field name="phoneNumber" type="short-varchar"/>
+		<field name="emailId" type="short-varchar"/>
+		<field name="mobDeviceId" type="long-varchar"/>
+		<field name="shoppingListId" type="id"/>
+		<field name="imei" type="short-varchar"/>
+		<field name="userType" type="short-varchar"/>
+		<field name="isUdailyEnabled" type="indicator"/>
+		<field name="isXpressEnabled" type="indicator"/>
+		<field name="contactMechId" type="id"/>
+	</extend-entity>    
+	
+	<extend-entity entity-name="Product">
+		<field name="listPrice" type="id"/>
+		<field name="discountPer" type="id"/>
+		<field name="discounted" type="indicator"/>
+		<field name="topRating" type="short-varchar"/>
+		<field name="isExpressDelivery" type="indicator"/>
+		<field name="mSmallImageUrl" type="url"></field>
+		<field name="mLargeImageUrl" type="url"></field>
+	</extend-entity>
+	
+	<extend-entity entity-name="ProductCategoryRollup">
+		<field name="categoryName" type="name"/>
+	</extend-entity>
+	
+	<extend-entity entity-name="PostalAddress">
+		<field name="teleContactMechId" type="id-ne"></field>
+      	<field name="contactNumber" type="short-varchar"></field>
+      	<field name="state" type="short-varchar"></field>
+      	<field name="country" type="short-varchar"></field>
+      	<field name="flatNo" type="short-varchar"></field>
+	</extend-entity>
+	
+	<extend-entity entity-name="OrderSlotType">
+		<field name="productStoreId" type="id-ne"></field>
+	</extend-entity>
+	
+	<extend-entity entity-name="PostalAddress">
+		<field name="partyId" type="id-ne"></field>
+		<field name="fullName" type="name"></field>
+		<field name="userLoginId" type="id-vlong"></field>
+	</extend-entity>
+	
+	<extend-entity entity-name="InviteFriendReference">
+		<field name="productStoreId" type="id-ne"/>
+		<field name="refToken" type="id-ne"/>
+	</extend-entity>
+</entitymodel>

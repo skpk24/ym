@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+
+    <screen name="main">
+        <section>
+            <actions>
+            <property-map resource="PartyUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                   <set field="partyId" value="${userLogin.userLoginId}"/>
+				 <script location="component://admin/webapp/admin/WEB-INF/actions/defaultDashBoard.groovy"/>
+             
+        </actions>
+            <widgets>
+                <decorator-screen name="adminCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                  
+						
+						<platform-specific>
+							<html>
+								<html-template location="component://admin/webapp/admin/main.ftl"/>
+							</html>
+						</platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="expanseDetail">
+        <section>
+            <actions>
+            	<property-map resource="PartyUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                   <set field="partyId" value="${userLogin.userLoginId}"/>
+				<script location="component://admin/webapp/admin/WEB-INF/actions/expanseDetail.groovy"/>
+			</actions>
+            <widgets>
+				<platform-specific>
+					<html>
+						<html-template location="component://admin/webapp/admin/expanseDetail.ftl"/>
+					</html>
+				</platform-specific>
+            </widgets>
+        </section>
+    </screen>
+	<screen name="note">
+        <section>
+            <actions>
+            <property-map resource="PartyUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="headerItem" value="main"/><!-- this highlights the selected menu-item with name "main" -->
+                   <set field="partyId" value="${userLogin.userLoginId}"/>
+             
+</actions>
+            <widgets>
+						<screenlet title="${uiLabelMap.PageTitleNewPartyNote}">
+                            <include-form name="AddPartyNote" location="component://party/widget/partymgr/PartyForms.xml"/>
+                        </screenlet>
+                  
+						
+            </widgets>
+        </section>
+    </screen>
+
+</screens>

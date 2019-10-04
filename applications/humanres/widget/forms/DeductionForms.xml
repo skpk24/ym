@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+    <form name="AddDeduction" type="single" target="createDeduction"
+        header-row-style="header-row" default-table-style="basic-table">
+       <field name="invoiceItemTypeId" tooltip="${uiLabelMap.CommonRequired}"> <text size="10" maxlength="30"/> </field>
+       
+       <field name="defaultGlAccountId" tooltip="${uiLabelMap.CommonRequired}">
+            <drop-down allow-empty="true">
+                <entity-options description="${accountName}" key-field-name="glAccountId" entity-name="GlAccount"/>
+            </drop-down>
+        </field>
+        
+        <field name="geoId" tooltip="${uiLabelMap.CommonRequired}">
+            <drop-down allow-empty="true">
+                <entity-options description="${geoName}" key-field-name="geoId" entity-name="Geo"/>
+            </drop-down>
+        </field>
+       
+       <field name="description" title="${uiLabelMap.description}"><text size="10" maxlength="30"/></field>
+       <field name="submitButton" title="${uiLabelMap.CommonSave}" widget-style="smallSubmit"><submit button-type="button"/></field>
+    </form>
+    
+    
+    <form name="UpdateDeduction" type="single" target="DeductionUpdated"
+        header-row-style="header-row" default-table-style="basic-table">
+        
+        <field name="invoiceItemTypeId"> <text size="10" maxlength="30"/> </field>
+        <field name="defaultGlAccountId" tooltip="${uiLabelMap.CommonRequired}">
+            <drop-down allow-empty="true">
+                <entity-options description="${accountName}" key-field-name="glAccountId" entity-name="GlAccount"/>
+            </drop-down>
+        </field>
+        <field name="geoId" tooltip="${uiLabelMap.CommonRequired}">
+            <drop-down allow-empty="false">
+                <entity-options description="${geoName}" key-field-name="geoId" entity-name="Geo"/>
+            </drop-down>
+        </field>
+        
+       <field name="description" title="${uiLabelMap.description}"><text size="10" maxlength="30"/></field>
+       <field name="submitButton" title="${uiLabelMap.CommonSave}" widget-style="smallSubmit"><submit button-type="button"/></field>
+    </form>
+    
+    
+    
+     <form name="FindDeduction" type="single" target="deduction"
+        odd-row-style="header-row" default-table-style="basic-table">
+        <auto-fields-entity entity-name="InvoiceItemType" default-field-type="find"/>
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+        <field name="searchButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit"><submit button-type="button"/></field>
+    </form>
+    <form name="ListDeduction" list-name="listIt" type="list" odd-row-style="alternate-row" header-row-style="header-row-2"
+        paginate-target="FindDeduction" default-table-style="basic-table hover-bar">
+        
+       <actions>
+            <set field="entityName" value="InvoiceItemType"/>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="parameters"/>
+                <field-map field-name="entityName" from-field="entityName"/>
+                <field-map field-name="viewIndex" from-field="viewIndex"/>
+                <field-map field-name="viewSize" from-field="viewSize"/>
+            </service>
+        </actions>
+        
+       <!--  <field name="deductionId" title="deductionId"> <hyperlink description="${deductionId}" target="AddDeduction">
+         
+                <parameter param-name="deductionId"/>
+                <parameter param-name="deductionTypeId"/>
+                
+         </hyperlink>
+         </field> -->
+         
+         <field name="invoiceItemTypeId" widget-style="buttontext" title="${uiLabelMap.invoiceItemTypeId}">
+            <hyperlink target="UpdateDeduction" description="${invoiceItemTypeId}" also-hidden="false">
+                <parameter param-name="invoiceItemTypeId"/>
+                <parameter param-name="parentTypeId"/>
+                <parameter param-name="hasTable"/>
+                <parameter param-name="defaultGlAccountId"/>
+                <parameter param-name="description"/>
+                <parameter param-name="geoId"/>
+            </hyperlink>
+        </field>
+        <field name="description" title="Name"><display/></field>
+        <field name="defaultGlAccountId" title="defaultGlAccountId"><display/></field>
+        <field name="geoId" title="geoId"><display/></field>
+         
+      </form>
+    
+</forms>

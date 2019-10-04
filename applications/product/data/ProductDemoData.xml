@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<entity-engine-xml>
+    <!-- Limited user demo -->
+    <UserLoginSecurityGroup groupId="CATALOGADMIN_LTD" userLoginId="ltdadmin" fromDate="2001-01-01 12:00:00.0"/>
+    <UserLoginSecurityGroup groupId="CATALOGADMIN_LTD" userLoginId="ltdadmin1" fromDate="2001-01-01 12:00:00.0"/>
+    
+    <!-- Image Management user demo -->
+    <Party partyId="imageAdmin" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="imageAdmin" firstName="Image Management" lastName="Administrator"/>
+    <UserLogin userLoginId="imageAdmin" partyId="imageAdmin" currentPassword="{SHA}47b56994cbc2b6d10aa1be30f70165adb305a41a"/>
+    <UserLoginSecurityGroup userLoginId="imageAdmin" groupId="FULLADMIN" fromDate="2010-01-01 12:00:00.0"/>
+    <UserLoginSecurityGroup userLoginId="imageAdmin" groupId="IMAGEADMIN" fromDate="2010-01-01 12:00:00.0"/>
+    
+    <Party partyId="imageApprove" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="imageApprove" firstName="Image Management" lastName="Approve"/>
+    <UserLogin userLoginId="imageApprove" partyId="imageApprove" currentPassword="{SHA}47b56994cbc2b6d10aa1be30f70165adb305a41a"/>
+    <UserLoginSecurityGroup userLoginId="imageApprove" groupId="FLEXADMIN" fromDate="2010-01-01 12:00:00.0"/>
+    <UserLoginSecurityGroup userLoginId="imageApprove" groupId="IMAGEAPPROVE" fromDate="2010-01-01 12:00:00.0"/>
+    
+    <Party partyId="imageUpload" partyTypeId="PERSON" statusId="PARTY_ENABLED"/>
+    <Person partyId="imageUpload" firstName="Image Management" lastName="Upload"/>
+    <UserLogin userLoginId="imageUpload" partyId="imageUpload" currentPassword="{SHA}47b56994cbc2b6d10aa1be30f70165adb305a41a"/>
+    <UserLoginSecurityGroup userLoginId="imageUpload" groupId="CATALOGADMIN" fromDate="2010-01-01 12:00:00.0"/>
+    <UserLoginSecurityGroup userLoginId="imageUpload" groupId="IMAGEUPLOAD" fromDate="2010-01-01 12:00:00.0"/>
+     <ProductType productTypeId="F" isPhysical="Y" isDigital="N" hasTable="N" description="For Food"/>
+     
+     
+     
+     
+      <StatusItem description="Packed" sequenceId="05" statusCode="ORDER_PACKED" statusId="ORDER_PACKED" statusTypeId="ORDER_STATUS"/>
+<StatusItem description="Dispatched" sequenceId="05" statusCode="ORDER_DISPATCHED" statusId="ORDER_DISPATCHED" statusTypeId="ORDER_STATUS"/>
+
+<StatusValidChange condition="" statusId="ORDER_APPROVED" statusIdTo="ORDER_PACKED" transitionName="Packed Order"/>
+<StatusValidChange condition="" statusId="ORDER_PACKED" statusIdTo="ORDER_DISPATCHED" transitionName="Dispatched Order"/>
+<StatusValidChange condition="" statusId="ORDER_DISPATCHED" statusIdTo="ORDER_COMPLETED" transitionName="Completed Order"/>
+
+<EnumerationType description="Recipe Types" enumTypeId="RECIPE_TYPE" hasTable="N" parentTypeId=""/>
+<Enumeration description="Appetizer Recipes" enumCode="APPETIZER_RECIPES" enumId="APPETIZER_RECIPES" sequenceId="01" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Beverage Recipes" enumCode="BEVERAGE_RECIPES" enumId="BEVERAGE_RECIPES" sequenceId="02" enumTypeId="RECIPE_TYPE"/>    
+<Enumeration description="Biriyani Recipes" enumCode="BIRIYANI_RECIPES" enumId="BIRIYANI_RECIPES" sequenceId="03" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Bachelor Recipes" enumCode="BACHELOR_RECIPES" enumId="BACHELOR_RECIPES" sequenceId="04" enumTypeId="RECIPE_TYPE"/>
+
+<Enumeration description="Chicken Recipes" enumCode="CHICKEN_RECIPES" enumId="CHICKEN_RECIPES" sequenceId="05" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Condiment Recipes" enumCode="CONDIMENT_RECIPES" enumId="CONDIMENT_RECIPES" sequenceId="06" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Cookies Cakes" enumCode="COOKIES_CAKES" enumId="COOKIES_CAKES" sequenceId="07" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Curry Recipes" enumCode="CURRY_RECIPES" enumId="CURRY_RECIPES" sequenceId="08" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Dairy Recipes" enumCode="DAIRY_RECIPES" enumId="DAIRY_RECIPES" sequenceId="09" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Dessert Recipes" enumCode="DESSERT_RECIPES" enumId="DESSERT_RECIPES" sequenceId="10" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Diet Recipes" enumCode="DIET_RECIPES" enumId="DIET_RECIPES" sequenceId="11" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Idli/Dosa Varieties" enumCode="IDLI/DOSA_VARIETIES" enumId="IDLI/DOSA_VARIETIES" sequenceId="12" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Kababs Grills" enumCode="KABABS_GRILLS" enumId="KABABS_GRILLS" sequenceId="13" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Meat Recipes" enumCode="MEAT_RECIPES" enumId="MEAT_RECIPES" sequenceId="14" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Pasta Recipes" enumCode="PASTA_RECIPES" enumId="PASTA_RECIPES" sequenceId="15" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Rice Varieties" enumCode="RICE_VARIETIES" enumId="RICE_VARIETIES" sequenceId="16" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Rotis" enumCode="ROTIS" enumId="ROTIS" sequenceId="17" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Salad Recipes" enumCode="SALAD_RECIPES" enumId="SALAD_RECIPES" sequenceId="18" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Seafood Recipes" enumCode="SEAFOOD_RECIPES" enumId="SEAFOOD_RECIPES" sequenceId="19" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Stews" enumCode="STEWS" enumId="STEWS" sequenceId="20" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Snacks/Sandwich Recipes" enumCode="SNACKS/SANDWICH_RECIPES" enumId="SANDWICH_RECIPES" sequenceId="21" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Sauces" enumCode="SAUCES" enumId="SAUCES" sequenceId="22" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Vegetable Recipes" enumCode="VEGETABLE_RECIPES" enumId="VEGETABLE_RECIPES" sequenceId="23" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Festival Specials" enumCode="FESTIVAL_SPECIALS" enumId="FESTIVAL_SPECIALS" sequenceId="24" enumTypeId="RECIPE_TYPE"/>
+
+<Enumeration description="International Kitchen" enumCode="INTERNATIONAL_KITCHEN" enumId="INTERNAT_KITCHEN" sequenceId="25" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Miscellaneous Recipes" enumCode="MISCELLANEOUS_RECIPES" enumId="MISCELL_RECIPES	" sequenceId="26" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Andhra Recipes" enumCode="ANDHRA_RECIPES" enumId="ANDHRA_RECIPES" sequenceId="27" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Bengali Recipes" enumCode="BENGALI_RECIPES" enumId="BENGALI_RECIPES" sequenceId="28" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Christmas Specials" enumCode="CHRISTMAS_SPECIALS" enumId="CHRISTMAS_SPECIALS" sequenceId="29" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Diwali Specials" enumCode="DIWALI_SPECIALS" enumId="DIWALI_SPECIALS" sequenceId="30" enumTypeId="RECIPE_TYPE"/>
+
+<Enumeration description="Eid Specials" enumCode="EID_SPECIALS" enumId="EID_SPECIALS" sequenceId="31" enumTypeId="RECIPE_TYPE"/>
+
+<Enumeration description="Goan Recipes" enumCode="GOAN_RECIPES" enumId="GOAN_RECIPES" sequenceId="32" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Gujurati Recipes" enumCode="GUJURATI_RECIPES" enumId="GUJURATI_RECIPES" sequenceId="33" enumTypeId="RECIPE_TYPE"/>
+
+<Enumeration description="Karnataka Recipes" enumCode="KARNATAKA_RECIPES" enumId="KARNATAKA_RECIPES" sequenceId="34" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Kerala Recipes" enumCode="KERALA_RECIPES" enumId="KERALA_RECIPES" sequenceId="35" enumTypeId="RECIPE_TYPE"/>
+
+<Enumeration description="Maharashtrian Recipes" enumCode="MAHARASHTRI_RECIPES" enumId="MAHARASHTRI_RECIPES" sequenceId="36" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="Onam Specials" enumCode="ONAM_SPECIALS" enumId="ONAM_SPECIALS" sequenceId="37" enumTypeId="RECIPE_TYPE"/>
+
+<Enumeration description="Punjabi Recipes" enumCode="PUNJABI_RECIPES" enumId="PUNJABI_RECIPES" sequenceId="38" enumTypeId="RECIPE_TYPE"/>
+
+<Enumeration description="TamilNadu Recipes" enumCode="TAMILNADU_RECIPES" enumId="TAMILNADU_RECIPES" sequenceId="39" enumTypeId="RECIPE_TYPE"/>
+
+<Enumeration description="Indian Varieties" enumCode="INDIAN_VARIETIES" enumId="NDIAN_VARIETIES" sequenceId="40" enumTypeId="RECIPE_TYPE"/>
+<Enumeration description="India Sweets" enumCode="INDIA_SWEETS" enumId="INDIA_SWEETS" sequenceId="41" enumTypeId="RECIPE_TYPE"/>
+
+
+
+
+
+
+
+
+
+<StatusType description="Recipe Status" hasTable="N" parentTypeId="" statusTypeId="RECIPE_STATUS"/>
+<StatusItem description="Requested" sequenceId="01" statusCode="RECIPE_REQUESTED" statusId="RECIPE_REQUESTED" statusTypeId="RECIPE_STATUS"/>
+<StatusItem description="Approved" sequenceId="02" statusCode="RECIPE_APPROVED" statusId="RECIPE_APPROVED" statusTypeId="RECIPE_STATUS"/>
+<StatusItem description="Rejected" sequenceId="03" statusCode="RECIPE_REJECTED" statusId="RECIPE_REJECTED" statusTypeId="RECIPE_STATUS"/>
+<StatusItem description="Recipe Of The Week Request" sequenceId="04" statusCode="RECIPE_OF_WEEK_REQ" statusId="RECIPE_OF_WEEK_REQ" statusTypeId="RECIPE_STATUS"/>
+<StatusItem description="Recipe Of The Week Response" sequenceId="05" statusCode="RECIPE_OF_WEEK_RES" statusId="RECIPE_OF_WEEK_RES" statusTypeId="RECIPE_STATUS"/>
+<StatusItem description="Recipe Of The Week Response Rejected" sequenceId="05" statusCode="REC_OF_WEEK_RES_REJ" statusId="REC_OF_WEEK_RES_REJ" statusTypeId="RECIPE_STATUS"/>
+<StatusItem description="Recipe Of The Week " sequenceId="06" statusCode="RECIPE_OF_WEEK" statusId="RECIPE_OF_WEEK" statusTypeId="RECIPE_STATUS"/>
+<StatusItem description="Recipe Of The Week Completed" sequenceId="06" statusCode="RECIPE_OF_WEEK_COMP" statusId="RECIPE_OF_WEEK_COMP" statusTypeId="RECIPE_STATUS"/>
+
+<!-- seed data for testimonials -->
+<StatusType description="Testimonial Status" hasTable="N" parentTypeId="" statusTypeId="FEEDBACK_STATUS"/>
+<StatusItem description="Received" sequenceId="01" statusCode="FB_RECEIVED" statusId="FB_RECEIVED" statusTypeId="FEEDBACK_STATUS"/>
+<StatusItem description="Approved" sequenceId="02" statusCode="FB_APPROVED" statusId="FB_APPROVED" statusTypeId="FEEDBACK_STATUS"/>
+<StatusItem description="Rejected" sequenceId="03" statusCode="FB_REJECTED" statusId="FB_REJECTED" statusTypeId="FEEDBACK_STATUS"/>
+
+<StatusValidChange condition="" statusId="FB_RECEIVED" statusIdTo="FB_APPROVED" transitionName="Approve Testimonial"/>
+<StatusValidChange condition="" statusId="FB_RECEIVED" statusIdTo="FB_REJECTED" transitionName="Reject Testimonial"/>
+<StatusValidChange condition="" statusId="FB_APPROVED" statusIdTo="FB_REJECTED" transitionName="Reject Testimonial"/>
+
+<!-- EOD -->
+
+<StatusValidChange condition="" statusId="RECIPE_REQUESTED" statusIdTo="RECIPE_APPROVED" transitionName="Approve Recipe"/>
+<StatusValidChange condition="" statusId="RECIPE_REQUESTED" statusIdTo="RECIPE_REJECTED" transitionName="Reject Recipe"/>
+<StatusValidChange condition="" statusId="RECIPE_APPROVED" statusIdTo="RECIPE_REJECTED" transitionName="Reject Recipe"/>
+<StatusValidChange condition="" statusId="RECIPE_APPROVED" statusIdTo="RECIPE_OF_WEEK_REQ" transitionName="Recipe Of The Week Requested"/>
+<StatusValidChange condition="" statusId="RECIPE_OF_WEEK_REQ" statusIdTo="RECIPE_OF_WEEK_RES" transitionName="Recipe Of The Week Response"/>
+<StatusValidChange condition="" statusId="RECIPE_OF_WEEK_RES" statusIdTo="REC_OF_WEEK_RES_REJ" transitionName="Recipe Of The Week Response Rected"/>
+<StatusValidChange condition="" statusId="RECIPE_OF_WEEK_RES" statusIdTo="RECIPE_OF_WEEK" transitionName="Recipe Of The Week"/>
+<StatusValidChange condition="" statusId="RECIPE_OF_WEEK" statusIdTo="RECIPE_OF_WEEK_COMP" transitionName="Recipe Of The Week Cpmpleted"/>
+<StatusValidChange condition="" statusId="RECIPE_OF_WEEK" statusIdTo="RECIPE_REJECTED" transitionName="Reject Recipe"/>
+
+<StatusType description="Recipe Response Status" hasTable="N" parentTypeId="" statusTypeId="RECIPE_RES_STATUS"/>
+<StatusItem description="Requested" sequenceId="01" statusCode="RECIPE_RES_REQUESTED" statusId="RECIPE_RES_REQUESTED" statusTypeId="RECIPE_RES_STATUS"/>
+<StatusItem description="Approved" sequenceId="02" statusCode="RECIPE_RES_APPROVED" statusId="RECIPE_RES_APPROVED" statusTypeId="RECIPE_RES_STATUS"/>
+<StatusItem description="Rejected" sequenceId="03" statusCode="RECIPE_RES_REJECTED" statusId="RECIPE_RES_REJECTED" statusTypeId="RECIPE_RES_STATUS"/>
+
+<StatusValidChange condition="" statusId="RECIPE_RES_REQUESTED" statusIdTo="RECIPE_RES_APPROVED" transitionName="Approve Response"/>
+<StatusValidChange condition="" statusId="RECIPE_RES_REQUESTED" statusIdTo="RECIPE_RES_REJECTED" transitionName="Reject Response"/>
+<StatusValidChange condition="" statusId="RECIPE_RES_APPROVED" statusIdTo="RECIPE_RES_REJECTED" transitionName="Reject Response"/>
+
+
+<StatusType description="Recipe Ingrediant Status" hasTable="N" parentTypeId="" statusTypeId="RECIPE_ING_STATUS"/>
+<StatusItem description="Requested" sequenceId="01" statusCode="RECIPE_ING_REQUESTED" statusId="RECIPE_ING_REQUESTED" statusTypeId="RECIPE_ING_STATUS"/>
+<StatusItem description="Approved" sequenceId="02" statusCode="RECIPE_ING_APPROVED" statusId="RECIPE_ING_APPROVED" statusTypeId="RECIPE_ING_STATUS"/>
+<StatusItem description="Rejected" sequenceId="03" statusCode="RECIPE_ING_REJECTED" statusId="RECIPE_ING_REJECTED" statusTypeId="RECIPE_ING_STATUS"/>
+
+<StatusValidChange condition="" statusId="RECIPE_ING_REQUESTED" statusIdTo="RECIPE_ING_APPROVED" transitionName="Approve Ingrediant"/>
+<StatusValidChange condition="" statusId="RECIPE_ING_REQUESTED" statusIdTo="RECIPE_ING_REJECTED" transitionName="Reject Ingrediant"/>
+<StatusValidChange condition="" statusId="RECIPE_ING_APPROVED" statusIdTo="RECIPE_ING_REJECTED" transitionName="Reject Ingrediant"/>
+
+<StatusType description="Recipe Comment Status" hasTable="N" parentTypeId="" statusTypeId="RECIPE_COMM_STATUS"/>
+<StatusItem description="Requested" sequenceId="01" statusCode="RECP_COMM_REQUESTED" statusId="RECP_COMM_REQUESTED" statusTypeId="RECIPE_COMM_STATUS"/>
+<StatusItem description="Approved" sequenceId="02" statusCode="RECP_COMM_APPROVED" statusId="RECP_COMM_APPROVED" statusTypeId="RECIPE_COMM_STATUS"/>
+<StatusItem description="Rejected" sequenceId="03" statusCode="RECP_COMM_REJECTED" statusId="RECP_COMM_REJECTED" statusTypeId="RECIPE_COMM_STATUS"/>
+
+<StatusValidChange condition="" statusId="RECP_COMM_REQUESTED" statusIdTo="RECP_COMM_APPROVED" transitionName="Approve Comment"/>
+<StatusValidChange condition="" statusId="RECP_COMM_REQUESTED" statusIdTo="RECP_COMM_REJECTED" transitionName="Reject Comment"/>
+<StatusValidChange condition="" statusId="RECP_COMM_APPROVED" statusIdTo="RECP_COMM_REJECTED" transitionName="Reject Comment"/>
+
+<Enumeration description="Recipe Status" enumCode="REC_STATUS_EMAIL" enumId="REC_STATUS_EMAIL" enumTypeId="PRDS_EMAIL" sequenceId="04"/>
+<ProductStoreEmailSetting productStoreId="9000" emailType="REC_STATUS_EMAIL" 
+bodyScreenLocation="component://ecommerce/widget/ecomclone/EmailProductScreens.xml#recipeStatusMail" subject="Recipe Status" 
+xslfoAttachScreenLocation="" bccAddress="jacob@youmart.com" fromAddress="jacob@youmart.com"/>
+     
+
+<Enumeration description="Order Email Report" enumCode="ORDER_EMAIL_REPORT" enumId="ORDER_EMAIL_REPORT" enumTypeId="PRDS_EMAIL" sequenceId="05"/>
+<ProductStoreEmailSetting productStoreId="9000" emailType="ORDER_EMAIL_REPORT" 
+bodyScreenLocation="component://ecommerce/widget/ecomclone/EmailOrderScreens.xml#orederEmailReport" subject="Order Email Report" 
+xslfoAttachScreenLocation="" bccAddress="jacob@youmart.com" fromAddress="jacob@youmart.com"/>
+  
+  
+<Enumeration description="Zip Location" enumCode="PIN_LOCATION_EMAIL" enumId="PIN_LOCATION_EMAIL" enumTypeId="PRDS_EMAIL" sequenceId="05"/>
+<ProductStoreEmailSetting productStoreId="9000" emailType="PIN_LOCATION_EMAIL" 
+bodyScreenLocation="component://ecommerce/widget/ecomclone/EmailProductScreens.xml#pinLocationMail" subject="Zip Location" 
+xslfoAttachScreenLocation="" bccAddress="jacob@youmart.com" fromAddress="jacob@youmart.com"/>
+  
+<Enumeration description="Zip Code Exceed" enumCode="PIN_EXCEED_EMAIL" enumId="PIN_EXCEED_EMAIL" enumTypeId="PRDS_EMAIL" sequenceId="06"/>
+<ProductStoreEmailSetting productStoreId="9000" emailType="PIN_EXCEED_EMAIL" 
+bodyScreenLocation="component://ecommerce/widget/ecomclone/EmailProductScreens.xml#pinexceedMail" subject="Zip Code Exceed Mail" 
+xslfoAttachScreenLocation="" bccAddress="jacob@youmart.com" fromAddress="jacob@youmart.com"/>
+            
+  <Enumeration description="feedback" enumCode="FEEDBACK_EMAIL" enumId="FEEDBACK_EMAIL" enumTypeId="PRDS_EMAIL" sequenceId="07"/>
+<ProductStoreEmailSetting productStoreId="9000" emailType="FEEDBACK_EMAIL" 
+bodyScreenLocation="component://ecommerce/widget/EmailProductScreens.xml#feedBackEmail" subject="FEEDBACK" 
+xslfoAttachScreenLocation="" bccAddress="jacob@youmart.com" fromAddress="jacob@youmart.com"/>   
+     
+<Enumeration description="Gift Card Voucher Coupon" enumCode="PRDS_ODR_GIFT_CARD" enumId="PRDS_ODR_GIFT_CARD" enumTypeId="PRDS_EMAIL" sequenceId="08"/>
+<ProductStoreEmailSetting productStoreId="9000" emailType="PRDS_ODR_GIFT_CARD" 
+bodyScreenLocation="component://ecommerce/widget/ecomclone/EmailProductScreens.xml#giftCardCouponMail" subject="Gift Card Voucher Coupon Code" 
+xslfoAttachScreenLocation="" bccAddress="jacob@youmart.com" fromAddress="jacob@youmart.com"/>
+       
+</entity-engine-xml>

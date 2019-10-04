@@ -1,0 +1,392 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import org.ofbiz.product.product.ProductWorker;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.ServletInputStream;
+
+import javolution.util.FastList;
+import javolution.util.FastMap;
+
+import org.ofbiz.base.util.Debug;
+import org.ofbiz.base.util.UtilDateTime;
+import org.ofbiz.base.util.UtilHttp;
+import org.ofbiz.base.util.UtilMisc;
+import org.ofbiz.base.util.UtilParse;
+import org.ofbiz.base.util.UtilProperties;
+import org.ofbiz.base.util.UtilValidate;
+import org.ofbiz.entity.GenericDelegator;
+import org.ofbiz.entity.GenericEntityException;
+import org.ofbiz.entity.GenericPK;
+import org.ofbiz.entity.GenericValue;
+import org.ofbiz.entity.condition.EntityCondition;
+import org.ofbiz.entity.condition.EntityConditionList;
+import org.ofbiz.entity.condition.EntityExpr;
+import org.ofbiz.entity.condition.EntityOperator;
+import org.ofbiz.entity.transaction.GenericTransactionException;
+import org.ofbiz.entity.transaction.TransactionUtil;
+import org.ofbiz.entity.util.EntityListIterator;
+import org.ofbiz.entity.util.EntityFindOptions;
+import org.ofbiz.entity.util.EntityUtil;
+import org.ofbiz.security.Security;
+import org.ofbiz.service.DispatchContext;
+import org.ofbiz.service.GenericServiceException;
+import org.ofbiz.service.LocalDispatcher;
+import org.ofbiz.service.ModelService;
+import org.ofbiz.service.ServiceUtil;
+import org.ofbiz.webapp.stats.VisitHandler;
+import org.ofbiz.webapp.website.WebSiteWorker;
+import org.ofbiz.entity.condition.*;
+import org.ofbiz.base.util.*;
+import org.ofbiz.base.util.string.*;
+
+import jxl.read.biff.BiffException;
+
+import java.io.*;  
+import jxl.*;  
+import java.util.*;  
+import jxl.Workbook;  
+import jxl.write.*;  
+
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+
+import org.ofbiz.product.catalog.*;
+import org.ofbiz.product.store.*;
+import org.ofbiz.order.shoppingcart.ShoppingCart;
+import org.ofbiz.product.product.ProductContentWrapper;
+import org.ofbiz.order.shoppingcart.product.ProductPromoWorker;
+
+GenericDelegator delegator = (GenericDelegator) request.getAttribute("delegator");
+Security security = (Security) request.getAttribute("security");
+webSiteId = CatalogWorker.getWebSiteId(request);
+productStore = ProductStoreWorker.getProductStore(request);
+
+productStoreId = "9000";    
+
+String path = System.getProperty("ofbiz.home");
+path.replace('\'', '/');
+
+        try{
+        	PrintWriter out = response.getWriter();
+            String filename = path+ "/framework/images/webapp/images/report/ProductReport.csv";
+            FileWriter fw = new FileWriter(filename);
+            
+            File file = new File(filename);
+            boolean success = file.createNewFile();
+            if (success) {
+              //////////////////////////
+              
+            } else {
+            	BufferedReader reader = new BufferedReader(new FileReader(filename));
+                String line = "", oldtext = "";
+                while((line = reader.readLine()) != null) {
+                    oldtext += line + "\r\n";
+                }
+                reader.close();
+                String newtext = "";
+                
+                FileWriter writer = new FileWriter(filename);
+                writer.write(newtext);
+                writer.close();
+                
+                /***************************************/
+                
+                fw.append("Exxio Product List");
+                fw.append(',');
+                fw.append('\n');
+                fw.append('\n');
+                
+                //-------- header row
+                fw.append("Product Code");
+                fw.append(',');
+                
+                fw.append("Product Name/Title");
+                fw.append(',');
+               
+                fw.append("Product Description");
+                fw.append(',');
+                
+                fw.append("Category");
+                fw.append(',');
+                
+                fw.append("Sale Price");
+                fw.append(',');
+             
+                fw.append("Image URL");
+                fw.append(',');
+                
+                //fw.append("Department");
+              //  fw.append(',');
+              
+                fw.append("URL to product page");
+                fw.append(',');
+                fw.append('\n');
+                
+                 List exprs = UtilMisc.toList(new EntityExpr("productCategoryId", EntityOperator.EQUALS, "DRESS"));
+                 exprs.add(new EntityExpr("productCategoryId", EntityOperator.EQUALS, "COAT"));
+                 exprs.add(new EntityExpr("productCategoryId", EntityOperator.EQUALS, "TRENCH"));
+                 exprs.add(new EntityExpr("productCategoryId", EntityOperator.EQUALS, "JACKET"));
+                 exprs.add(new EntityExpr("productCategoryId", EntityOperator.EQUALS, "CARDIGAN"));
+                 
+                 exprs.add(new EntityExpr("productCategoryId", EntityOperator.EQUALS, "ANKLE-BOOTS"));
+                 exprs.add(new EntityExpr("productCategoryId", EntityOperator.EQUALS, "LADIES-BOOTS"));
+                 exprs.add(new EntityExpr("productCategoryId", EntityOperator.EQUALS, "PUMPS"));
+                 exprs.add(new EntityExpr("productCategoryId", EntityOperator.EQUALS, "BALLET-FLAT"));
+                 exprs.add(new EntityExpr("productCategoryId", EntityOperator.EQUALS, "SNEAKERS"));
+                 
+                 exprs.add(new EntityExpr("productCategoryId", EntityOperator.EQUALS, "CLUTCH-BAG"));
+                 exprs.add(new EntityExpr("productCategoryId", EntityOperator.EQUALS, "HAND-BAG"));
+                 exprs.add(new EntityExpr("productCategoryId", EntityOperator.EQUALS, "SHOPPING-BAG"));
+                 exprs.add(new EntityExpr("productCategoryId", EntityOperator.EQUALS, "SHOULDER-BAG"));
+                 exprs.add(new EntityExpr("productCategoryId", EntityOperator.EQUALS, "TOTE-BAG"));
+                 
+                 exprs.add(new EntityExpr("productCategoryId", EntityOperator.EQUALS, "WALLET"));
+                 exprs.add(new EntityExpr("productCategoryId", EntityOperator.EQUALS, "WKEY-HOLDER"));
+                 exprs.add(new EntityExpr("productCategoryId", EntityOperator.EQUALS, "WOMEN-BELT"));
+                 exprs.add(new EntityExpr("productCategoryId", EntityOperator.EQUALS, "WOMEN-KEYRING"));
+                 
+                 EntityCondition mainCond = new EntityConditionList(exprs, EntityOperator.OR);
+                 EntityListIterator productListELI = delegator.findListIteratorByCondition("ProductCategoryMember", mainCond, UtilMisc.toList("productId"), null);
+                 request.setAttribute("productStoreId", "9000");
+                 session.setAttribute("productStoreId", "9000");
+                List productList = productListELI.getCompleteList();
+                productListELI.close();
+                for(int i=0; i<productList.size(); i++){
+                   GenericValue pr = (GenericValue) productList.get(i);
+            	  String prodId=pr.getString("productId");
+						product= delegator.findByPrimaryKeyCache("Product",UtilMisc.toMap("productId",prodId));
+						isVirtual=product.get("isVirtual");
+						isStoreInventoryNotAvailable=ProductStoreWorker.isStoreInventoryAvailable(request, product, 1.0);
+						isStoreInventoryRequired=ProductStoreWorker.isStoreInventoryRequired(request, product);
+						/*String requireInventory=product.get("requireInventory");
+						isVirtual=product.get("isVirtual");
+						if(isVirtual.equalsIgnoreCase("Y")) {
+							featureMap = dispatcher.runSync("getProductFeatureSet", UtilMisc.toMap("productId", prodId));
+					        featureSet = featureMap.get("featureSet");
+					        if (featureSet != null && featureSet.size() > 0) {
+					            variantTreeMap = dispatcher.runSync("getProductVariantTree", UtilMisc.toMap("productId", prodId, "featureOrder", featureSet, "productStoreId", "9000"));
+					            variantTree = variantTreeMap.get("variantTree");
+					             if(UtilValidate.isEmpty(variantTree)){
+ 					                 productList.remove(i);
+						             i--;
+					               }
+					            }
+					        else{
+					           productList.remove(i);
+						       i--;
+					         }    
+						 }
+						else 
+						   if(isStoreInventoryNotAvailable){
+						       if (isStoreInventoryRequired){
+						            if(requireInventory.equalsIgnoreCase("Y")) {
+						            }
+						       }
+						     } 
+						   else{
+						       if (isStoreInventoryRequired){
+						             productList.remove(i);
+						             i--;
+						            }
+						    }*/
+				  
+                 //code is baed on Inventory is greater than Zero
+                   if(isVirtual.equalsIgnoreCase("Y")) {
+                     variantsRes = dispatcher.runSync("getAssociatedProducts", UtilMisc.toMap("productId", prodId, "type", "PRODUCT_VARIANT", "prodCatalogId", "WOMEN"));
+                     variants = variantsRes.get("assocProducts");
+                      if (variants != null) {
+	                        vari = variants.iterator();
+	                        varSizes=variants.size();
+	                        j=variants.size();
+		                        while (vari.hasNext()) {
+			                        variantAssoc = vari.next();
+			                        variant = variantAssoc.getRelatedOne("AssocProduct");
+			                        varProductId=variant.get("productId");
+			                        variproduct = delegator.findByPrimaryKeyCache("Product", UtilMisc.toMap("productId", variant.get("productId")));
+			                        isStoreInventoryNotAvailable=ProductStoreWorker.isStoreInventoryAvailable(request, variproduct, 1.0);
+			                          if(!isStoreInventoryNotAvailable){
+			                            j--;
+			                          }
+		                          }//while
+		                          if(j==0) {
+		                             productList.remove(i);
+								     i--; 
+		                          }
+                         }
+                   }//if close for virtual
+                    else{
+                     if(!isStoreInventoryNotAvailable){
+						      productList.remove(i);
+						             i--; 
+						     } 
+                     }
+                } //for closed
+                Iterator productListItr = productList.iterator();
+            	while (productListItr.hasNext()) {
+            	  GenericValue p = (GenericValue) productListItr.next();
+            	  String productId=p.getString("productId");
+            	 
+            	 product = delegator.findByPrimaryKeyCache("Product", UtilMisc.toMap("productId", productId));
+            	 
+            	  String prodName=product.getString("productName");
+            	  String brandName=product.getString("brandName");
+            	  String seasonName=product.getString("seasonName");
+            	  String description=product.getString("description");
+            	  
+            	  String smallImageUrl=product.getString("smallImageUrl");
+            	  if(smallImageUrl!=null){
+                  		smallImageUrl="http://www.exxio.com"+smallImageUrl;
+                     }
+            	 
+            	  String largeImageUrl=product.getString("largeImageUrl");
+            	   if(largeImageUrl!=null){
+                  		largeImageUrl="http://www.exxio.com"+largeImageUrl;
+                     }
+            	  
+            	   String detailImageUrl=product.getString("detailImageUrl");
+            	    if(detailImageUrl!=null){
+                  		detailImageUrl="http://www.exxio.com"+detailImageUrl;
+                     }
+            	  fw.append(productId);
+            	  fw.append(',');
+            	  
+            	  if(prodName!=null){
+            	   newProdName=prodName.replace(" ","-");
+                  		fw.append(prodName);
+                  		fw.append(',');
+                  }
+                  else{
+                  fw.append("");
+                  fw.append(',');
+                  }
+                  
+                 
+                   if(description!=null){
+                        nameDes=description.trim();
+                        nameDes=nameDes.replace("\n","");
+                        nameDes=nameDes.replace("\r","");
+                        
+                        nameDes=nameDes.replace(","," ");
+                  		fw.append(nameDes);
+                  		fw.append(',');
+                         }
+                    else{
+                       fw.append("");
+                       fw.append(',');
+                      }
+                 
+                  List prodCategoryMember = delegator.findByCondition("ProductCategoryMember", new EntityExpr("productId", EntityOperator.EQUALS, productId), null, null);
+                    Iterator prodCatListItr = prodCategoryMember.iterator();
+                    String productCategoryId = "";
+                    GenericValue prodcat=EntityUtil.getFirst(prodCategoryMember);
+                    categoryId=prodcat.getString("productCategoryId");
+                	while (prodCatListItr.hasNext()) {
+                		GenericValue prodCat = (GenericValue) prodCatListItr.next();
+                		productCategoryId = productCategoryId + " " +prodCat.getString("productCategoryId");
+                	}
+                	
+                	fw.append(productCategoryId);
+                    fw.append(',');
+                  
+                  
+                  
+                  
+                 
+                  
+                  
+               
+                  
+                  if(UtilValidate.isNotEmpty(categoryId)){
+	                     prodCategory = delegator.findByPrimaryKey("ProductCategory",UtilMisc.toMap("productCategoryId",categoryId));
+        		         context.put("prodCategory",prodCategory);
+        		         parentCategory  = prodCategory.getRelatedCache("CurrentProductCategoryRollup");
+                          if(parentCategory != null && parentCategory.size() > 0){
+			               parentCategoryId = parentCategory.get(0).getString("parentProductCategoryId");
+		                    }
+		            }
+                 
+	              if(UtilValidate.isNotEmpty(parentCategoryId)){
+	                  prodCatalog = delegator.findByAnd("ProdCatalogCategory",UtilMisc.toMap("productCategoryId",parentCategoryId));
+	                   if(prodCatalog != null && prodCatalog.size() > 0){
+	                     catalogId = prodCatalog.get(0).getString("prodCatalogId");
+	                     }
+	                 }
+                     if(UtilValidate.isNotEmpty(categoryId)){
+                     
+					        priceContext = UtilMisc.toMap("product", product, "prodCatalogId", catalogId,
+                                              "currencyUomId","GBP", "autoUserLogin", autoUserLogin);
+                            priceContext.put("webSiteId", webSiteId);
+                            priceContext.put("productStoreId", productStoreId);
+                            priceContext.put("checkIncludeVat", "Y");
+                           // priceContext.put("agreementId", cart.getAgreementId());
+                           // priceContext.put("partyId", cart.getPartyId());  // IMPORTANT: must put this in, or price will be calculated for the CSR instead of the customer
+                            priceMap = dispatcher.runSync("calculateProductPrice", priceContext);
+                          
+                     }//catalog id not empty
+                     String price="";
+                     if(UtilValidate.isNotEmpty(priceMap)){
+                        double priceDouble=priceMap.get("basePrice");
+                        price=Double.toString(priceDouble);
+                     } 
+                      
+                     if(UtilValidate.isNotEmpty(price)){
+                  		fw.append(price);
+		                fw.append(',');
+                        }
+                     else{
+                     fw.append("");
+		             fw.append(',');
+                     }   
+                  
+                  fw.append(largeImageUrl);
+                  fw.append(',');
+                  
+                  String url="http://www.exxio.com/"+productId;
+                  if(newProdName!=null){
+                   String nameUrl="/"+newProdName.toLowerCase()+".html";
+                   url=url+nameUrl;
+                  }
+                  fw.append(url);
+                  fw.append('\n');
+            	}
+               
+              
+                
+                fw.flush();
+                fw.close();
+               
+           }
+         
+               }catch (Exception ex){
+            ex.printStackTrace();
+   
+   }
+        

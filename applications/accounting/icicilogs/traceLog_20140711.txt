@@ -1,0 +1,12 @@
+[2014-07-11 11:09:34.632] <PostLib><postSSL><TxnNo-->1><Entered>
+[2014-07-11 11:09:34.635] <PostLib><postSSL><TxnNo-->1><MrtTxnID-->YMCO113660><MrtID-->96008628><Entered>
+[2014-07-11 11:09:34.635] <PostLib><buildMerchantBillShip><TxnNo-->1><MrtTxnID-->YMCO113660><Entered>
+[2014-07-11 11:09:34.636] <PostLib><buildMerchantBillShip><TxnNo-->1><MrtTxnID-->YMCO113660><Exiting>
+[2014-07-11 11:09:34.713] <PostLib><postData><TxnNo-->1><MrtTxnID-->YMCO113660><Entered>
+[2014-07-11 11:09:34.713] <PostLib><postData><Created URL object><TxnNo-->1><MrtTxnID-->YMCO113660>
+[2014-07-11 11:09:34.731] <PostLib><postData><Opened URL Connection><TxnNo-->1><MrtTxnID-->YMCO113660>
+[2014-07-11 11:09:35.14] <PostLib><postData><Written data on the output stream><TxnNo-->1><MrtTxnID-->YMCO113660>
+[2014-07-11 11:09:35.258] <PostLib><postData><Total transaction Response string value><RespCode=000&Message=Successful&TxnID=YMCO113660&RedirectionTxnID=D2FA4D4B4C8F4D3B92288F46A0B1BC7A>
+[2014-07-11 11:09:35.258] <PostLib><postData><Read response on the stream><TxnNo-->1><MrtTxnID-->YMCO113660>
+[2014-07-11 11:09:35.258] <PostLib><postData>Close the URL connection><TxnNo-->1><MrtTxnID-->YMCO113660>
+[2014-07-11 11:09:35.26] <PostLib><postSSL><TxnNo-->1><MrtTxnID-->YMCO113660><Exiting>

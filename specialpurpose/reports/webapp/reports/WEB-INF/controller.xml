@@ -1,0 +1,774 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <!-- The controller elements that are common to all OFBiz components
+         can be found in the following xml file. A component can override the
+         elements found in the common-controller.xml file. -->
+    <include location="component://common/webcommon/WEB-INF/common-controller.xml"/>
+
+    <description>reports Component Site Configuration File</description>
+    <owner></owner>
+	<handler name="jfreechart" type="view" class="org.ofbiz.webapp.view.ChartViewHandler"/>
+
+    <!-- Request Mappings -->
+  <!-- <request-map uri="main">
+    	<security https="true" auth="true"/>
+    	<response name="success" type="view" value="dashBoard"/>
+    </request-map>   -->
+<request-map uri="main">
+    	<security https="true" auth="true"/>
+    	<response name="success" type="view" value="salesSummary"/>
+    </request-map> 
+       <request-map uri="customerCredit">
+        <security https="true" auth="true"/>
+        <event type="java" path="org.ofbiz.accounting.credit.CreditHelper" invoke="customerCredit"/>
+        <response name="success" type="view" value="customerCredit"/>
+     </request-map>
+     
+      <request-map uri="InventoryReports.xls"><security https="true" auth="true"/>
+        <event type="java" path="org.ofbiz.order.report.Report" invoke="exportInventoryResultToExcel2"/>
+        <response name="success" type="view" value="InventoryReports.xls" />
+      </request-map>
+    
+    
+    <request-map uri="authview">
+    <security https="true" auth="true"/>
+    <response name="success" type="view" value="main"/>
+    </request-map>
+
+
+	<request-map uri="uri">
+	     <security https="true" auth="true"/>
+	     <event type="java" path="org.ofbiz.order.report.Report" invoke="dashBoradReportForFNP" />
+	     <response name="success" type="view" value="dashBoradReport"/>
+	</request-map>
+	
+	<request-map uri="dashBoradReport">
+	     <security https="true" auth="true"/>
+	     <event type="java" path="org.ofbiz.order.report.Report" invoke="dashBoradReportForFNP" />
+	     <response name="success" type="view" value="dashBoradReport"/>
+	</request-map>
+	
+ <request-map uri="dashBoradReportExcel">
+		<security https="true" auth="true"/>
+		 <event type="java" path="org.ofbiz.order.report.Report" invoke="dashBoradReportExcel" />
+	   <response name="success" type="none" />
+		<!-- <response name="success" type="view" value="CustomerOrdersReport.csv" /> -->
+    </request-map>
+<request-map uri="dashBoradReportCsv">
+		<security https="true" auth="true"/>
+		 <event type="java" path="org.ofbiz.order.report.Report" invoke="dashBoradReportCsv" />
+	   <response name="success" type="none" />
+		<!-- <response name="success" type="view" value="CustomerOrdersReport.csv" /> -->
+    </request-map>
+    <request-map uri="salesmanReportCSV">
+		<security https="true" auth="true"/>
+		 <event type="java" path="org.ofbiz.order.report.Report" invoke="salesmanReportCSV" />
+	   <response name="success" type="none" />
+		
+    </request-map>
+	<request-map uri="DSR">
+	     <security https="true" auth="true"/>
+	     <event type="java" path="org.ofbiz.order.report.Report" invoke="DSRReportFNP" />
+	     <response name="success" type="view" value="DSR"/>
+	</request-map>
+ <!-- Report jfree chart..-->
+      <request-map uri="showChart">
+        <security auth="true" https="true"/>
+        <response name="success" type="view" value="showChart"/>
+    </request-map>
+
+	<request-map uri="DSRCashSummary">
+	     <security https="true" auth="true"/>
+	     <event type="java" path="org.ofbiz.order.report.Report" invoke="DSRCashSummaryReportFNP" />
+	     <response name="success" type="view" value="DSRCashSummary"/>
+	</request-map>
+
+	<request-map uri="DSRPrint">
+	     <security https="true" auth="true"/>
+	     <event type="java" path="org.ofbiz.order.report.Report" invoke="DSRReportFNP" />
+	     <response name="success" type="view" value="DSRPrint"/>
+	</request-map>
+<request-map uri="SalesManReport">
+	     <security https="true" auth="true"/>
+	   <response name="success" type="view" value="SalesManReport"/>
+	</request-map>
+	
+	<request-map uri="orderSummaryReport">
+	     <security https="true" auth="true"/>
+	   <response name="success" type="view" value="orderSummaryReport"/>
+	</request-map>
+	
+	<request-map uri="cashonhand">
+	     <security https="true" auth="true"/>
+	   <response name="success" type="view" value="cashonhand"/>
+	</request-map>
+	<request-map uri="dailySlot">
+	     <security https="true" auth="true"/>
+	     
+	   <response name="success" type="view" value="dailySlot"/>
+	</request-map>
+	<request-map uri="dailySlotReport">
+	     <security https="true" auth="true"/>
+	     <event type="java" path="org.ofbiz.order.report.newReports.AdminReports" invoke="dailySlotReport"/>
+	   <response name="success" type="view" value="dailySlot"/>
+	</request-map>
+	
+	<request-map uri="DSRCashSummaryPrint">
+	     <security https="true" auth="true"/>
+	     <event type="java" path="org.ofbiz.order.report.Report" invoke="DSRCashSummaryReportFNP" />
+	     <response name="success" type="view" value="DSRCashSummaryPrint"/>
+	</request-map>
+	
+	<request-map uri="freshReport">
+	     <security https="true" auth="true"/>
+	     <event type="java" path="org.ofbiz.order.report.Report" invoke="freshFlowerDetails" />
+     
+   <response name="success" type="view" value="freshReport"/>
+	</request-map>
+	
+	
+	<request-map uri="chequewindow">
+	     <security https="true" auth="true"/>
+	     <event type="java" path="org.ofbiz.order.report.Report" invoke="chequewindow" />
+	     <response name="success" type="view" value="cashwindow"/>
+	</request-map>
+	
+	<request-map uri="cashwindow">
+	     <security https="true" auth="true"/>
+	     <event type="java" path="org.ofbiz.order.report.Report" invoke="cashwindow" />
+	     <response name="success" type="view" value="cashwindow"/>
+	</request-map>
+	
+	<request-map uri="creditwindow">
+	     <security https="true" auth="true"/>
+	     <event type="java" path="org.ofbiz.order.report.Report" invoke="creditwindow" />
+	     <response name="success" type="view" value="creditwindow"/>
+	</request-map>
+
+
+	<request-map uri="creditcardwindow">
+	     <security https="true" auth="true"/>
+	     <event type="java" path="org.ofbiz.order.report.Report" invoke="creditcardwindow" />
+	     <response name="success" type="view" value="creditcardwindow"/>
+	</request-map>
+
+
+	<request-map uri="otherPuchase">
+	     <security https="true" auth="true"/>
+	     <event type="java" path="org.ofbiz.order.report.Report" invoke="otherPuchase" />
+	     <response name="success" type="view" value="otherPuchase"/>
+	</request-map>
+
+
+	<request-map uri="orderitemwindow">
+	     <security https="true" auth="true"/>
+	     <event type="java" path="org.ofbiz.order.report.Report" invoke="orderitemwindow" />
+	     <response name="success" type="view" value="orderitemwindow"/>
+	</request-map>
+
+	<request-map uri="cutomerwindow">
+	     <security https="true" auth="true"/>
+<!-- 	     <event type="java" path="org.ofbiz.order.report.Report" invoke="cutomerwindow" />
+ -->	     <response name="success" type="view" value="cutomerwindow"/>
+	</request-map>
+
+
+
+	<request-map uri="reportingVal">
+	<security auth="true" https="true"/> 
+	<response name="success" type="view" value="reportingVal"/>
+	</request-map>
+	<request-map uri="reportingValue.pdf"><security https="true" auth="true"/>
+        <response name="success" type="view" value="reportingValuepdf"/>
+    </request-map>
+    <request-map uri="reportingValue.CSV"><security https="true" auth="true"/>
+        <response name="success" type="view" value="reportingValueCSV"/>
+    </request-map>
+
+	<!--######################### Inventory Reports Requests Starts  #########################-->
+    <request-map uri="InventoryReports">
+	   <security https="true" auth="true"/>
+	   <response name="success" type="view" value="InventoryReports" />
+    </request-map>
+
+    <request-map uri="InventoryReports.csv"><security https="true" auth="true"/>
+        <response name="success" type="view" value="InventoryReports.csv"/>
+    </request-map>
+	<!--######################### Inventory Reports Requests Ends  #########################-->
+
+	<!--######################### Customer Reports Requests Starts  #######################################-->
+    <request-map uri="CustomerReports"><security https="true" auth="true"/>
+        <response name="success" type="view" value="CustomerReports"/>
+    </request-map>
+    
+	<request-map uri="viewRegistrationreport">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="viewRegistrationreport"/>
+    </request-map>
+
+     <request-map uri="registrationreport.csv">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="registrationreport.csv"/>
+    </request-map>
+
+    <!-- NewsLetter Reports Requests Starts -->
+	<request-map uri="SubscriptionReports">
+	<security https="true" auth="true"/>
+	<response name="success" type="view" value="SubscriptionReports"/>
+	</request-map>
+	
+	<request-map uri="NewsLetterReport.csv">
+	<security https="true" auth="true"/>
+	<response name="success" type="view" value="NewsLetterReport.csv"/>
+	</request-map>
+
+    <!-- NewsLetter Reports Requests Ends -->
+    
+	<!--######################### Customer Reports Requests Ends  #########################-->
+
+	<!--######################### Revenue Reports Requests Starts  #########################-->    
+    <request-map uri="revenueReports">
+	   <security https="true" auth="true"/>
+	   <response name="success" type="view" value="revenueReports"/>
+	</request-map>
+
+	<request-map uri="revenueReoprtCSV">
+	   <security https="true" auth="true"/>
+	    <event type="java" path="org.ofbiz.order.report.Report" invoke="revenueReoprtCSV"/>
+	   <response name="success" type="none" />
+	</request-map>
+	
+	
+    <request-map uri="revenueReoprtSummaryCSV">
+	   <security https="true" auth="true"/>
+	    <event type="java" path="org.ofbiz.order.report.Report" invoke="revenueReoprtSummaryCSV" />
+	   <response name="success" type="none" />
+    </request-map>
+ 	<request-map uri="orderSummaryReport">
+		<security https="true" auth="true"/>
+		<event type="java" path="org.ofbiz.order.report.newReports.AdminReports" invoke="orderSummaryReport"/>
+		<response name="success" type="view" value="orderSummaryReport"/>
+    </request-map>
+    
+    <request-map uri="stockInOutReport">
+	     <security https="true" auth="true"/>
+	   <response name="success" type="view" value="stockInOutReport"/>
+	</request-map>
+	
+    <request-map uri="stockInOutReportCSV">
+		<security https="true" auth="true"/>
+		<event type="java" path="org.ofbiz.order.report.newReports.AdminReports" invoke="stockInOutReportCSV"/>
+		<response name="success" type="none"/>
+		<response name="error" type="none"/>
+    </request-map>
+    
+    <request-map uri="comparativeProductReports">
+	     <security https="true" auth="true"/>
+	   <response name="success" type="view" value="comparativeProductReports"/>
+	</request-map>
+	
+    <request-map uri="comparativeProductReportsExcel">
+		<security https="true" auth="true"/>
+		<event type="java" path="org.ofbiz.order.report.newReports.AdminReports" invoke="comparativeProductReportsExcel"/>
+		<response name="success" type="none"/>
+		<response name="error" type="none"/>
+    </request-map>
+    
+    <request-map uri="offersDiscountsReports">
+	     <security https="true" auth="true"/>
+	   <response name="success" type="view" value="offersDiscountsReports"/>
+	</request-map>
+	
+    <request-map uri="offersDiscountsReportsExcel">
+		<security https="true" auth="true"/>
+		<event type="java" path="org.ofbiz.order.report.newReports.AdminReports" invoke="offersDiscountsReportsExcel"/>
+		<response name="success" type="none"/>
+		<response name="error" type="none"/>
+    </request-map>
+     
+    <request-map uri="customerOrderHistoryReports">
+	     <security https="true" auth="true"/>
+	   <response name="success" type="view" value="customerOrderHistoryReports"/>
+	</request-map>
+	
+    <request-map uri="customerOrderHistoryReportsExcel">
+		<security https="true" auth="true"/>
+		<event type="java" path="org.ofbiz.order.report.newReports.AdminReports" invoke="customerOrderHistoryReportsExcel"/>
+		<response name="success" type="none"/>
+		<response name="error" type="none"/>
+    </request-map>
+    
+     <request-map uri="cashonhand">
+		<security https="true" auth="true"/>
+		<event type="java" path="org.ofbiz.order.report.newReports.AdminReports" invoke="cashOnDeliveryReport"/>
+		<response name="success" type="view" value="cashonhand"/>
+    </request-map>
+    <request-map uri="dailyDashboard">
+		<security https="true" auth="true"/>
+		<event type="java" path="org.ofbiz.order.report.newReports.AdminReports" invoke="cashOnDeliveryReport"/>
+		<response name="success" type="view" value="dailyDashboard"/>
+    </request-map>
+	<request-map uri="revenueMonthlyReportSummaryCSV">
+	<security https="true" auth="true"/>
+	<event type="java" path="org.ofbiz.order.report.Report" invoke="revenueMonthlyReportSummaryCSV" />
+	<response name="success" type="none" />
+	</request-map>
+	<!--######################### Revenue Reports Requests Ends  #########################-->
+
+    <!--######################### Sales Reports Requests Starts #########################-->	
+	
+	<request-map uri="salesreports">
+    	<security https="true" auth="true"/>
+    	<response name="success" type="view" value="salesreports"/>
+    </request-map>
+
+	<request-map uri="viewSalesreport">
+    	<security https="true" auth="true"/>
+    	<response name="success" type="view" value="viewSalesreport"/>
+    </request-map>
+    <request-map uri="CustomerCreditReports">
+    	<security https="true" auth="true"/>
+    	 <event type="java" path="org.ofbiz.accounting.credit.CreditHelper" invoke="calculatePendingCredits"/>
+    	<response name="success" type="view" value="CustomerCreditReports"/>
+    </request-map>
+
+    <request-map uri="genSalesreportCSV">
+	   <security https="true" auth="true"/>
+	   <event type="java" path="org.ofbiz.order.report.Report" invoke="genSalesreportCSV" />
+	   <response name="success" type="none" />
+    </request-map>
+    <!--######################### Sales Reports Requests Ends  #########################-->	
+    
+    <!--######################### Purchase Reports Requests Starts #########################-->	
+    <!-- <request-map uri="purchaseReports">
+	<security https="true" auth="true"/>
+	<response name="success" type="request-redirect" value="purchaseSummary" />
+	</request-map>
+	<request-map uri="">
+    	<security https="true" auth="true"/>
+    	<response name="success" type="view" value="purchaseSummary"/>
+    </request-map>
+    <request-map uri="viewPurchaseReport">
+    	<security https="true" auth="true"/>
+    	<response name="success" type="view" value="viewPurchaseReport"/>
+    </request-map>
+    
+    
+    <request-map uri="purchaseDetail">
+    	<security https="true" auth="true"/>
+    	<response name="success" type="view" value="purchaseDetail"/>
+    </request-map>
+    <request-map uri="viewPurchaseDetailReport">
+    	<security https="true" auth="true"/>
+    	<response name="success" type="view" value="viewPurchaseDetailReport"/>
+    </request-map> -->
+    
+    
+  
+    <!--######################### Purchase Reports Requests Ends  #########################-->	
+   <request-map uri="dashboard">
+    <security https="true" auth="true"/>
+    <response name="success" type="view" value="dashboard"/>
+    </request-map>
+    <request-map uri="salesTaxReport">
+    <security https="true" auth="true"/>
+    <response name="success" type="view" value="salesTaxReport"/>
+    </request-map>
+    
+    <request-map uri="viewSalesTaxReport">
+    	<security https="true" auth="true"/>
+    	<response name="success" type="view" value="viewSalesTaxReport"/>
+    </request-map>
+    
+    
+    <!-- For new Sales report -->
+    
+<request-map uri="orderwiseSalesCSV">
+ <security https="true" auth="true"/>
+ <event type="java" path="org.ofbiz.order.report.newReports.AdminReports" invoke="orderwiseSalesReport"/>
+	   <response name="success" type="none" />
+	</request-map>
+<request-map uri="salesSummary">
+	<security https="true" auth="true"/>
+	<response name="success" type="view" value="salesSummary" />
+	</request-map>
+	 <request-map uri="ItemsalesReoprtCSV">
+	   <security https="true" auth="true"/>
+	    <event type="java" path="org.ofbiz.order.report.newReports.AdminReports" invoke="salesReoprtCSV"/>
+	   <response name="success" type="none" />
+	</request-map>
+	  <request-map uri="purchaseSummary">
+	<security https="true" auth="true"/>
+	<response name="success" type="view" value="purchaseSummary" />
+	</request-map>
+	<request-map uri="purchaseReoprtCSV">
+	   <security https="true" auth="true"/>
+	    <event type="java" path="org.ofbiz.order.report.newReports.AdminReports" invoke="PreparePurchaseCSV"/>
+	   <response name="success" type="none" />
+	</request-map>
+	<request-map uri="reportToSupplier">
+	   <security https="true" auth="true"/>
+	    <event type="java" path="com.ilinks.restful.post.ILinksAppUtil" invoke="reportToSupplier"/>
+	   <response name="success" type="none" />
+	</request-map>
+	
+	<request-map uri="youDailyDispatchReport">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="youDailyDispatchReport" />
+	</request-map>
+	<request-map uri="youDailyDispatchReportCSV">
+	   <security https="true" auth="true"/>
+	    <event type="java" path="com.ilinks.restful.post.ILinksAppUtil" invoke="youDailyDispatchReport"/>
+	   <response name="success" type="none" />
+	</request-map>
+	
+	<request-map uri="packingReport">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="packingReport" />
+	</request-map>
+	<request-map uri="packingReportCSV">
+	   <security https="true" auth="true"/>
+	    <event type="java" path="com.ilinks.restful.post.ILinksAppUtil" invoke="packingReport"/>
+	   <response name="success" type="none" />
+	</request-map>
+	
+	<request-map uri="customerData">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="customerData" />
+	</request-map>
+	<request-map uri="customerDataCSV">
+	   <security https="true" auth="true"/>
+	    <event type="java" path="com.ilinks.restful.post.ILinksAppUtil" invoke="customerData"/>
+	   <response name="success" type="none" />
+	</request-map>
+	
+	
+	<request-map uri="dailyPurchaseSummary">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="dailyPurchaseSummary" />
+	</request-map>
+	<request-map uri="dailyPurchaseSummaryCSV">
+	   <security https="true" auth="true"/>
+	    <event type="java" path="org.ofbiz.order.report.newReports.AdminReports" invoke="dailyPurchaseSummaryCSV"/>
+	   <response name="success" type="none" />
+	</request-map>
+		<request-map uri="stockInHandCSV">
+	   <security https="true" auth="true"/>
+	    <event type="java" path="org.ofbiz.order.report.newReports.AdminReports" invoke="stockInHandCSV"/>
+	   <response name="success" type="none" />
+	</request-map>
+	  <request-map uri="stockInHand">
+	<security https="true" auth="true"/>
+	<response name="success" type="view" value="stockInHand" />
+	</request-map>
+	 <request-map uri="LookupProduct"><security https="true" auth="true"/><response name="success" type="view" value="LookupProduct"/></request-map>
+	 <request-map uri="LookupBrand"><security https="true" auth="true"/><response name="success" type="view" value="LookupBrand"/></request-map>
+		<!--######################### Order Reports Requests Starts  #########################-->
+	<request-map uri="OrderReports">
+	<security https="true" auth="true"/>
+	<response name="success" type="view" value="OrderReports" />
+	</request-map>
+	<request-map uri="CustomerOrderReports">
+	<security https="true" auth="true"/>
+	<response name="success" type="view" value="CustomerOrderReports" />
+	</request-map>
+
+	<request-map uri="searchorders">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="findOrders"/>
+        <response name="success" type="view" value="CustomerOrdersReport"/>
+        <response name="error" type="view" value="CustomerOrdersReport"/>
+    </request-map>
+    <request-map uri="searchcustorders">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="findOrders"/>
+        <response name="success" type="view" value="CustOrdersReport"/>
+        <response name="error" type="view" value="CustOrdersReport"/>
+    </request-map>
+	<!--
+	<request-map uri="CustomerOrdersReport">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="CustomerOrdersReport"/>
+    </request-map>
+	 -->
+     <request-map uri="CustomerOrdersReport.csv">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="CustomerOrdersReport.csv" />
+    </request-map> 
+    <request-map uri="CustOrdersReport.csv">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="CustOrdersReport.csv" />
+    </request-map> 
+
+     <request-map uri="ReturnsReport">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="ReturnsReport" />
+    </request-map>
+
+	<request-map uri="findreturn">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="ReturnsReport" />
+    </request-map>
+
+	<request-map uri="returns.csv">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="returns.csv" />
+    </request-map>
+	<!--######################### Order Reports Requests Ends  #########################-->
+
+
+	<!--######################### Product Reports Requests Starts  #########################-->
+	
+	<request-map uri="staffActivity">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="staffActivity" />
+    </request-map>
+	<request-map uri="staffActivityCSV">
+		<security https="true" auth="true"/>
+		<event type="java" path="org.ofbiz.order.report.Report" invoke="getStaffActivityReport"/>
+		<response name="success" type="none"/>
+    </request-map>
+	<request-map uri="productReports">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="productReports" />
+    </request-map>
+
+	<request-map uri="productReportsCSV">
+		<security https="true" auth="true"/>
+		<event type="java" path="org.ofbiz.order.report.Report" invoke="productListCSV"/>
+		<response name="success" type="none"/>
+		<!--<response name="success" type="view" value="productReportsCSV" />-->
+    </request-map>
+
+	<request-map uri="productOptionsReport">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="productOptionsReport" />
+    </request-map>
+
+	<request-map uri="productPriceReport">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="productPriceReport" />
+    </request-map>
+
+	<request-map uri="productPriceReport.csv">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="productPriceReport.csv" />
+    </request-map>
+
+	<!--<request-map uri="productPromotionReport">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="productPromotionReport" />
+    </request-map>-->
+    
+	<request-map uri="promotionListReport">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="promotionListReport" />
+    </request-map>
+
+	<request-map uri="promoList.csv">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="promoList.csv" />
+    </request-map>
+
+	<request-map uri="giftCertificatesReport">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="giftCertificatesReport" />
+    </request-map>
+
+	<request-map uri="GiftCardReports.csv">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="GiftCardReports.csv" />
+    </request-map>
+    
+	<request-map uri="promotionBasisSaleReport">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="promotionBasisSaleReport" />
+    </request-map>
+    
+	<request-map uri="ListPromoSales.csv">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="ListPromoSales.csv" />
+    </request-map>
+    
+    
+    <request-map uri="productOptionsReport.csv">
+	   <security https="true" auth="true"/>
+	   <event type="java" path="org.ofbiz.order.report.Report" invoke="getProductVariantsReport" />
+	   <response name="success" type="none" />
+    </request-map>
+    
+	<!--######################### Product Reports Requests Ends  #########################-->
+	<request-map uri="LookupProduct">
+		<security auth="true" https="true"/>
+		<response name="success" type="view" value="LookupProduct"/>
+	</request-map>
+	<request-map uri="LookupProductCategory">
+        <security auth="true" https="true"/>
+        <response name="success" type="view" value="LookupProductCategory"/>
+    </request-map>
+    
+    <request-map uri="LookupPartyName">
+	    <security auth="true" https="true"/>
+	    <response name="success" type="view" value="LookupPartyName"/>
+    </request-map>
+    <request-map uri="LookupPinCode">
+	    <security auth="true" https="true"/>
+	    <response name="success" type="view" value="LookupPinCode"/>
+    </request-map>	
+    
+	<request-map uri="LookupUserLoginAndPartyDetails">
+		<security https="true" auth="true"/>
+		<response name="success" type="view" value="LookupUserLoginAndPartyDetails"/>
+	</request-map>
+	
+	<request-map uri="billProductWiseReports">
+    	<security https="true" auth="true"/>
+    	<response name="success" type="view" value="billProductWiseReports"/>
+    </request-map>
+    
+    <request-map uri="ViewBillProductWiseSalesReports">
+    	<security https="true" auth="true"/>
+    	<response name="success" type="view" value="ViewBillProductWiseSalesReports"/>
+    </request-map>
+    <request-map uri="itemWiseReports">
+    	<security https="true" auth="true"/>
+    	<response name="success" type="view" value="itemWiseReports"/>
+    </request-map>
+    
+    <request-map uri="counterWiseReports">
+    	<security https="true" auth="true"/>
+    	<response name="success" type="view" value="counterWiseReports"/>
+    </request-map>
+    
+    <request-map uri="ViewItemWiseSalesReports">
+    	<security https="true" auth="true"/>
+    	<response name="success" type="view" value="ViewItemWiseSalesReports"/>
+    </request-map>
+    
+    <request-map uri="ViewCounterWiseSalesReports">
+    	<security https="true" auth="true"/>
+    	<response name="success" type="view" value="ViewCounterWiseSalesReports"/>
+    </request-map>
+    <request-map uri="salesDetailItemWiseReports">
+    	<security https="true" auth="true"/>
+    	<response name="success" type="view" value="salesDetailItemWiseReports"/>
+    </request-map>
+    
+     <request-map uri="viewSalesDetailItemWiseReports">
+    	<security https="true" auth="true"/>
+    	<response name="success" type="view" value="viewSalesDetailItemWiseReports"/>
+    </request-map>
+    
+    <!-- View Mappings -->
+    <view-map name="main" type="screen" page="component://reports/widget/ReportsScreens.xml#main"/>
+    <view-map name="dashBoradReport" type="screen" page="component://reports/widget/ReportsScreens.xml#dashBoradReport"/>
+    
+    <view-map name="DSR" type="screen" page="component://reports/widget/ReportsScreens.xml#DSR"/>
+    <view-map name="DSRCashSummary" type="screen" page="component://reports/widget/ReportsScreens.xml#DSRCashSummary"/>
+    
+    
+    <view-map name="DSRPrint" type="screen" page="component://reports/widget/ReportsScreens.xml#DSRPrint"/>
+    <view-map name="DSRCashSummaryPrint" type="screen" page="component://reports/widget/ReportsScreens.xml#DSRCashSummaryPrint"/>
+    
+    
+    
+    <view-map name="freshReport" type="screen" page="component://reports/widget/ReportsScreens.xml#freshReport"/>
+    <view-map name="SalesManReport" type="screen" page="component://reports/widget/ReportsScreens.xml#SalesManReport"/>
+      <view-map name="orderSummaryReport" type="screen" page="component://reports/widget/ReportsScreens.xml#orderSummaryReport"/>
+       <view-map name="cashonhand" type="screen" page="component://reports/widget/ReportsScreens.xml#cashonhand"/>
+        <view-map name="dailySlot" type="screen" page="component://reports/widget/ReportsScreens.xml#dailySlot"/>
+
+	<view-map name="stockInOutReport" type="screen" page="component://reports/widget/ReportsScreens.xml#stockInOutReport"/>
+	<view-map name="comparativeProductReports" type="screen" page="component://reports/widget/ReportsScreens.xml#comparativeProductReports"/>
+	<view-map name="offersDiscountsReports" type="screen" page="component://reports/widget/ReportsScreens.xml#offersDiscountsReports"/>
+	<view-map name="customerOrderHistoryReports" type="screen" page="component://reports/widget/ReportsScreens.xml#customerOrderHistoryReports"/>
+
+	<view-map name="billProductWiseReports" type="screen" page="component://reports/widget/ReportsScreens.xml#billProductWiseReports"/>
+	<view-map name="ViewBillProductWiseSalesReports" type="screen" page="component://reports/widget/ReportsScreens.xml#ViewBillProductWiseSalesReports"/>
+	<view-map name="itemWiseReports" type="screen" page="component://reports/widget/ReportsScreens.xml#itemWiseReports"/>
+	<view-map name="counterWiseReports" type="screen" page="component://reports/widget/ReportsScreens.xml#counterWiseReports"/>
+	<view-map name="ViewItemWiseSalesReports" type="screen" page="component://reports/widget/ReportsScreens.xml#ViewItemWiseSalesReports"/>
+	<view-map name="ViewCounterWiseSalesReports" type="screen" page="component://reports/widget/ReportsScreens.xml#ViewCounterWiseSalesReports"/>
+	<view-map name="salesDetailItemWiseReports" type="screen" page="component://reports/widget/ReportsScreens.xml#SalesDetailItemWiseReports"/>
+	<view-map name="viewSalesDetailItemWiseReports" type="screen" page="component://reports/widget/ReportsScreens.xml#ViewSalesDetailItemWiseReports"/>
+
+    <view-map name="cashwindow" type="screen" page="component://reports/widget/ReportsScreens.xml#cashwindow"/>
+    <view-map name="creditwindow" type="screen" page="component://reports/widget/ReportsScreens.xml#creditwindow"/>
+    <view-map name="creditcardwindow" type="screen" page="component://reports/widget/ReportsScreens.xml#creditcardwindow"/>
+
+    <view-map name="orderitemwindow" type="screen" page="component://reports/widget/ReportsScreens.xml#orderitemwindow"/>
+    
+    <view-map name="otherPuchase" type="screen" page="component://reports/widget/ReportsScreens.xml#otherPuchase"/>
+
+    <view-map name="cutomerwindow" type="screen" page="component://reports/widget/ReportsScreens.xml#cutomerwindow"/>
+    <view-map name="CustomerCreditReports" type="screen" page="component://reports/widget/ReportsScreens.xml#CustomerCreditReports"/>
+    <view-map name="dashBoard" type="screen" page="component://reports/widget/ReportsScreens.xml#dashBoard"/>
+    <view-map name="salesTaxReport" type="screen" page="component://reports/widget/ReportsScreens.xml#salesTaxReport"/>
+    <view-map name="dashboard" type="screen" page="component://reports/widget/ReportsScreens.xml#dashboard"/>
+    <view-map name="reportingVal" type="screen" page="component://reports/widget/ReportsScreens.xml#reportingVal"/>
+    <view-map name="reportingValuepdf" type="screenfop" content-type="application/pdf" page="component://reports/widget/ReportsScreens.xml#reportingValuepdf"/>
+    <view-map name="reportingValueCSV" type="screencsv" content-type="text/csv" page="component://reports/widget/ReportsScreens.xml#reportingValueCSV" encoding="none"/>
+	
+	<view-map name="purchaseSummary" type="screen" page="component://reports/widget/ReportsScreens.xml#purchaseSummary"/>
+	<view-map name="youDailyDispatchReport" type="screen" page="component://reports/widget/ReportsScreens.xml#youDailyDispatchReport"/>
+	<view-map name="packingReport" type="screen" page="component://reports/widget/ReportsScreens.xml#packingReport"/>
+	<view-map name="customerData" type="screen" page="component://reports/widget/ReportsScreens.xml#customerData"/>
+	<view-map name="dailyPurchaseSummary" type="screen" page="component://reports/widget/ReportsScreens.xml#dailyPurchaseSummary"/>
+	
+	<view-map name="stockInHand" type="screen" page="component://reports/widget/ReportsScreens.xml#stockInHand"/>
+
+	<view-map name="purchaseDetail" type="screen" page="component://reports/widget/ReportsScreens.xml#purchaseDetail"/>
+	<view-map name="viewSalesTaxReport" type="screen" page="component://reports/widget/ReportsScreens.xml#viewSalesTaxReport"/>
+	<view-map name="viewSalesreport" type="screen" page="component://reports/widget/ReportsScreens.xml#viewSalesreport"/>
+	<view-map name="viewPurchaseReport" type="screen" page="component://reports/widget/ReportsScreens.xml#viewPurchaseReport"/>
+	<view-map name="viewPurchaseDetailReport" type="screen" page="component://reports/widget/ReportsScreens.xml#viewPurchaseDetailReport"/>
+	<view-map name="ReturnsReport" type="screen" page="component://reports/widget/ReportsScreens.xml#ReturnsReport"/>
+	<view-map name="InventoryReports" type="screen" page="component://reports/widget/ReportsScreens.xml#InventoryReports"/>
+	<view-map name="InventoryReports.csv" type="screencsv" content-type="text/csv" page="component://reports/widget/ReportsScreens.xml#InventoryReportsCSV" encoding="none"/>
+	<view-map name="CustomerReports" type="screen" page="component://reports/widget/ReportsScreens.xml#CustomerReports"/>
+	<view-map name="viewRegistrationreport" type="screen" page="component://reports/widget/ReportsScreens.xml#CustomerReports"/>
+	<view-map name="registrationreport.csv" type="screencsv" content-type="text/csv" page="component://reports/widget/ReportsScreens.xml#registrationreportCSV" encoding="none"/>
+	<view-map name="CustomerOrdersReport" type="screen" page="component://reports/widget/ReportsScreens.xml#CustomerOrdersReport"/>
+	<view-map name="customerCredit" type="screen" page="component://reports/widget/ReportsScreens.xml#customerCredit"/>
+	
+	
+	<view-map name="CustOrdersReport" type="screen" page="component://reports/widget/ReportsScreens.xml#CustOrdersReport"/>
+	<view-map name="CustomerOrdersReport.csv" type="screencsv" content-type="text/csv" page="component://reports/widget/ReportsScreens.xml#CustomerOrdersReportCSV" encoding="none"/>
+	<view-map name="CustOrdersReport.csv" type="screencsv" content-type="text/csv" page="component://reports/widget/ReportsScreens.xml#CustOrdersReportCSV" encoding="none"/>
+	
+	<view-map name="returns.csv" type="screencsv" content-type="text/csv" page="component://reports/widget/ReportsScreens.xml#returnsCSV" encoding="none"/>
+	<view-map name="revenueReports" type="screen" page="component://reports/widget/ReportsScreens.xml#revenueReports"/>
+	<view-map name="salesSummary" type="screen" page="component://reports/widget/ReportsScreens.xml#salesSummary"/>
+	<view-map name="purchaseReports" type="screen" page="component://reports/widget/ReportsScreens.xml#purchaseReports"/>
+	<view-map name="OrderReports" type="screen" page="component://reports/widget/ReportsScreens.xml#OrderReports"/>
+	
+	<view-map name="CustomerOrderReports" type="screen" page="component://reports/widget/ReportsScreens.xml#CustomerOrderReports"/>
+	
+	<view-map name="SubscriptionReports" type="screen" page="component://reports/widget/ReportsScreens.xml#SubscriptionReports"/>
+	<view-map name="NewsLetterReport.csv" type="screencsv" content-type="text/csv" page="component://reports/widget/ReportsScreens.xml#NewsLetterReportCSV" encoding="none"/>
+	<view-map name="productReports" type="screen" page="component://reports/widget/ReportsScreens.xml#productReports"/>
+	<view-map name="productReportsCSV" type="screencsv" content-type="text/csv" page="component://reports/widget/ReportsScreens.xml#productReportsCSV" encoding="none"/>
+	<view-map name="productPriceReport" type="screen" page="component://reports/widget/ReportsScreens.xml#productPriceReport"/>
+	<view-map name="productPriceReport.csv" type="screencsv" content-type="text/csv" page="component://reports/widget/ReportsScreens.xml#productPriceReportCSV" encoding="none"/>
+	<view-map name="promotionListReport" type="screen" page="component://reports/widget/ReportsScreens.xml#promotionListReport"/>
+	<view-map name="promoList.csv" type="screencsv" content-type="text/csv" page="component://reports/widget/ReportsScreens.xml#promoList.csv" encoding="none"/>
+	<view-map name="giftCertificatesReport" type="screen" page="component://reports/widget/ReportsScreens.xml#giftCertificatesReport"/>
+	<view-map name="GiftCardReports.csv" type="screencsv" content-type="text/csv" page="component://reports/widget/ReportsScreens.xml#GiftCardReports.csv" encoding="none"/>
+	<view-map name="promotionBasisSaleReport" type="screen" page="component://reports/widget/ReportsScreens.xml#promotionBasisSaleReport"/>
+	<view-map name="ListPromoSales.csv" type="screencsv" content-type="text/csv" page="component://reports/widget/ReportsScreens.xml#ListPromoSales.csv" encoding="none"/>
+	<view-map name="productOptionsReport" type="screen" page="component://reports/widget/ReportsScreens.xml#productOptionsReport"/>
+	<view-map name="LookupProduct" type="screen" page="component://reports/widget/ReportsScreens.xml#LookupProduct"/>
+	<view-map name="LookupBrand" type="screen" page="component://reports/widget/ReportsScreens.xml#LookupBrand"/>
+	
+	<view-map name="LookupPartyName" type="screen" page="component://reports/widget/ReportsScreens.xml#LookupPartyName"/>
+	<view-map name="LookupPinCode" type="screen" page="component://reports/widget/ReportsScreens.xml#LookupPinCode"/>
+	
+	<view-map name="staffActivity" type="screen" page="component://reports/widget/ReportsScreens.xml#staffActivity"/>
+	<view-map name="LookupUserLoginAndPartyDetails" type="screen" page="component://Setup/widget/partymgr/LookupScreens.xml#LookupUserLoginAndPartyDetails"/>
+    <view-map name="InventoryReports.xls" type="screen"  page="component://reports/widget/ReportsScreens.xml#InventoryReportsxls"/>
+   <view-map name="LookupProductCategory" type="screen" page="component://product/widget/catalog/LookupScreens.xml#LookupProductCategory"/>
+     <view-map name="LookupProduct" type="screen" page="component://product/widget/catalog/LookupScreens.xml#LookupProduct"/>
+<view-map name="showChart" type="chart"/>
+
+</site-conf>

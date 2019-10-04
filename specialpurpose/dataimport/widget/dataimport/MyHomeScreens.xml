@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2006 - 2007 Open Source Strategies, Inc.
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the Honest Public License.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * Honest Public License for more details.
+ * 
+ * You should have received a copy of the Honest Public License
+ * along with this program; if not, write to Funambol,
+ * 643 Bair Island Road, Suite 305 - Redwood City, CA 94063, USA
+-->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.ofbiz.org/dtds/widget-screen.xsd">
+	
+    <screen name="myHome">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/>
+				<script location="component://dataimport/webapp/dataimport/WEB-INF/actions/myhome/myHome.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html><html-template location="component://dataimport/webapp/dataimport/myhome/myHome.ftl"/></html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="imageUploadMain">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/>
+				<script location="component://dataimport/webapp/dataimport/WEB-INF/actions/myhome/imageUpload.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html><html-template location="component://dataimport/webapp/dataimport/myhome/imageUpload.ftl"/></html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+     </screen>
+	 <screen name="ProductImportSheet">
+        <section>
+            <actions>
+                <set field="headerItem" value="ProductImportSheet"/>
+				<script location="component://dataimport/webapp/dataimport/WEB-INF/actions/myhome/productData.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html><html-template location="component://dataimport/webapp/dataimport/myhome/productData.ftl"/></html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+	
+	<screen name="dataimport">
+        <section>
+            <actions>
+                <set field="headerItem" value="dataimport"/>
+				<script location="component://dataimport/webapp/dataimport/WEB-INF/actions/myhome/myHome.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html><html-template location="component://dataimport/webapp/dataimport/myhome/myHome.ftl"/></html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+	<screen name="variantProduct">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/>
+				<script location="component://dataimport/webapp/dataimport/WEB-INF/actions/myhome/variantProduct.bsh"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html><html-template location="component://dataimport/webapp/dataimport/myhome/variantProduct.ftl"/></html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+	
+	<screen name="ExportVariantProduct">
+		<section>
+			<actions>
+                <set field="titleProperty" value="Export Variant Product"/>
+                <set field="labelTitleProperty" value="ExportVariantProduct"/>
+                <script location="component://dataimport/webapp/dataimport/WEB-INF/actions/myhome/ExportVariantProduct.bsh"/>
+            </actions>
+			<widgets>
+				<include-form name="ExportVariantProductForm" location="component://dataimport/webapp/dataimport/myhome/DataForms.xml"/>
+            </widgets>
+		</section>
+    </screen>
+	
+	<screen name="report">
+        <section>
+            <actions>
+                <set field="headerItem" value="report"/>
+				<script location="component://dataimport/webapp/dataimport/WEB-INF/actions/report/report.bsh"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html><html-template location="component://dataimport/webapp/dataimport/report/report.ftl"/></html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+	
+	<screen name="ExportCatalogReport">
+		<section>
+			<actions>
+                <set field="headerItem" value="report"/>
+				<script location="component://dataimport/webapp/dataimport/WEB-INF/actions/report/report.bsh"/>
+            </actions>
+			<widgets>
+				<include-form name="ExportCatalogReportForm" location="component://dataimport/webapp/dataimport/myhome/DataForms.xml"/>
+            </widgets>
+		</section>
+    </screen>
+	
+	<screen name="ExportCategoryReport">
+		<section>
+			<actions>
+                <set field="headerItem" value="report"/>
+				<script location="component://dataimport/webapp/dataimport/WEB-INF/actions/report/report.bsh"/>
+            </actions>
+			<widgets>
+				<include-form name="ExportCategoryReportForm" location="component://dataimport/webapp/dataimport/myhome/DataForms.xml"/>
+            </widgets>
+		</section>
+    </screen>
+	
+	<screen name="ExportFeatureReport">
+		<section>
+			<actions>
+                <set field="headerItem" value="report"/>
+				<script location="component://dataimport/webapp/dataimport/WEB-INF/actions/report/report.bsh"/>
+            </actions>
+			<widgets>
+				<include-form name="ExportFeatureReportForm" location="component://dataimport/webapp/dataimport/myhome/DataForms.xml"/>
+            </widgets>
+		</section>
+    </screen>
+	
+	<screen name="ExportProductReport">
+		<section>
+			<actions>
+                <set field="headerItem" value="report"/>
+				<script location="component://dataimport/webapp/dataimport/WEB-INF/actions/report/report.bsh"/>
+            </actions>
+			<widgets>
+				<include-form name="ExportProductReportForm" location="component://dataimport/webapp/dataimport/myhome/DataForms.xml"/>
+            </widgets>
+		</section>
+    </screen>
+	
+	<screen name="ExportVariantProductReport">
+		<section>
+			<actions>
+                <set field="headerItem" value="report"/>
+				<script location="component://dataimport/webapp/dataimport/WEB-INF/actions/report/report.bsh"/>
+            </actions>
+			<widgets>
+				<include-form name="ExportVariantProductReportForm" location="component://dataimport/webapp/dataimport/myhome/DataForms.xml"/>
+            </widgets>
+		</section>
+    </screen>
+</screens>

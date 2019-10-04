@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+    <screen name="main">
+        <section>
+            <actions>
+             	<set field="headerItem" value="Events"/>
+                <entity-and entity-name="WorkEffortAndPartyAssign" list="myTasks" filter-by-date="true">
+                    <field-map field-name="partyId" from-field="userLogin.partyId"/>
+                    <field-map field-name="statusId" value="PRTYASGN_ASSIGNED"/>
+                    <field-map field-name="workEffortTypeId" value="TASK"/>
+                    <field-map field-name="currentStatusId" value="CAL_ACCEPTED"/>
+                    <field-map field-name="workEffortParentId" from-field="null"/>
+                </entity-and>
+                <entity-and entity-name="WorkEffortAndPartyAssign" list="tasksAssignedByMe" filter-by-date="true">
+                    <field-map field-name="assignedByUserLoginId" from-field="userLogin.userLoginId"/>
+                    <field-map field-name="statusId" value="PRTYASGN_ASSIGNED"/>
+                    <field-map field-name="workEffortTypeId" value="TASK"/>
+                    <field-map field-name="currentStatusId" value="CAL_ACCEPTED"/>
+                    <field-map field-name="workEffortParentId" from-field="null"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonEventDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="${uiLabelMap.SfaTaskAssignedToMe}" navigation-form-name="MyTasks">
+                                    <include-form name="MyTasks" location="component://marketing/widget/sfa/forms/EventForms.xml"/>
+                                </screenlet>
+                                <screenlet title="${uiLabelMap.SfaTaskAssignedByMe}" navigation-form-name="MyTasks">
+                                    <include-form name="TasksAssignedByMe" location="component://marketing/widget/sfa/forms/EventForms.xml"/>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+      <screen name="myTickets">
+        <section>
+            <actions>
+           <entity-and list="myTeamTickets" entity-name="CustRequest">
+           <order-by field-name="custRequestId"/>
+           </entity-and>
+                <!-- <script location="component://marketing/webapp/sfa/WEB-INF/action/mytickets.groovy"/> --> 
+            </actions>
+            <widgets>
+                 <decorator-screen name="CommonEventDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                     <screenlet title="My Team Tickets">
+                     <container  style="button-bar"> 
+                         <link text="My Tickets" target="mineTickets" style="buttontext create">
+                             <parameter param-name="DONE_PAGE" from-field="donePage"/>
+                         </link>
+                     </container>
+                            <platform-specific><html><html-template location="component://marketing/webapp/sfa/mytickets.ftl"/></html></platform-specific>
+                    </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    <screen name="mineTickets">
+        <section>
+            <actions>
+           <entity-condition list="mineTickets" entity-name="CustRequest">
+                  <condition-expr field-name="fromPartyId"  from-field="admin"/>
+                </entity-condition> 
+                  <script location="component://marketing/webapp/sfa/WEB-INF/action/mytickets.bsh"/>
+            </actions>
+            <widgets>
+                 <decorator-screen name="CommonEventDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                     <screenlet title="My Team Tickets">
+                     <container  style="button-bar"> 
+                         <link text="My Tickets" target="mineTickets" style="buttontext create">
+                         </link>
+                     </container>
+                            <platform-specific><html><html-template location="component://marketing/webapp/sfa/minetickets.ftl"/></html></platform-specific>
+                    </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    
+    <!--  <screen name="myTickets">
+        <section>
+            <actions>
+             	<set field="headerItem" value="myTicket"/>
+                <set field="tabButtonItem" value="myTicket"/>
+                <entity-and entity-name="WorkEffortAndPartyAssign" list="myTasks" filter-by-date="true">
+                    <field-map field-name="partyId" from-field="userLogin.partyId"/>
+                    <field-map field-name="statusId" value="PRTYASGN_ASSIGNED"/>
+                    <field-map field-name="workEffortTypeId" value="TASK"/>
+                    <field-map field-name="currentStatusId" value="CAL_ACCEPTED"/>
+                    <field-map field-name="workEffortParentId" from-field="null"/>
+                </entity-and>
+                <entity-and entity-name="WorkEffortAndPartyAssign" list="tasksAssignedByMe" filter-by-date="true">
+                    <field-map field-name="assignedByUserLoginId" from-field="userLogin.userLoginId"/>
+                    <field-map field-name="statusId" value="PRTYASGN_ASSIGNED"/>
+                    <field-map field-name="workEffortTypeId" value="TASK"/>
+                    <field-map field-name="currentStatusId" value="CAL_ACCEPTED"/>
+                    <field-map field-name="workEffortParentId" from-field="null"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonEventDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="${uiLabelMap.SfaTaskAssignedToMe}" navigation-form-name="MyTasks">
+                                    <include-form name="MyTasks" location="component://marketing/widget/sfa/forms/EventForms.xml"/>
+                                </screenlet>
+                                <screenlet title="${uiLabelMap.SfaTaskAssignedByMe}" navigation-form-name="MyTasks">
+                                    <include-form name="TasksAssignedByMe" location="component://marketing/widget/sfa/forms/EventForms.xml"/>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+     -->
+      <screen name="findTickets">
+        <section>
+            <actions>
+             	<set field="headerItem" value="findTicket"/>
+                <set field="tabButtonItem" value="findTicket"/>
+                <entity-and entity-name="WorkEffortAndPartyAssign" list="myTasks" filter-by-date="true">
+                    <field-map field-name="partyId" from-field="userLogin.partyId"/>
+                    <field-8map field-name="statusId" value="PRTYASGN_ASSIGNED"/>
+                    <field-map field-name="workEffortTypeId" value="TASK"/>
+                    <field-map field-name="currentStatusId" value="CAL_ACCEPTED"/>
+                    <field-map field-name="workEffortParentId" from-field="null"/>
+                </entity-and>
+                <entity-and entity-name="WorkEffortAndPartyAssign" list="tasksAssignedByMe" filter-by-date="true">
+                    <field-map field-name="assignedByUserLoginId" from-field="userLogin.userLoginId"/>
+                    <field-map field-name="statusId" value="PRTYASGN_ASSIGNED"/>
+                    <field-map field-name="workEffortTypeId" value="TASK"/>
+                    <field-map field-name="currentStatusId" value="CAL_ACCEPTED"/>
+                    <field-map field-name="workEffortParentId" from-field="null"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonEventDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="${uiLabelMap.SfaTaskAssignedToMe}" navigation-form-name="MyTasks">
+                                    <include-form name="MyTasks" location="component://marketing/widget/sfa/forms/EventForms.xml"/>
+                                </screenlet>
+                                <screenlet title="${uiLabelMap.SfaTaskAssignedByMe}" navigation-form-name="MyTasks">
+                                    <include-form name="TasksAssignedByMe" location="component://marketing/widget/sfa/forms/EventForms.xml"/>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="EditEvent">
+        <section>
+            <actions>
+            	<set field="headerItem" value="createTicket"/>
+                <set field="tabButtonItem" value="createTicket"/>
+                <entity-one entity-name="WorkEffort" value-field="workEffort"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonEventDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <screenlet title="${uiLabelMap.WorkEffortAddCalendarEvent}">
+                                    <include-form name="EditEvent" location="component://marketing/widget/sfa/forms/EventForms.xml"/>
+                                </screenlet>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+       
+     <screen name="createCaseForm">
+        <section>
+            <actions>
+                <set field="headerItem" value="createTicket"/>
+                <set field="tabButtonItem" value="createTicket"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonEventDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                            <include-form name="createCaseForm" location="component://marketing/widget/sfa/forms/CasesForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    
+     <screen name="viewCase">
+        <section>
+            <actions>
+                <set field="pageTitleLabel" value="CrmViewCase"/>
+                <set field="sectionHeaderUiLabel" value="CrmViewCase"/> 
+                <set field="listSortTarget" value="viewCase"/> <!-- targets for order by links -->
+                <set field="donePage" value="viewCase"/>
+                <set field="hasOperationPermission" value="_VIEW"/>
+                <set field="findActivitiesKey" value="custRequestId"/>
+                <!-- <script location="component://crmsfa/webapp/crmsfa/WEB-INF/actions/includes/pagination.bsh"/>
+                <script location="component://crmsfa/webapp/crmsfa/WEB-INF/actions/security/checkComplexCaseSecurity.bsh"/>-->
+                <script location="component://marketing/webapp/sfa/WEB-INF/action/viewCase.bsh"/>
+                <!--<script location="component://crmsfa/webapp/crmsfa/WEB-INF/actions/activities/findActivities.bsh"/> -->
+            </actions>
+            <widgets>
+                 <decorator-screen name="CommonEventDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+
+                        <!-- Main cases section
+                            <platform-specific><html><html-template location="component://crmsfa/webapp/crmsfa/cases/submenus/caseDetailsMenu.ftl"/></html></platform-specific> -->
+                                <include-form name="viewCase" location="component://marketing/widget/sfa/forms/CasesForms.xml"/>
+
+                        <!-- status change history -->
+                          <include-form name="listCaseHistory" location="component://marketing/widget/sfa/forms/CasesForms.xml"/>
+
+                        <!-- pending activities 
+                        <include-screen name="pendingActivities" location="component://crmsfa/widget/crmsfa/screens/activities/ActivitiesScreens.xml"/>-->
+
+                        <!-- attached content 
+                        <include-screen name="contentList" location="component://crmsfa/widget/crmsfa/screens/content/ContentScreens.xml"/>-->
+
+                        <!-- Notes section -->
+                       <!--  <container style="subSectionBlock">
+                            <platform-specific><html><html-template location="component://crmsfa/webapp/crmsfa/cases/submenus/notesMenu.ftl"/></html></platform-specific>
+                            <platform-specific><html><html-template location="component://crmsfa/webapp/crmsfa/common/ListNotes.ftl"/></html></platform-specific>
+                        </container>
+							 -->
+                        <!-- completed activities 
+                        <include-screen name="completedActivities" location="component://crmsfa/widget/crmsfa/screens/activities/ActivitiesScreens.xml"/>-->
+
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    
+      <screen name="findCases">
+        <section>
+            <actions>
+                <set field="pageTitleLabel" value="CrmFindCases"/>
+                <set field="sectionHeaderUiLabel" value="CrmFindCases"/>
+                <set field="findCaseWidget" value="findCases"/>
+            </actions>
+            <widgets>
+               <decorator-screen name="CommonEventDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                    <screenlet title="Find By Filters">
+                             <include-form name="FindCasesForm" location="component://marketing/widget/sfa/forms/CasesForms.xml"/>
+                    </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>    
+    </screen>
+    
+    <screen name="LookupCases">
+        <section>
+            <actions>
+               <!--  <script location="component://crmsfa/webapp/crmsfa/WEB-INF/actions/includes/pagination.bsh"/> -->
+                <!--  <script location="component://marketing/webapp/sfa/WEB-INF/action/findCases.groovy"/>-->
+                <!-- <script location="component://marketing/webapp/sfa/WEB-INF/action/listCases.bsh"/> -->                
+                <entity-condition list="custRequest" entity-name="CustRequest">
+                  <condition-expr field-name="priority" from-field="parameters.priority"/>
+                   <condition-expr field-name="priority" from-field="parameters.custRequestId"/>
+                  <condition-expr field-name="subject" from-field="parameters.custRequestName"/>
+                   <condition-expr field-name="reason" from-field="parameters.reason"/>
+                  <condition-expr field-name="custRequestTypeId" from-field="parameters.custRequestTypeId"/>
+                  <condition-expr field-name="statusId" from-field="parameters.statusId"/>
+                </entity-condition> 
+            </actions>
+            <widgets>
+                 <decorator-screen name="CommonEventDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                       <!--  <container style="subSectionBlock">
+                            <container style="subSectionHeader"><label style="subSectionTitle">${uiLabelMap.CrmFindCases}</label></container>
+                            <include-form name="FindCasesForm" location="component://marketing/widget/sfa/forms/CasesForms.xml"/>
+                        </container> -->
+                            <platform-specific><html><html-template location="component://marketing/webapp/sfa/listCases.ftl"/></html></platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+	<screen name="submittedTicket">
+        <section>
+            <actions>
+                <set field="titleProperty" value="submittedTicket"/>
+                <!-- <set field="headerItem" value="submittedTicket"/> -->
+                <set field="tabButtonItem2" value="submittedTicket"/> 
+                <set field="entityName" value="CustRequest"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonEventListDecorator" location="component://marketing/widget/sfa/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <decorator-screen name="ListItemsDecorator" location="component://common/widget/CommonScreens.xml">
+                            <decorator-section name="search-results">
+                                <include-form name="ListSubmittedCustomerRequests" location="component://marketing/widget/sfa/ordermgr/CustRequestForms.xml"/>
+                            </decorator-section>
+                        </decorator-screen>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+         </section>
+    </screen>
+    
+	<screen name="acceptedTicket">
+        <section>
+            <actions>
+                <set field="titleProperty" value="OrderFindRequests"/>
+                <!-- <set field="headerItem" value="request"/> -->
+                <set field="headerItem" value="Events"/>
+                <set field="tabButtonItem2" value="acceptedTicket"/> 
+                <set field="entityName" value="CustRequest"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonEventListDecorator" location="component://marketing/widget/sfa/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <decorator-screen name="ListItemsDecorator" location="component://common/widget/CommonScreens.xml">
+                            <decorator-section name="search-results">
+                                <include-form name="ListAcceptedCustomerRequests" location="component://marketing/widget/sfa/ordermgr/CustRequestForms.xml"/>
+                            </decorator-section>
+                        </decorator-screen>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+         </section>
+    </screen>
+    
+	<screen name="rejectedTicket">
+        <section>
+            <actions>
+                <set field="titleProperty" value="OrderFindRequests"/>
+               <!--  <set field="headerItem" value="request"/> -->
+               <set field="headerItem" value="Events"/>
+                <set field="tabButtonItem2" value="rejectedTicket"/> 
+                <set field="entityName" value="CustRequest"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonEventListDecorator" location="component://marketing/widget/sfa/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <decorator-screen name="ListItemsDecorator" location="component://common/widget/CommonScreens.xml">
+                            <decorator-section name="search-results">
+                                <include-form name="ListRejectedCustomerRequests" location="component://marketing/widget/sfa/ordermgr/CustRequestForms.xml"/>
+                            </decorator-section>
+                        </decorator-screen>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+         </section>
+    </screen>
+    
+	<screen name="completedTicket">
+        <section>
+            <actions>
+                <set field="titleProperty" value="OrderFindRequests"/>
+                <!-- <set field="headerItem" value="request"/> -->
+                <set field="headerItem" value="Events"/>
+                <set field="tabButtonItem2" value="completedTicket"/> 
+                <set field="entityName" value="CustRequest"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonEventListDecorator" location="component://marketing/widget/sfa/CommonScreens.xml">
+                    <decorator-section name="body">
+                        <decorator-screen name="ListItemsDecorator" location="component://common/widget/CommonScreens.xml">
+                            <decorator-section name="search-results">
+                                <include-form name="ListCompletedCustomerRequests" location="component://marketing/widget/sfa/ordermgr/CustRequestForms.xml"/>
+                            </decorator-section>
+                        </decorator-screen>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+         </section>
+    </screen>
+</screens>

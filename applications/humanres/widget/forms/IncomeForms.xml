@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+ 
+ 	<form name="EditIncome" type="single" target="createIncome">
+ 	<actions>
+ 	<set field="invoiceItemTypeId" from-field="parameters.invoiceItemTypeId"/>
+ 	</actions>
+	<field name="invoiceItemTypeId" title="${uiLabelMap.IncomeTypeId}"><text></text></field>
+ 	<field name="action" use-when="invoiceItemTypeId!=null"><hidden value="Update"/></field>
+ 	<field name="action" use-when="invoiceItemTypeId==null"><hidden value="Create"/></field>
+     <field name="description" id-name="${uiLabelMap.description}" ><text/></field>
+           <!-- <field name="incomeTypeId">
+           
+           <drop-down>
+           <entity-options description="${incomeTypeId}" entity-name="IncomeType" key-field-name="incomeTypeId"></entity-options>
+          
+         </drop-down>
+        </field>
+    <field name="unitOfMeasure">
+          <drop-down >
+            <option key="PERIOD" description="Period"/>
+            <option key="HOUR" description="Hour"/>
+         </drop-down>
+        </field> 
+         <field name="gainOf"><text size="10" maxlength="10"/></field>-->
+         <field name="geoId" title="${uiLabelMap.geoId}" >
+          <drop-down >
+            <entity-options description="${geoName}" entity-name="Geo" key-field-name="geoId"></entity-options>
+         </drop-down>
+        </field>
+         <field name="glAccountType" title="${uiLabelMap.glAccountType}">
+         <drop-down allow-empty="false">
+         <entity-options description="${accountName}" entity-name="GlAccount" key-field-name="glAccountId"></entity-options>
+         </drop-down>
+          </field>
+   <field name="submitButton" use-when="invoiceItemTypeId!=null" title="${uiLabelMap.CommonUpdate}"><submit button-type="button"/></field>
+        <field name="submitButton"   use-when="invoiceItemTypeId==null" title="${uiLabelMap.CommonAdd}"><submit button-type="button"/></field>
+    </form>
+    
+        <form name="FindIncome" type="single" target="findIncome"
+        odd-row-style="header-row" default-table-style="basic-table">
+        <auto-fields-entity entity-name="InvoiceItemType" default-field-type="find"/>
+       
+       <!--  <field name="invoiceItemTypeId" title="IncomeTypeId">
+           <drop-down allow-empty="false">
+           <entity-options description="${invoiceItemTypeId}" entity-name="InvoiceItemType" key-field-name="invoiceItemTypeId">
+           <entity-constraint name="parentTypeId" operator="equals" value="PAYROL_EARN_HOURS"/>
+           <entity-constraint name="geoId" operator="equals" value="IN"/>
+           </entity-options>
+           </drop-down>
+        </field> -->
+        <field name="invoiceItemTypeId" title="${uiLabelMap.Income}"></field>
+         <field name="hasTable"><hidden></hidden></field>
+         <field name="parentTypeId"><hidden value="PAYROL_EARN_HOURS"></hidden></field>
+         <field name="geoId"><hidden value="IN"></hidden></field>
+         
+        
+        
+          <field name="description" title="${uiLabelMap.description}"></field>
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+        <field name="searchButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit"><submit button-type="button"/></field>
+    </form>
+    <form name="ListIncome" list-name="listIt" type="list" odd-row-style="alternate-row" header-row-style="header-row-2"
+        paginate-target="findIncome" default-table-style="basic-table hover-bar">
+        <actions>
+            <set field="entityName" value="InvoiceItemType"/>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="parameters"/>
+                <field-map field-name="entityName" from-field="entityName"/>
+                <field-map field-name="viewIndex" from-field="viewIndex"/>
+                <field-map field-name="viewSize" from-field="viewSize"/>
+            </service>
+        </actions>
+        
+        <auto-fields-entity entity-name="InvoiceItemType" default-field-type="display"/>
+        <field name="hasTable"><hidden></hidden></field>
+        <field name="invoiceItemTypeId" title="${uiLabelMap.IncomeType}">
+           <hyperlink target="EditIncome" description="${invoiceItemTypeId}">
+           <parameter param-name="invoiceItemTypeId" />
+           
+           </hyperlink>
+        </field>
+          </form>
+       <form name="EditTax" type="single" target="createTax">
+				<!--  <actions>
+ 						<set field="taxId" from-field="${parameters.taxId}"/>
+				 </actions>
+         <field name="taxId" use-when="taxId==null"><hidden/></field>
+         <field name="action" use-when="taxId!=null"><hidden value="update"/></field>
+        <field name="action" use-when="taxId==null"><hidden value="create"/></field>
+         
+        <field name="taxName" title="taxName"><text></text></field>
+        <field name="description" id-name="description" ><text/></field>
+       <field name="taxTypeId">
+           <drop-down>
+           <entity-options description="${incomeTypeId}" entity-name="IncomeType" key-field-name="incomeTypeId"></entity-options>
+          <option key="direct" description="DIRECT"/>
+          <option key="indirect" description="INDIRECT"/>
+         </drop-down>
+        </field>
+        <field name="geoId">
+          <drop-down >
+            <entity-options description="${geoId}" entity-name="Geo" key-field-name="geoId"></entity-options>
+         </drop-down>
+        </field>
+        
+   <field name="submitButton" use-when="taxId!=null" title="${uiLabelMap.CommonUpdate}"><submit button-type="button"/></field>
+        <field name="submitButton"   use-when="taxId==null" title="${uiLabelMap.CommonAdd}"><submit button-type="button"/></field> -->
+        <actions>
+ 	<set field="invoiceItemTypeId" from-field="parameters.invoiceItemTypeId"/>
+ 	</actions>
+	<field name="invoiceItemTypeId" title="${uiLabelMap.TaxTypeId}"><text></text></field>
+ 	<field name="action" use-when="invoiceItemTypeId!=null"><hidden value="Update"/></field>
+ 	<field name="action" use-when="invoiceItemTypeId==null"><hidden value="Create"/></field>
+     <field name="description" id-name="description" ><text/></field>
+     <field name="geoId" title="${uiLabelMap.geoId}">
+          <drop-down >
+            <entity-options description="${geoName}" entity-name="Geo" key-field-name="geoId"></entity-options>
+         </drop-down>
+        </field>
+         <field name="glAccountType" title="${uiLabelMap.glAccountType}">
+         <drop-down>
+         <entity-options description="${glAccountTypeId}" entity-name="GlAccount" key-field-name="glAccountId"></entity-options>
+         </drop-down>
+          </field>
+   <field name="submitButton" use-when="invoiceItemTypeId!=null" title="${uiLabelMap.CommonUpdate}"><submit button-type="button"/></field>
+        <field name="submitButton"   use-when="invoiceItemTypeId==null" title="${uiLabelMap.CommonAdd}"><submit button-type="button"/></field>
+    </form>
+  
+     <form name="FindTax" type="single" target="findTax"
+        odd-row-style="header-row" default-table-style="basic-table">
+        <!-- <auto-fields-entity entity-name="PayrollTax" default-field-type="find"/>
+     
+        <field name="taxTypeId">
+           <drop-down>
+           <entity-options description="${taxTypeId}" entity-name="PayrollTaxType" key-field-name="taxTypeId"></entity-options>
+		 </drop-down>
+        </field>
+        <field name="noConditionFind"><hidden value="Y"/>if this isn't there then with all fields empty no query will be done</field>
+        <field name="searchButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit"><submit button-type="button"/></field> -->
+         <auto-fields-entity entity-name="InvoiceItemType" default-field-type="find"/>
+       
+       <!--  <field name="invoiceItemTypeId">
+           <drop-down>
+           <entity-options description="${invoiceItemTypeId}" entity-name="InvoiceItemType" key-field-name="invoiceItemTypeId">
+           <entity-constraint name="parentTypeId" operator="equals" value="PAYROL_TAXES"/>
+       	 <entity-constraint name="geoId" operator="equals" value="IN"/>
+           </entity-options>
+         </drop-down>
+        </field> -->
+        <field name="invoiceItemTypeId" title="${uiLabelMap.Tax}"></field>
+         <field name="hasTable"><hidden></hidden></field>
+         <field name="parentTypeId"><hidden value="PAYROL_TAXES"></hidden></field>
+         <field name="geoId"><hidden value="IN"></hidden></field>
+         
+          <field name="description" title="${uiLabelMap.description}"></field>
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+        <field name="searchButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit"><submit button-type="button"/></field>
+    </form>
+    <form name="ListTax" list-name="listIt" type="list" odd-row-style="alternate-row" header-row-style="header-row-2"
+        paginate-target="findTax" default-table-style="basic-table hover-bar">
+      <!--   <actions>
+            <set field="entityName" value="PayrollTax"/>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="parameters"/>
+                <field-map field-name="entityName" from-field="entityName"/>
+                <field-map field-name="viewIndex" from-field="viewIndex"/>
+                <field-map field-name="viewSize" from-field="viewSize"/>
+            </service>
+        </actions>
+        <auto-fields-entity entity-name="PayrollTax" default-field-type="display"/>
+        
+        <field name="taxId" >
+           <hyperlink target="EditTax" description="${taxId}">
+           <parameter param-name="taxId" />
+           
+           </hyperlink>
+        </field> -->
+         <actions>
+            <set field="entityName" value="InvoiceItemType"/>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="parameters"/>
+                <field-map field-name="entityName" from-field="entityName"/>
+                <field-map field-name="viewIndex" from-field="viewIndex"/>
+                <field-map field-name="viewSize" from-field="viewSize"/>
+            </service>
+        </actions>
+        
+        <auto-fields-entity entity-name="InvoiceItemType" default-field-type="display"/>
+        <field name="hasTable"><hidden></hidden></field>
+        
+        <field name="invoiceItemTypeId" title="${uiLabelMap.TaxType}">
+           <hyperlink target="EditTax" description="${invoiceItemTypeId}">
+           <parameter param-name="invoiceItemTypeId" />
+           
+           </hyperlink>
+        </field>
+        
+          </form>
+      
+        <form name="FindPay" type="single" target="findPay"
+        odd-row-style="header-row" default-table-style="basic-table">
+        <auto-fields-entity entity-name="EmployeeSalary" default-field-type="find"/>
+        <field name="employeeId" title="${uiLabelMap.employeeId}"></field>
+        
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+        <field name="searchButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit"><submit button-type="button"/></field>
+    </form>
+    <form name="ListPay" list-name="listIt" type="list" odd-row-style="alternate-row" header-row-style="header-row-2"
+        paginate-target="findPay" default-table-style="basic-table hover-bar">
+        <actions>
+            <set field="entityName" value="EmployeeSalary"/>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="parameters"/>
+                <field-map field-name="entityName" from-field="entityName"/>
+                <field-map field-name="viewIndex" from-field="viewIndex"/>
+                <field-map field-name="viewSize" from-field="viewSize"/>
+            </service>
+        </actions>
+        <auto-fields-entity entity-name="EmployeeSalary" default-field-type="display"/>
+        
+       <!--  <field name="salaryStus" title="${uiLabelMap.PayrollStatus}" widget-style="buttontext">
+           <hyper
+           
+                <parameter param-name="partyId"/>
+                
+            </hyperlink>
+        </field>   -->
+         <field name="salaryStatus" title="${uiLabelMap.PayrollStatus}"> <hyperlink description="${salaryStatus}" target="displayPay">
+       <parameter param-name="employeeId"></parameter></hyperlink></field>
+        </form>
+        <form name="TaxExemptions" type="single"  target="createTaxExemption" odd-row-style="header-row" default-table-style="basic-table">
+          <field name="exemptionName" title="Exemption"><text /></field>
+          <field name="description"><textarea /></field>
+          <field name="limit"><text /></field>
+          <field name="action"><hidden value="create"/></field>
+          <field name="mode">
+           <drop-down allow-empty="false">
+             <option key="FLAT" description="Flat"/>
+             <option key="PERCENTAGE" description="Percentage"/>
+           </drop-down>
+          </field>
+           <field name="submitButton"   title="${uiLabelMap.CommonAdd}"><submit button-type="button"/></field>
+        </form>
+    
+    </forms>

@@ -1,0 +1,126 @@
+.m_wrapper{
+  height:30px;
+  line-height:30px;
+  width:200px;
+  margin:10px;
+  font-family: "Myriad Pro", "Trebuchet MS", Helvetica, sans-serif;
+  font-size:12px;
+  position:absolute;
+ 
+  right:0px;
+  bottom:20px;
+}
+
+.m_itemMain{
+  color:#fff;
+  border:1px solid #333;
+  background-color:#777;
+  background-repeat:no-repeat;
+  background-position:95% 50%;
+  cursor:pointer;
+  text-align:left;
+  text-indent:10px;
+  width:200px;
+  position:fixed;
+  bottom:30px;
+  right:0px;
+  z-index: 99999;
+}
+
+#ui_element{
+ float:left;
+}
+
+.m_down{
+  background-image:url(/images/down.png)  ;
+}
+
+.m_up{
+  background-image:url(/images/up.png) ;
+}
+
+.m_wrapper ul {
+  list-style:none;
+  padding:2px 0px 0px 0px;
+  width:200px;
+  z-index: 99999;
+  position:fixed;
+  bottom:60px;
+  right:0px;
+}
+
+.m_wrapper ul li a{
+  text-decoration:none;
+  cursor:pointer;
+  display:block;
+  padding:3px 0px;
+  line-height:20px;
+  text-indent:10px;
+  letter-spacing:1px;
+  color:#ddd;
+  margin:3px 0px;
+}
+
+.proceed{
+	 font-family:  Arial, Helvetica, sans-serif;
+ 	 font-size:12px;
+	 font-weight:bold;
+	 color:#FFF;
+	}
+.ProductCompareButton {
+	position:absolute;
+	top:2px;
+	left:4px;
+	z-index:999;
+	display:none;
+	background:url('/erptheme1/compareimage.png') no-repeat;
+	width:216px;
+	height:32px;
+	overflow:hidden;	
+}
+.ProductCompareButton a{
+	width:216px;
+	height:32px;
+	display:block;
+	}
+	.compareProduct {
+	margin: 0px;
+	padding:0px;
+	width: auto;
+	text-align:left;
+	height:auto;
+	overflow:hidden;
+	font-size:13px;
+	background:#f4f2f2;
+	position:relative;
+}
+.compareProduct ul {
+	margin:0px;
+	height:auto;
+	float:left;
+	overflow:hidden;
+	padding:0px;
+	background:#f4f2f2;
+	margin:0 1px 0 0;
+	height:80px;
+	width:302px;
+	border:1px solid #cfcfcf;
+}
+.compareProduct ul li {
+	margin:0;
+	float:left;
+	padding:5px;
+	overflow:hidden;
+}
+.compareProduct ul li.compName {
+	width:168px;
+	overflow:hidden;
+}
+.compareProduct ul.compLast {
+	width:78px;
+	margin:0px;
+	position:relative;
+}
+#compareproductScroll{
+		z-index:9999;
+}

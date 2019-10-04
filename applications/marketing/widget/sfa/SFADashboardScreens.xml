@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!--
+		Licensed to the Apache Software Foundation (ASF) under one or more
+		contributor license agreements. See the NOTICE file distributed with
+		this work for additional information regarding copyright ownership.
+		The ASF licenses this file to you under the Apache License, Version
+		2.0 (the "License"); you may not use this file except in compliance
+		with the License. You may obtain a copy of the License at
+		http://www.apache.org/licenses/LICENSE-2.0 Unless required by
+		applicable law or agreed to in writing, software distributed under the
+		License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+		CONDITIONS OF ANY KIND, either express or implied. See the License for
+		the specific language governing permissions and limitations under the
+		License.
+	-->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+	
+		<screen name="DashboardsSuperMain">
+		<section>
+			<actions>
+<!--				<script-->
+<!--					location="component://marketing/webapp/sfa/WEB-INF/action/reports/CombinedDashboards.groovy" />-->
+				<set field="secondaryMenuName" value="SfaMainTabBar" global="true" />
+				<set field="secondaryMenuLocation" value="component://marketing/widget/sfa/SfaMenus.xml"
+					global="true" />
+				<!-- <set field="titleProperty" value="MarketingFindLeads"/> -->
+				<set field="currentUrl" value="sfaReports" />
+				<set field="headerItem" value="sfa" />
+				<set field="tabButtonItem1" value="BarCharts" />
+				<set field="tabButtonItem" value="Dashboards" />
+			</actions>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<section>
+							<widgets>
+								<container id="commnication" style="lefthalf">
+									<include-screen name="CommunicationDashboard" />
+								</container>
+								<container id="CompanyDashBoards" style="righthalf">
+									<include-screen name="CompanyDashBoards" />
+								</container>
+								<container id="OpportunityDashboard" style="lefthalf">
+									<include-screen name="OpportunityDashboardMain" />
+								</container>
+								<container id="AccountsAndcontactsMain" style="lefthalf">
+									<include-screen name="AccountsAndcontactsMain" />
+								</container>
+								<container id="TargetsDashBoards" style="lefthalf">
+									<include-screen name="TargetsDashBoards" />
+								</container>
+
+								<!-- <container id="CombinedDashboards" style="lefthalf"> -->
+								<!-- <include-screen name="CombinedDashboards" /> -->
+								<!-- </container> -->
+							</widgets>
+						</section>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+	<screen name="DashboardsMain">
+		<section>
+			<actions>
+				<set field="secondaryMenuName" value="SfaMainTabBar" global="true" />
+				<set field="secondaryMenuLocation" value="component://marketing/widget/sfa/SfaMenus.xml"
+					global="true" />
+				<!-- <set field="titleProperty" value="MarketingFindLeads"/> -->
+				<set field="currentUrl" value="sfaReports" />
+				<set field="headerItem" value="sfa" />
+				<set field="tabButtonItem1" value="" />
+				<set field="tabButtonItem" value="Dashboards" />
+				<script
+					location="component://marketing/webapp/sfa/WEB-INF/action/reports/dashboards.groovy" />
+				<set field="reportNameForm" value="${reportNameForm}" />
+			</actions>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<!--
+						<decorator-section name="left-column"> <include-screen
+						name="leftbar"
+						location="component://marketing/widget/sfa/CommonScreens.xml"/>
+						</decorator-section>
+					-->
+					<decorator-section name="body">
+						<section>
+							<widgets>
+								<container style="no-clear">
+									<include-menu name="LeadFindTabBar"
+										location="component://marketing/widget/sfa/SfaMenus.xml" />
+
+									<screenlet collapsible="true" initially-collapsed="false"
+										id="LeadForms" title="Dashboard Options">
+										<include-form name="dashboardForm"
+											location="component://marketing/widget/sfa/marketting/ReportForms.xml" />
+									</screenlet>
+									<section>
+										<condition>
+											<not>
+												<if-empty field="dashboardScreenletName" />
+											</not>
+										</condition>
+										<widgets>
+											<screenlet collapsible="true" initially-collapsed="false"
+												id="ListLeads" title="${dashboardScreenletName}">
+												<platform-specific>
+													<html>
+														<html-template
+															location="component://marketing/webapp/sfa/Dashboard/CombinedDashboard.ftl" />
+													</html>
+												</platform-specific>
+											</screenlet>
+										</widgets>
+									</section>
+								</container>
+							</widgets>
+						</section>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+
+
+	<screen name="DashboardsCombined">
+		<section>
+			<actions>
+			<script
+					location="component://marketing/webapp/sfa/WEB-INF/action/CalendarEvents.groovy" />
+			
+				<set field="secondaryMenuName" value="SfaMainTabBar" global="true" />
+				<set field="secondaryMenuLocation" value="component://marketing/widget/sfa/SfaMenus.xml"
+					global="true" />
+				<!-- <set field="titleProperty" value="MarketingFindLeads"/> -->
+				<set field="currentUrl" value="sfaReports" />
+				<set field="headerItem" value="sfa" />
+				<set field="tabButtonItem" value="Dashboards" />
+				<set field="tabButtonItem1" value="CalendarEvents" />
+			</actions>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<section>
+							<widgets>
+
+								<screenlet id="DashboardsMenu" title="Events Dashboards"
+									collapsible="true">
+									<include-menu name="DashboardsMenu"
+										location="component://marketing/widget/sfa/SfaMenus.xml" />
+									<include-screen name="DashboardsMainScreenRenderMain" />
+									<platform-specific>
+										<html>
+											<html-template
+												location="component://marketing/webapp/sfa/Dashboard/designs/CalendarEvents.ftl" />
+										</html>
+									</platform-specific>
+
+								</screenlet>
+
+							</widgets>
+						</section>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="DashboardsBarCharts">
+		<section>
+			<actions>
+				<set field="secondaryMenuName" value="SfaMainTabBar" global="true" />
+				<set field="secondaryMenuLocation" value="component://marketing/widget/sfa/SfaMenus.xml"
+					global="true" />
+				<!-- <set field="titleProperty" value="MarketingFindLeads"/> -->
+				<set field="currentUrl" value="sfaReports" />
+				<set field="headerItem" value="sfa" />
+				<set field="tabButtonItem" value="Dashboards" />
+				<set field="tabButtonItem1" value="BarCharts" />
+			</actions>
+			<widgets>
+				<decorator-screen name="main-decorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<section>
+							<widgets>
+
+								<screenlet id="DashboardsMenu" title="Bar Charts"
+									collapsible="true">
+									<include-menu name="DashboardsMenu"
+										location="component://marketing/widget/sfa/SfaMenus.xml" />
+									<container id="CompanyDashBoards" style="righthalf">
+										<include-screen name="CompanyDashBoards" />
+									</container>
+									<container id="OpportunityDashboard" style="lefthalf">
+										<include-screen name="OpportunityDashboardMain" />
+									</container>
+									<container id="AccountsAndcontactsMain" style="lefthalf">
+										<include-screen name="AccountsAndcontactsMain" />
+									</container>
+									<container id="TargetsDashBoards" style="lefthalf">
+										<include-screen name="TargetsDashBoards" />
+									</container>
+
+								</screenlet>
+
+							</widgets>
+						</section>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="CommunicationDashboard">
+		<section>
+			<actions>
+				<script
+					location="component://marketing/webapp/sfa/WEB-INF/action/CalendarEvents.groovy" />
+			</actions>
+			<widgets>
+				<screenlet id="inbound" title="Events Logged">
+					<platform-specific>
+						<html>
+							<html-template
+								location="component://marketing/webapp/sfa/Dashboard/designs/CalendarEvents.ftl" />
+						</html>
+					</platform-specific>
+				</screenlet>
+			</widgets>
+		</section>
+	</screen>
+	<screen name="CompanyDashboard">
+		<section>
+			<actions>
+				<set field="tabButtonItem1" value="CompanyByContactsDash" />
+				<script
+					location="component://marketing/webapp/sfa/WEB-INF/action/CompanyByContacts.groovy" />
+			</actions>
+			<widgets>
+				<screenlet id="CompanyByContactsDash" title="Lead Dashboards"
+					collapsible="true">
+					<include-menu name="CompanyDashboards"
+						location="component://marketing/widget/sfa/SfaMenus.xml" />
+
+					<platform-specific>
+						<html>
+							<html-template
+								location="component://marketing/webapp/sfa/Dashboard/designs/CompanyByContacts.ftl" />
+						</html>
+					</platform-specific>
+				</screenlet>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="CompanyByRoles">
+		<section>
+			<actions>
+				<set field="tabButtonItem1" value="CompanyByRolesDash" />
+				<script
+					location="component://marketing/webapp/sfa/WEB-INF/action/CompanyByContacts.groovy" />
+			</actions>
+			<widgets>
+				<screenlet id="CompanyByContactsDash" title="Lead Dashboards"
+					collapsible="true">
+					<include-menu name="CompanyDashboards"
+						location="component://marketing/widget/sfa/SfaMenus.xml" />
+					<platform-specific>
+						<html>
+							<html-template
+								location="component://marketing/webapp/sfa/Dashboard/designs/CompanyByRoles.ftl" />
+						</html>
+					</platform-specific>
+				</screenlet>
+			</widgets>
+		</section>
+	</screen>
+	<screen name="CompanyByStatus">
+		<section>
+			<actions>
+				<set field="tabButtonItem1" value="CompanyByStatusDash" />
+				<script
+					location="component://marketing/webapp/sfa/WEB-INF/action/CompanyByStatus.groovy" />
+			</actions>
+			<widgets>
+				<screenlet id="CompanyByContactsDash" title="Lead Dashboards"
+					collapsible="true">
+					<include-menu name="CompanyDashboards"
+						location="component://marketing/widget/sfa/SfaMenus.xml" />
+
+					<platform-specific>
+						<html>
+							<html-template
+								location="component://marketing/webapp/sfa/Dashboard/designs/CompanyByStatus.ftl" />
+						</html>
+					</platform-specific>
+				</screenlet>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="AccountsAndContacts">
+		<section>
+			<widgets>
+				<screenlet id="AccountsAndContacts" title="Accounts And Contacts"
+					collapsible="true">
+					<platform-specific>
+						<html>
+							<html-template
+								location="component://marketing/webapp/sfa/Dashboard/AccountsAndContacts.ftl" />
+						</html>
+					</platform-specific>
+				</screenlet>
+			</widgets>
+		</section>
+	</screen>
+	<screen name="TargetsDashBoards">
+
+		<section>
+			<actions>
+				<set field="tabButtonItem1" value="LeadTargets" />
+				<set field="CompanyTargets" value="${parameter.reportName}" />
+			</actions>
+			<widgets>
+				<include-screen name="${parameters.reportName}" />
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="DashboardsMainScreenRenderMain">
+
+		<section>
+			<actions>
+				<set field="tabButtonItem1" value="CalendarEvents" />
+				<set field="CompanyTargets" value="${parameter.DashBoardScreen}" />
+			</actions>
+			<widgets>
+				<include-screen name="${parameter.DashBoardScreen}" />
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="DashboardsMainScreen">
+
+		<section>
+			<actions>
+				<set field="tabButtonItem1" value="CalendarEvents" />
+				<set field="CompanyTargets" value="${parameter.DashBoardScreen}" />
+			</actions>
+			<widgets>
+				<screenlet id="inbound" title="Events Logged">
+					<platform-specific>
+						<html>
+							<html-template
+								location="component://marketing/webapp/sfa/Dashboard/designs/CalendarEvents.ftl" />
+						</html>
+					</platform-specific>
+				</screenlet>
+			</widgets>
+		</section>
+	</screen>
+
+
+
+	<screen name="CompanyDashBoards">
+
+		<section>
+			<actions>
+				<set field="tabButtonItem1" value="CompanyByContactsDash" />
+			</actions>
+			<widgets>
+				<include-screen name="${parameters.cmpName}" />
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="CompanyTargets">
+		<section>
+			<actions>
+				<set field="tabButtonItem1" value="LeadTargets" />
+				<script
+					location="component://marketing/webapp/sfa/WEB-INF/action/CompanyTargetsReport.groovy" />
+			</actions>
+			<widgets>
+				<screenlet id="CompanyTargets" title="Lead Targets"
+					collapsible="true">
+					<include-menu name="TeamTargetsSubTabBar"
+						location="component://marketing/widget/sfa/SfaMenus.xml" />
+
+					<platform-specific>
+						<html>
+							<html-template
+								location="component://marketing/webapp/sfa/Dashboard/CompanyTargets.ftl" />
+						</html>
+					</platform-specific>
+				</screenlet>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="TeamTargets">
+		<section>
+			<actions>
+				<set field="tabButtonItem1" value="TeamTargets" />
+
+				<script
+					location="component://marketing/webapp/sfa/WEB-INF/action/TeamTargetsReport.groovy" />
+			</actions>
+			<widgets>
+				<screenlet id="TeamTargets" title="Team Targets"
+					collapsible="true">
+					<include-menu name="TeamTargetsSubTabBar"
+						location="component://marketing/widget/sfa/SfaMenus.xml" />
+					<platform-specific>
+						<html>
+							<html-template
+								location="component://marketing/webapp/sfa/Dashboard/TeamTargets.ftl" />
+						</html>
+					</platform-specific>
+				</screenlet>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="IndiTargets">
+		<section>
+			<actions>
+				<set field="tabButtonItem1" value="IndiTargets" />
+
+				<script
+					location="component://marketing/webapp/sfa/WEB-INF/action/IndividualTargetsReport.groovy" />
+			</actions>
+			<widgets>
+				<screenlet id="TeamTargets" title="Individual Targets"
+					collapsible="true">
+					<include-menu name="TeamTargetsSubTabBar"
+						location="component://marketing/widget/sfa/SfaMenus.xml" />
+					<platform-specific>
+						<html>
+							<html-template
+								location="component://marketing/webapp/sfa/Dashboard/IndividualTargets.ftl" />
+						</html>
+					</platform-specific>
+				</screenlet>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="OpportunityDashboardMain">
+		<section>
+			<widgets>
+				<include-screen name="${parameters.oppName}" />
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="OpportunityDashboards">
+		<section>
+			<actions>
+				<set field="tabButtonItem1" value="OpportunityByLeadSize" />
+
+				<script
+					location="component://marketing/webapp/sfa/WEB-INF/action/OpportunityByLeadSize.groovy" />
+			</actions>
+			<widgets>
+				<screenlet id="OpportunityDashboars" title="Opportunities Dashboards"
+					collapsible="true">
+					<include-menu name="OpportunitiesSubTabBar"
+						location="component://marketing/widget/sfa/SfaMenus.xml" />
+					<platform-specific>
+						<html>
+							<html-template
+								location="component://marketing/webapp/sfa/Dashboard/OpportunityByLeadSize.ftl" />
+						</html>
+					</platform-specific>
+				</screenlet>
+			</widgets>
+		</section>
+	</screen>
+	<screen name="OpportunityByStatus">
+		<section>
+			<actions>
+				<set field="tabButtonItem1" value="OpportunityByStatus" />
+
+				<script
+					location="component://marketing/webapp/sfa/WEB-INF/action/OpportunityByStatus.groovy" />
+			</actions>
+			<widgets>
+				<screenlet id="OpportunityDashboars" title="Opportunities Dashboards"
+					collapsible="true">
+					<include-menu name="OpportunitiesSubTabBar"
+						location="component://marketing/widget/sfa/SfaMenus.xml" />
+					<platform-specific>
+						<html>
+							<html-template
+								location="component://marketing/webapp/sfa/Dashboard/OpportunityByStatus.ftl" />
+						</html>
+					</platform-specific>
+				</screenlet>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="AccountsAndcontactsMain">
+		<section>
+			<widgets>
+				<include-screen name="${parameters.accName}" />
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="ContactsByRoles">
+		<section>
+			<actions>
+				<set field="tabButtonItem1" value="ContactsByRoles" />
+
+				<script
+					location="component://marketing/webapp/sfa/WEB-INF/action/AccountsByRoles.groovy" />
+			</actions>
+			<widgets>
+				<screenlet id="OpportunityDashboars" title="Accounts And Contacts"
+					collapsible="true">
+					<include-menu name="ContactsByRolesSubTabBar"
+						location="component://marketing/widget/sfa/SfaMenus.xml" />
+					<platform-specific>
+						<html>
+							<html-template
+								location="component://marketing/webapp/sfa/Dashboard/AccountsByRoles.ftl" />
+						</html>
+					</platform-specific>
+				</screenlet>
+			</widgets>
+		</section>
+	</screen>
+	<screen name="OpportunityByStatus">
+		<section>
+			<actions>
+				<set field="tabButtonItem1" value="OpportunityByStatus" />
+
+				<script
+					location="component://marketing/webapp/sfa/WEB-INF/action/OpportunityByStatus.groovy" />
+			</actions>
+			<widgets>
+				<screenlet id="OpportunityDashboars" title="Opportunities Dashboards"
+					collapsible="true">
+					<include-menu name="OpportunitiesSubTabBar"
+						location="component://marketing/widget/sfa/SfaMenus.xml" />
+					<platform-specific>
+						<html>
+							<html-template
+								location="component://marketing/webapp/sfa/Dashboard/OpportunityByStatus.ftl" />
+						</html>
+					</platform-specific>
+				</screenlet>
+			</widgets>
+		</section>
+	</screen>
+
+	<screen name="BarChartScreenRender">
+		<section>
+			<actions>
+				<set field="tabButtonItem1" value="BarCharts" />
+			</actions>
+			<widgets>
+				<screenlet id="CompanyTargets" title="Lead Targets"
+					collapsible="true">
+					<include-menu name="DashboardsMenu"
+						location="component://marketing/widget/sfa/SfaMenus.xml" />
+
+					<platform-specific>
+						<html>
+							<html-template
+								location="component://marketing/webapp/sfa/Dashboard/CompanyTargets.ftl" />
+						</html>
+					</platform-specific>
+				</screenlet>
+			</widgets>
+
+		</section>
+	</screen>
+
+
+</screens>

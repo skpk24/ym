@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<property key="DataImportCustomers">
+		<value xml:lang="en">Import Customers</value>
+	</property>
+	<property key="DataImportInventory">
+		<value xml:lang="en">Import Inventory</value>
+	</property>
+	<property key="DataImportNumberNotProcessed">
+		<value xml:lang="en"># Not Processed</value>
+	</property>
+	<property key="DataImportNumberProcessed">
+		<value xml:lang="en"># Processed</value>
+	</property>
+	<property key="DataImportOrderItemLines">
+		<value xml:lang="en">Order Item Lines</value>
+	</property>
+	<property key="DataImportOrderLines">
+		<value xml:lang="en">Order Header Lines</value>
+	</property>
+	<property key="DataImportOrders">
+		<value xml:lang="en">Import Orders</value>
+	</property>
+	<property key="DataImportProducts">
+		<value xml:lang="en">Import Products</value>
+	</property>
+	<property key="DataimportJobName">
+		<value xml:lang="en">Job Name</value>
+	</property>
+	<property key="DataimportLoginGreeting">
+		<value xml:lang="en">Opentaps DataImport Login</value>
+	</property>
+	<property key="DataimportRunImport">
+		<value xml:lang="en">Run Import</value>
+	</property>
+	<property key="DataimportServiceTime">
+		<value xml:lang="en">Start Date/Time</value>
+	</property>
+	<property key="DataimportSync">
+		<value xml:lang="en">Synchronously</value>
+	</property>
+	<property key="DataImportName">
+		<value xml:lang="en">Nichesuite: Data Import Manager</value>
+	</property>
+	
+	<property key="UploadedCustomers">
+		<value xml:lang="en">Upload Customers</value>
+	</property>
+	<property key="TotalImportedCustomer">
+		<value xml:lang="en">Total Imported Customers</value>
+	</property>
+	<property key="TotalUnImportedCustomer">
+		<value xml:lang="en">Total UnImported Customers</value>
+	</property>
+	<property key="UploadCustomers">
+		<value xml:lang="en">Upload Customers</value>
+	</property>
+	<property key="UploadCustomerData">
+		<value xml:lang="en">Upload Customer Data</value>
+	</property>
+	<property key="ImportCustomers">
+		<value xml:lang="en">Import Customers</value>
+	</property>
+	
+	<property key="ImportCatalog">
+		<value xml:lang="en">Import Catalog</value>
+	</property>
+	<property key="TotalUnImportedCatalog">
+		<value xml:lang="en">Total UnImported Catalog</value>
+	</property>
+	<property key="TotalImportedCatalog">
+		<value xml:lang="en">Total Imported Catalog</value>
+	</property>
+	<property key="UploadCatalogData">
+		<value xml:lang="en">Upload Catalog Data</value>
+	</property>
+	<property key="UploadCatalog">
+		<value xml:lang="en">Upload Catalog</value>
+	</property>
+	<property key="UploadedCatalogDetails">
+		<value xml:lang="en">Uploaded  Catalog  Details</value>
+	</property>
+	<property key="CatalogId">
+		<value xml:lang="en">Catalog Id</value>
+	</property>
+	<property key="QuickAdd">
+		<value xml:lang="en">Quick Add (Y/N)</value>
+	</property>
+	<property key="ProductStoreId">
+		<value xml:lang="en">Product Store Id</value>
+	</property>
+	<property key="CatalogName">
+		<value xml:lang="en">Catalog Name</value>
+	</property>
+	<property key="AllowProductCompare">
+		<value xml:lang="en">Allow Product Compare</value>
+	</property>
+	<property key="NoCatalogsUploaded">
+		<value xml:lang="en">No Catalogs Uploaded</value>
+	</property>
+	
+	
+	
+	
+	
+	<property key="ImportCategory">
+		<value xml:lang="en">Import Category</value>
+	</property>
+	<property key="TotalUnImportedCategory">
+		<value xml:lang="en">Total UnImported Category</value>
+	</property>
+	<property key="TotalImportedCategory">
+		<value xml:lang="en">Total Imported Category</value>
+	</property>
+	<property key="UploadCategoryData">
+		<value xml:lang="en">Upload Category Data</value>
+	</property>
+	<property key="UploadCategory">
+		<value xml:lang="en">Upload Category</value>
+	</property>
+	<property key="UploadedCategoryDetails">
+		<value xml:lang="en">Uploaded Category Details</value>
+	</property>
+	<property key="CategoryId">
+		<value xml:lang="en">Category Id</value>
+	</property>
+	<property key="CategoryName">
+		<value xml:lang="en">Category Name</value>
+	</property>
+	<property key="Description">
+		<value xml:lang="en">Description</value>
+	</property>
+	<property key="LongDescription">
+		<value xml:lang="en">Long Description</value>
+	</property>
+	<property key="CategoryImage">
+		<value xml:lang="en">Category Image</value>
+	</property>
+	<property key="LinkOneImage">
+		<value xml:lang="en">Link One Image</value>
+	</property>
+	<property key="ProductCatalogId">
+		<value xml:lang="en">Product Catalog Id</value>
+	</property>
+	<property key="CatalogCategoryTypeId">
+		<value xml:lang="en">Catalog Category Type Id</value>
+	</property>
+	<property key="RollUpCategoryId">
+		<value xml:lang="en">Roll Up Category Id</value>
+	</property>
+	<property key="ProductCategoryTypeId">
+		<value xml:lang="en">Product Category Type Id</value>
+	</property>
+	<property key="NoCategoryUploaded">
+		<value xml:lang="en">No Category Uploaded</value>
+	</property>
+	
+	
+	
+	<property key="ImportFeature">
+		<value xml:lang="en">Import Feature</value>
+	</property>
+	<property key="TotalUnImportedFeature">
+		<value xml:lang="en">Total UnImported Feature</value>
+	</property>
+	<property key="TotalImportedFeature">
+		<value xml:lang="en">Total Imported Feature</value>
+	</property>
+	<property key="UploadFeatureData">
+		<value xml:lang="en">Upload Feature Data</value>
+	</property>
+	<property key="UploadFeature">
+		<value xml:lang="en">Upload Feature</value>
+	</property>
+	
+	<property key="ImportProduct">
+		<value xml:lang="en">Import Product</value>
+	</property>
+	<property key="TotalUnImportedProduct">
+		<value xml:lang="en">Total UnImported Product</value>
+	</property>
+	<property key="TotalImportedProduct">
+		<value xml:lang="en">Total Imported Product</value>
+	</property>
+	<property key="UploadProductData">
+		<value xml:lang="en">Upload Product Data</value>
+	</property>
+	<property key="UploadProduct">
+		<value xml:lang="en">Upload Product</value>
+	</property>Import Variant Product Image
+	
+	<property key="ImportVariantProductImage">
+		<value xml:lang="en">Import Variant Product Image</value>
+	</property>
+	<property key="TotalUnImportedVariantProduct">
+		<value xml:lang="en">Total UnImported VariantProduct</value>
+	</property>
+	<property key="TotalImportedVariantProduct">
+		<value xml:lang="en">Total Imported Variant Product</value>
+	</property>
+	<property key="UploadVariantProductData">
+		<value xml:lang="en">Upload Variant Product Data</value>
+	</property>
+	<property key="UploadVariantProduct">
+		<value xml:lang="en">Upload Variant Product</value>
+	</property>
+	
+	
+	<property key="UpdateProductPrice">
+		<value xml:lang="en">Update Product Price</value>
+	</property>
+	
+	<property key="ImportProductInventory">
+		<value xml:lang="en">Import Product Inventory</value>
+	</property>
+	
+	<property key="ImportProductSupplier">
+		<value xml:lang="en">Import Product Supplier</value>
+	</property>
+	
+	
+	<property key="TotalUpdatedProducts">
+		<value xml:lang="en">Total Updated Products</value>
+	</property>
+	<property key="UpdateProductData">
+		<value xml:lang="en">Update Product Data</value>
+	</property>
+	<property key="UpdateProduct">
+		<value xml:lang="en">Update Product</value>
+	</property>
+	
+	
+	<property key="TotalUnImportedInventory">
+		<value xml:lang="en">Total UnImported Inventory</value>
+	</property>
+	<property key="TotalImportedInventory">
+		<value xml:lang="en">Total Imported Inventory Data</value>
+	</property>
+	
+	<property key="ImportProductSupplier">
+		<value xml:lang="en">Import Product Supplier</value>
+	</property>
+	
+	<property key="TotalImportedProductSupplier">
+		<value xml:lang="en">Total Imported Product Supplier</value>
+	</property>
+	<property key="TotalUnImportedProductSupplier">
+		<value xml:lang="en">Total UnImported ProductSupplier</value>
+	</property>
+	
+</resource>

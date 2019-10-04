@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/services.xsd">
+    <description>RestfulComponent Services</description>
+    <vendor></vendor>
+    <version>1.0</version>
+
+    
+    <service name="logRequest" engine="java" location="com.ilinks.restful.service.RESTfulServices" invoke="logRequest" auth="false" transaction-timeout="60" max-retry="0">
+        <description>Log User Request</description>
+        <attribute name="webAppName" type="String" mode="IN" optional="true" default-value="restful"/>
+        <attribute name="requestURL" type="String" mode="IN" optional="false"/>
+        <attribute name="version" type="String" mode="IN" optional="false"/>
+        <attribute name="action" type="String" mode="IN" optional="true" default-value="REQUEST"/>
+        <attribute name="visitID" type="String" mode="IN" optional="false"/>
+        <attribute name="serverIpAddress" type="String" mode="IN" optional="true"/>
+        <attribute name="serverHostName" type="String" mode="IN" optional="true"/>
+        <attribute name="referrerURL" type="String" mode="IN" optional="true"/>
+        <attribute name="userLogin" type="GenericValue" mode="IN" optional="true"/>
+    </service>
+    
+    
+    <service name="createShippingLabelGroup" engine="group" location="createShippingLabelGroup" invoke="" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Generate the Shipping Labels For Each Package But Only Stores the Master Tracking Number</description>
+        <attribute name="shipmentId" type="String" mode="IN" optional="true"></attribute>
+        <attribute name="shipmentPackageSeqId" type="String" mode="IN" optional="true"></attribute>
+        <attribute name="shipmentRouteSegmentId" type="String" mode="IN" optional="true"></attribute>
+        <attribute name="orderId" type="String" mode="IN" optional="true"></attribute>
+        <attribute name="netCost" type="BigDecimal" mode="IN" optional="true"></attribute>
+        <attribute name="totalSurCharge" type="BigDecimal" mode="IN" optional="true"/>
+    </service>
+    
+    
+    <service name="calculateStoreShippingCost" engine="java" location="com.ilinks.restful.service.RESTfulServices" invoke="calculateStoreShippingCost" auth="false" transaction-timeout="120" max-retry="0">
+        <description>FedEx Shipping Cost</description>
+        <attribute name="orderID" type="String" mode="IN" optional="false" />
+        <attribute name="address" type="String" mode="IN" optional="false"/>
+        <attribute name="city" type="String" mode="IN" optional="false" />
+        <attribute name="state" type="String" mode="IN" optional="false"/>
+        <attribute name="postalCode" type="String" mode="IN" optional="false"/>
+        <attribute name="country" type="String" mode="IN" optional="true" default-value="US"/>
+        <attribute name="weight" type="String" mode="IN" optional="false"/>
+    </service>
+    
+    <service name="createShippingLabel" engine="java" location="com.ilinks.restful.service.RESTfulServices" invoke="createShippingLabel" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Generate the Shipping Labels For Each Package But Only Stores the Master Tracking Number</description>
+        <attribute name="shipmentId" type="String" mode="IN" optional="false" />
+        <attribute name="shipmentPackageSeqId" type="String" mode="IN" optional="false" />
+        <attribute name="shipmentRouteSegmentId" type="String" mode="IN" optional="false" />
+        <attribute name="orderId" type="String" mode="OUT" optional="false"/>
+        <attribute name="netCost" type="BigDecimal" mode="OUT" optional="false" />
+        <attribute name="totalSurCharge" type="BigDecimal" mode="OUT" optional="false"/>
+    </service>
+    
+    
+    
+    <service name="updateBillingProfile" engine="java" location="com.ilinks.restful.service.RESTfulServices" invoke="updateBillingProfile" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Update Billing Profile expires existing profile before creating new profile</description>
+        <attribute name="firstNameOnCard" type="String" mode="IN" optional="false" />
+        <attribute name="lastNameOnCard"            type="String" mode="IN" optional="false" />
+        <attribute name="address1"                  type="String" mode="IN" optional="false" />
+        <attribute name="address2"                  type="String" mode="IN" optional="false"/>
+        <attribute name="city"                      type="String" mode="IN" optional="false" />
+        <attribute name="stateProvinceGeoId"        type="String" mode="IN" optional="false" />
+        <attribute name="postalCode"                type="String" mode="IN" optional="false"/>
+        <attribute name="countyGeoId"               type="String" mode="IN" optional="false"/>
+        <attribute name="cardNumber"                type="String" mode="IN" optional="false"/>
+        <attribute name="expireDate"                type="String" mode="IN" optional="false"/>
+        <attribute name="cardType"                  type="String" mode="IN" optional="false"/>
+        <attribute name="productStoreId"            type="String" mode="IN" optional="false"/>
+        <attribute name="areaCode"                  type="String" mode="IN" optional="false"/>
+        <attribute name="contactNumber"             type="String" mode="IN" optional="false"/>
+        <attribute name="contactMechPurposeTypeId"  type="String" mode="IN" optional="false"/>
+        <attribute name="telephoneID"               type="String" mode="INOUT" optional="true"/>
+        <attribute name="postalAddressID"           type="String" mode="INOUT" optional="true"/>
+        <attribute name="paymentMethodID"           type="String" mode="INOUT" optional="true"/>
+        
+    </service>
+    
+     <!--  refer a friend -->
+     <service name="sendReferAFriendEmail" engine="java" location="com.ilinks.restful.service.ReferAFriendServices" invoke="sendReferAFriendEmail" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Send Refer A Friend Email</description>
+        <attribute name="trackingCode"      type="String" mode="IN" optional="false"/>
+        <attribute name="productStoreID"    type="String" mode="IN" optional="false"/>
+        <attribute name="sendToName"        type="String" mode="IN" optional="false"/>
+        <attribute name="sendTo"            type="String" mode="IN" optional="false"/>
+    </service>
+    
+    <service name="retrieveReferAFriendInfo" engine="java" location="com.ilinks.restful.service.ReferAFriendServices" invoke="retrieveReferAFriendInfo" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Refer A Friend Info, Creates RAF Code If Code Does Not Exists</description>
+        <attribute name="referAFriendList"  type="java.util.List" mode="OUT" optional="false"/>
+        <attribute name="startDate"         type="Timestamp" mode="IN" optional="false"/>
+        <attribute name="endDate"           type="Timestamp" mode="IN" optional="false"/>
+        <attribute name="trackingCode"      type="String" mode="OUT" optional="true"/>
+    </service>
+    
+    <service name="createReferAFriendCode" engine="java" location="com.ilinks.restful.service.ReferAFriendServices" invoke="createReferAFriendCode" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Create Refer A Friend Code</description>
+        <attribute name="trackingCode"    type="String" mode="OUT" optional="false"/>
+    </service>
+    
+    
+    <!--  misc -->
+    <service name="deleteBillingInfo" engine="java" location="com.ilinks.restful.service.RESTfulServices" invoke="deleteBillingInfo" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Delete Billing Info Payment, Address, Payment</description>
+        <attribute name="telephoneID"               type="String" mode="IN" optional="false"/>
+        <attribute name="postalAddressID"           type="String" mode="IN" optional="false"/>
+        <attribute name="paymentMethodID"           type="String" mode="IN" optional="false"/>
+    </service>
+    
+    
+   
+    
+    <service name="storeShippingCost" engine="java" location="com.ilinks.restful.service.RESTfulServices" invoke="storeShippingCost" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Stores the Shipping Cost Within Order Attribute</description>
+        <attribute name="orderId" type="String" mode="IN" optional="false" />
+        <attribute name="netCost" type="BigDecimal" mode="IN" optional="false" />
+        <attribute name="totalSurCharge" type="BigDecimal" mode="IN" optional="false"/>
+    </service>
+    
+    
+    <service name="notify" engine="java" location="com.ilinks.restful.post.ILinksAppUtil" invoke="notify" auth="true" transaction-timeout="120" max-retry="0">
+        <description>Send Push notification to all user</description>
+        <attribute name="message" type="String" mode="IN" optional="false" />
+    </service>
+    
+</services>

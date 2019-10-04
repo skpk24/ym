@@ -1,0 +1,172 @@
+ 
+ <forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+ 
+ 
+ 
+ <form name="FindTemplates" type="single" target="FindDocuments"  title="" default-map-name="document"
+        header-row-style="header-row">
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+        <!-- <field name="documentId" title="documentId"><text-find/></field> -->
+        <field name="contentName" title="Template Name"><text-find/></field>
+        <field name="companyName" title="Lead Name"><text-find/></field>
+        <field name="submitButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit">
+            <submit button-type="button"/>
+        </field>
+    </form>
+
+    <form name="ListTemplates1" list-name="documentList" target="" title="" type="list" paginate-target="FindDocuments"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar" header-row-style="header-row-2" >
+        <actions>
+        
+        	<script
+				location="component://marketing/webapp/sfa/WEB-INF/action/document/DocumentList.groovy" />
+        </actions>
+        <row-actions>
+         <entity-one entity-name="Person" value-field="getPerson">
+          <field-map field-name="partyId" value="${partyId}"/>
+         </entity-one>
+        </row-actions>
+        
+        <field name="dataResourceId" title="Template Name">
+            <hyperlink also-hidden="false" description="${dataResourceId}"  target="img" target-window="_BLANK">
+                <parameter param-name="imgId" from-field="dataResourceId"/>
+            </hyperlink>
+        </field>
+        <field name="companyName"> <display default-value="${getPerson.firstName}"> </display> </field>
+<!-- 		<field name="contentName"><display/></field> -->
+		<field name="description"><display/></field>
+
+		<field name="replace" title="Edit">
+            <hyperlink also-hidden="false" description="Edit" target="EditPartyTemplate" >
+                <parameter param-name="contentId" from-field="contentId"/>
+                <parameter param-name="partyId" from-field="partyId"/>
+                <parameter param-name="partyContentTypeId" from-field="partyContentTypeId"/>
+                <parameter param-name="dataResourceId" from-field="dataResourceId"/>
+            </hyperlink>
+        </field>
+       
+        <field name="deleteLink" title="Delete">
+<!--             <hyperlink target="RemovePartyContent" description="${uiLabelMap.CommonDelete}" also-hidden="false"> -->
+    <hyperlink also-hidden="false" description="Delete" target="removePartyContent">
+               <parameter param-name="contentId" from-field="contentId"/>
+                <parameter param-name="partyId" from-field="partyId"/>
+                <parameter param-name="fromDate" from-field="fromDate"/>
+                <parameter param-name="partyContentTypeId" from-field="partyContentTypeId"/>
+            </hyperlink>
+        </field>
+
+	
+			
+    </form>
+    
+    
+    
+ <form name="FindTemplates" type="single" target="FindDocuments"  title="" default-map-name="document"
+        header-row-style="header-row">
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+        <!-- <field name="documentId" title="documentId"><text-find/></field> -->
+        <field name="contentName" title="Template Name"><text-find/></field>
+        <field name="companyName" title="Lead Name"><text-find/></field>
+        <field name="submitButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit">
+            <submit button-type="button"/>
+        </field>
+    </form>
+
+    <form name="ListTemplates" list-name="listIt" target="" title="" type="list" paginate-target="FindDocuments"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar" header-row-style="header-row-2"  list-entry-name="listIt">
+        <actions>
+        
+        	<script
+				location="component://marketing/webapp/sfa/WEB-INF/action/document/DocumentList.groovy" />
+        </actions>
+        <row-actions>
+         <entity-one entity-name="Person" value-field="getPerson">
+          <field-map field-name="partyId" value="${listIt.partyId}"/>
+         </entity-one>
+        </row-actions>
+        
+        <field name="dataResourceId" title="Template Name========">
+            <hyperlink also-hidden="false" description="${listIt.contentName}" target="img" target-window="_BLANK">
+                <parameter param-name="imgId" value="${listIt.dataResourceId}"/>
+            </hyperlink>
+        </field>
+        <field name="companyName"> <display default-value="${getPerson.firstName}"> </display> </field>
+<!-- 		<field name="contentName"><display/></field> -->
+		<field name="description"><display description="${listIt.description}"/></field>
+
+		<field name="replace" title="Edit">
+            <hyperlink also-hidden="false" description="Edit" target="EditPartyContents" >
+                <parameter param-name="contentId" from-field="contentId"/>
+                <parameter param-name="partyId" from-field="partyId"/>
+                <parameter param-name="partyContentTypeId" from-field="partyContentTypeId"/>
+            </hyperlink>
+        </field>
+       
+        <field name="deleteLink" title="Delete">
+<!--             <hyperlink target="RemovePartyContent" description="${uiLabelMap.CommonDelete}" also-hidden="false"> -->
+    <hyperlink also-hidden="false" description="Delete" target="removePartyContent">
+               <parameter param-name="contentId" from-field="contentId"/>
+                <parameter param-name="partyId" from-field="partyId"/>
+                <parameter param-name="fromDate" from-field="fromDate"/>
+                <parameter param-name="partyContentTypeId" from-field="partyContentTypeId"/>
+            </hyperlink>
+        </field>
+
+	
+			
+    </form>
+  
+  
+   <form name="FindDocuments" type="single" target="FindDocuments"  title="" default-map-name="document"
+        header-row-style="header-row">
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+        <!-- <field name="documentId" title="documentId"><text-find/></field> -->
+        <field name="companyName" title="Lead Name"><text-find/></field>
+        <field name="contentName" title="Document Name"><text-find/></field>
+        
+        <field name="submitButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit">
+            <submit button-type="button"/>
+        </field>
+    </form>
+
+    <form name="ListDocuments" list-name="documentList" target="" title="" type="list" paginate-target="FindDocuments"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar" header-row-style="header-row-2" >
+        <row-actions>
+         <entity-one entity-name="Person" value-field="getPerson">
+          <field-map field-name="partyId" value="${partyId}"/>
+         </entity-one>
+        </row-actions>
+        
+        <field name="dataResourceId" title="Document Name">
+            <hyperlink also-hidden="false" description="${contentName}" target="img" target-window="_BLANK">
+                <parameter param-name="imgId" from-field="dataResourceId"/>
+            </hyperlink>
+        </field>
+        <field name="companyName"> <display default-value="${getPerson.firstName}"> </display> </field>
+<!-- 		<field name="contentName"><display/></field> -->
+		<field name="description"><display/></field>
+
+		<field name="replace" title="Replace">
+            <hyperlink also-hidden="false" description="Replace" target="UpdateDocument" >
+                <parameter param-name="contentId" from-field="contentId"/>
+                <parameter param-name="partyId" from-field="partyId"/>
+                <parameter param-name="partyContentTypeId" from-field="partyContentTypeId"/>
+                <parameter param-name="dataResourceId" from-field="dataResourceId"/>
+            </hyperlink>
+        </field>
+       
+        <field name="deleteLink" title="Delete">
+<!--             <hyperlink target="RemovePartyContent" description="${uiLabelMap.CommonDelete}" also-hidden="false"> -->
+    <hyperlink also-hidden="false" description="Delete" target="removePartyContent">
+               <parameter param-name="contentId" from-field="contentId"/>
+                <parameter param-name="partyId" from-field="partyId"/>
+                <parameter param-name="fromDate" from-field="fromDate"/>
+                <parameter param-name="partyContentTypeId" from-field="partyContentTypeId"/>
+            </hyperlink>
+        </field>
+
+	
+			
+    </form>
+    </forms>

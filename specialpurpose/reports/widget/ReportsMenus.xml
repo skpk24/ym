@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-menu.xsd">
+    <menu name="MainAppBar" title="${uiLabelMap.reportsApplication}" extends="CommonAppBarMenu" extends-resource="component://common/widget/CommonNewMenus.xml">
+
+        <!--<menu-item name="main" title="${uiLabelMap.CommonMain}">
+        	<link target="main"></link>
+        </menu-item>
+
+		<menu-item name="Affiliate" title="${uiLabelMap.Affiliate}">
+			<link target="reportingVal" >
+				<parameter param-name="targetchannel" value="AFFIL_SALES_CHANNEL"/>
+				<parameter param-name="typeVal" value="Affiliate"/>
+			</link>
+		</menu-item>
+
+		<menu-item name="Internal" title="${uiLabelMap.CommonInternalSales}">
+			<link target="reportingVal" >
+				<parameter param-name="targetchannel" value="WEB_SALES_CHANNEL"/>
+				<parameter param-name="typeVal" value="Internal"/>
+			</link>
+		</menu-item>
+
+		<menu-item name="Pos" title="${uiLabelMap.CommonPos}">
+			<link target="reportingVal" >
+				<parameter param-name="targetchannel" value="POS_SALES_CHANNEL"/>
+				<parameter param-name="typeVal" value="Pos"/>
+			</link>
+		</menu-item>
+
+		<menu-item name="Ebay" title="${uiLabelMap.Ebay}">
+			<link target="reportingVal" >
+				<parameter param-name="targetchannel" value="EBAY_SALES_CHANNEL"/>
+				<parameter param-name="typeVal" value="Ebay"/>
+			</link>
+		</menu-item>
+
+		<menu-item name="Amazon" title="${uiLabelMap.Amazon}">
+			<link target="reportingVal" >
+				<parameter param-name="targetchannel" value="AMAZON_SALES_CHANNEL"/>
+				<parameter param-name="typeVal" value="Amazon"/>
+			</link>
+		</menu-item>-->
+  		<menu-item name="SalesReports" title="Daily Sales Summary">
+			<link target="salesSummary" ></link>
+		</menu-item>
+		<menu-item name="purchaseReports" title="Purchase Summary">
+			<link target="purchaseSummary" ></link>
+		</menu-item>
+		<menu-item name="dailyPurchaseReports" title="Daily Purchase Summary">
+			<link target="dailyPurchaseSummary" ></link>
+		</menu-item>
+		<menu-item name="stockInHand" title="Stock In Hand">
+			<link target="stockInHand" ></link>
+		</menu-item>
+		<menu-item name="youDailyDispatchReport" title="YouDaily dispatch report">
+			<link target="youDailyDispatchReport" ></link>
+		</menu-item>
+		<menu-item name="packingReport" title="Udaily Packing Report">
+			<link target="packingReport" ></link>
+		</menu-item>
+		<menu-item name="customerData" title="Customer Data">
+			<link target="customerData" ></link>
+		</menu-item>
+		
+		
+		<!-- <menu-item name="SalesReports" title="Sales Reports">
+			<link target="salesSummary" ></link>
+		</menu-item> -->
+
+		<!--  <menu-item name="InventoryReports" title="Inventory Reports">
+			<link target="InventoryReports" url-mode="intra-app"></link>
+		</menu-item>--> 
+
+	<!--  <menu-item name="OrderReports" title="Order Reports">
+			<link target="OrderReports" url-mode="intra-app">
+			</link>
+		</menu-item>
+
+		<menu-item name="CustomerReports" title="Customer Reports">
+			<link target="CustomerReports" url-mode="intra-app"></link>
+		</menu-item>-->
+
+		<!-- <menu-item name="RevenueReports" title="Revenue Reports">
+			<link target="revenueReports" url-mode="intra-app"></link>
+		</menu-item> -->
+
+		<!--  <menu-item name="ProductReports" title="Product Reports">
+			<link target="productReports" url-mode="intra-app"></link>
+		</menu-item>-->
+		<!--  <menu-item name="StaffActivity" title="Staff Activity Reports">
+			<link target="staffActivity" url-mode="intra-app"></link>
+		</menu-item>-->
+		
+		
+		<!-- <menu-item name="dashBoradReport" title="Dash-Board Report">
+			<link target="dashBoradReport" url-mode="intra-app"></link>
+		</menu-item> -->
+	   
+	    <!--  <menu-item name="freshReport" title="Fresh Flower Report">
+			<link target="freshReport" url-mode="intra-app"></link>
+		</menu-item>
+	    <menu-item name="DSR" title="DSR">
+			<link target="DSR" url-mode="intra-app"></link>
+		</menu-item>
+		 <menu-item name="SalesManReport" title="SalesMan Report">
+			<link target="SalesManReport" url-mode="intra-app"></link>
+		</menu-item>
+		<menu-item name="PurchaseReports" title="Purchase Reports">
+			<link target="purchaseReports">
+			</link>
+		</menu-item>-->
+		<!--   <menu-item name="dashboard" title="Dash Board">
+			<link target="dashboard" url-mode="intra-app"></link>
+		</menu-item>
+		<menu-item name="SalesTaxReport" title="Sales Tax Report">
+			<link target="salesTaxReport" url-mode="intra-app"></link>
+		</menu-item> -->
+		<!--  <menu-item name="OrderPDFReport" title="Order PDF Report">
+			<link target="orderPDFReport" url-mode="intra-app"></link>
+		</menu-item>-->
+	 	<!-- <menu-item name="orderSummaryReport" title="orderSummary Report">
+			<link target="orderSummaryReport" url-mode="intra-app"></link>
+		</menu-item> -->
+		<!--  <menu-item name="cashonhand" title="cashOnDelivery Report">
+			<link target="cashonhand" url-mode="intra-app"></link>
+		</menu-item>-->
+		<!--   <menu-item name="dailySlot" title="End of Slots reports">
+			<link target="dailySlot" url-mode="intra-app"></link>
+		</menu-item>-->
+		<menu-item name="stockInOutReport" title="Stock in / Stock out">
+			<link target="stockInOutReport" ></link>
+		</menu-item>
+		<menu-item name="comparativeProductReports" title="Comparative Reports">
+			<link target="comparativeProductReports" ></link>
+		</menu-item>
+		
+		<menu-item name="offersDiscountsReports" title="offers / discounts">
+			<link target="offersDiscountsReports" ></link>
+		</menu-item>
+    </menu>
+
+
+	<menu name="DSRTABBAR" extends="CommonTabBarMenu" extends-resource="component://common/widget/CommonMenus.xml" >
+        <menu-item name="CashSummary" title="Cash Summary">
+            <link target="DSRCashSummary"></link>
+        </menu-item>
+        <!--<menu-item name="NewsLetterReports" title="Newsletter Subscription Reports">
+            <link target="SubscriptionReports"></link>
+        </menu-item>-->
+	</menu>
+
+
+    
+	<menu name="OrderReportsBar" extends="CommonTabBarMenu" extends-resource="component://common/widget/CommonMenus.xml" >
+		<menu-item name="CustomerOrdersReport" title="Order Reports">
+            <link target="OrderReports">
+			</link>
+        </menu-item>
+		<menu-item name="ReturnsReport" title="Return Reports">
+            <link target="ReturnsReport">
+			</link>
+        </menu-item>  
+	</menu>    
+    
+	<menu name="CustomerReportsBar" extends="CommonTabBarMenu" extends-resource="component://common/widget/CommonMenus.xml" >
+        <menu-item name="CustomerReports" title="Customer Registration Reports">
+            <link target="CustomerReports"></link>
+        </menu-item>
+        <menu-item name="CustomerCreditReports" title="Credit Report">
+            <link target="CustomerCreditReports"></link>
+        </menu-item>
+        <menu-item name="CustomerOrderReports" title="Customer Order Reports">
+            <link target="CustomerOrderReports"></link>
+        </menu-item>
+         <menu-item name="CustCreditReports" title="Customer wise Credit's">
+            <link target="customerCredit"></link>
+        </menu-item>
+	</menu>
+    
+	<menu name="SalesReports" extends="CommonTabBarMenu" extends-resource="component://common/widget/CommonMenus.xml" >
+
+        <menu-item name="SalesSummary" title="Sales Summary">
+            <link target="salesSummary"></link>
+        </menu-item>	
+       <!--  <menu-item name="salesreports" title="Sales Reports">
+            <link target="salesreports"></link>
+        </menu-item> -->
+         <menu-item name="billProductWise" title="Bill-Product Wise Sales Reports">
+            <link target="billProductWiseReports"></link>
+        </menu-item>
+        <menu-item name="itemWiseReports" title="Item Wise Sales Reports">
+            <link target="itemWiseReports"></link>
+        </menu-item>
+        <menu-item name="salesDetailItemWiseReports" title="Sales Detail Item Wise Reports">
+            <link target="salesDetailItemWiseReports"></link>
+        </menu-item>
+        <!--  <menu-item name="counterWiseReports" title="Counter Wise Sales Reports">
+            <link target="counterWiseReports"></link>
+        </menu-item>-->
+	</menu>  
+	
+	<menu name="PurchaseReports" extends="CommonTabBarMenu" extends-resource="component://common/widget/CommonMenus.xml" >
+
+        <menu-item name="PurchaseSummary" title="Purchase Summary">
+            <link target="purchaseSummary"></link>
+        </menu-item>	
+        <menu-item name="PurchaseDetail" title="Purchase Detail">
+            <link target="purchaseDetail"></link>
+        </menu-item>
+	</menu>
+	
+	<menu name="SalesTaxReports" extends="CommonTabBarMenu" extends-resource="component://common/widget/CommonMenus.xml" >
+
+        <menu-item name="SalesTaxReport" title="Sales Tax Reports">
+            <link target="salesTaxReport"></link>
+        </menu-item>	
+	</menu>    
+
+	<menu name="ProductReportsBar" extends="CommonTabBarMenu" extends-resource="component://common/widget/CommonMenus.xml" >
+
+        <menu-item name="ProductsReport" title="Product Report">
+            <link target="productReports"></link>
+        </menu-item>	
+        <menu-item name="ProductOptionsReport" title="Product Options Reports">
+            <link target="productOptionsReport"></link>
+        </menu-item>
+        <menu-item name="ProductPriceReport" title="Product Price Report">
+            <link target="productPriceReport">
+            </link>
+        </menu-item>
+        <!--<menu-item name="ProductPromotionReport" title="Product Promotion Reports">
+            <link target="productPromotionReport"></link>
+        </menu-item>-->
+        <menu-item name="PromotionListReport" title="Promo List Report">
+            <link target="promotionListReport"></link>
+        </menu-item>
+      <!--  <menu-item name="GiftCertificatesReport" title="Gift Certificates Availed Report">
+            <link target="giftCertificatesReport"></link>
+        </menu-item>-->
+        <menu-item name="PromotionBasisSaleReport" title="Promotion Basis Sale Reports">
+            <link target="promotionBasisSaleReport"></link>
+        </menu-item>
+	</menu>
+	<menu name="promosCSVBar" extends="CommonTabBarMenu" extends-resource="component://common/widget/CommonMenus.xml" >
+		<menu-item name="promoList.csv" title="Download CSV">
+            <link target="promoList.csv"></link>
+        </menu-item>
+	</menu>
+
+</menus>

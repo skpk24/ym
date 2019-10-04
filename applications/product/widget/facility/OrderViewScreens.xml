@@ -1,0 +1,714 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+    <screen name="CommonOrderViewDecorator">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                        	<container style="tot">
+                                <decorator-section-include name="body"/>
+                                </container>
+                            </widgets>
+                        	
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+	
+	
+	
+	
+	 <screen name="Main">
+        <section>
+            <actions>
+                <set field="headerItem" value="main"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+						<include-screen name="component://product/widget/facility/OrderViewScreens.xml#ListSalesOrders"/>
+						<include-screen name="component://product/widget/catalog/ProductScreens.xml#BestSellingProducts"/>
+                        <!--<include-portal-page id="OrderPortalPage"/>-->
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+	 
+	 <screen name="ListSalesOrders">
+        <section>
+            <actions>
+                <property-map resource="OrderUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="filterDate" type="Timestamp" value="${nowTimestamp}"/>
+                <script location="component://product/webapp/facility/WEB-INF/actions/order/OrderList.groovy"/>
+            </actions>
+            <widgets>
+                <section>
+                    <condition>
+                        <if-has-permission permission="ORDERMGR" action="_VIEW"/>
+                    </condition>
+                    <widgets>
+                        <platform-specific>
+                            <html><html-template location="component://product/webapp/facility/order/OrderListByDate.ftl"/></html>
+                        </platform-specific>
+                    </widgets>
+                    <fail-widgets>
+                        <label style="h3" text="${uiLabelMap.OrderViewPermissionError}"/>
+                    </fail-widgets>
+                </section>
+            </widgets>
+        </section>
+    </screen>
+	 
+	 
+	 <screen name="PendingShipmentOrders">
+        <section>
+            <actions>
+                <set field="headerItem" value="pendingshipment"/>
+                <set field="facilityId" from-field="parameters.facilityId"/>
+                <set field="tabButtonItem" value="ReadyShipping"/>
+                <set field="thirdMenuName" value="ShippingTabBar" global="true"/>
+                <set field="thirdMenuLocation" value="component://product/widget/facility/FacilityMenus.xml" global="true"/> 
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonFacilityDecorator"  location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+						<include-screen name="component://product/widget/facility/OrderViewScreens.xml#PendingListShipmentOrders"/>
+						<!-- <include-screen name="component://product/widget/catalog/ProductScreens.xml#BestSellingProducts"/>  -->
+                        <!--<include-portal-page id="OrderPortalPage"/>-->
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+     </screen>
+	
+   
+   
+   <screen name="PendingListShipmentOrders">
+        <section>
+            <actions>
+                <property-map resource="OrderUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="filterDate" type="Timestamp" value="${nowTimestamp}"/>
+                <script location="component://product/webapp/facility/WEB-INF/actions/order/PendingShipmentOrderList.groovy"/>
+            </actions>
+            <widgets>
+                <section>
+                    <condition>
+                        <if-has-permission permission="ORDERMGR" action="_VIEW"/>
+                    </condition>
+                    <widgets>
+                        <platform-specific>
+                            <html><html-template location="component://product/webapp/facility/order/PendingShipmentOrderList.ftl"/></html>
+                        </platform-specific>
+                    </widgets>
+                    <fail-widgets>
+                        <label style="h3" text="${uiLabelMap.OrderViewPermissionError}"/>
+                    </fail-widgets>
+                </section>
+            </widgets>
+        </section>
+    </screen>
+   
+   
+   
+    <screen name="OrderHeaderView">
+        <section>
+            <actions>
+                <set field="titleProperty" value="OrderViewOrder"/>
+                <set field="headerItem" value="findorders"/>
+                <script location="component://product/webapp/facility/WEB-INF/actions/order/OrderView.groovy"/>
+                <script location="component://product/webapp/facility/WEB-INF/actions/order/OrderViewWebSecure.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonOrderViewDecorator">
+                    <decorator-section name="body">
+						  <section>
+                                <widgets>
+                        <include-screen name="orderHeader"/>
+                        <container style="clear"/>
+                        <platform-specific>
+                            <html><html-template location="component://product/webapp/facility/order/orderitems.ftl"/></html>
+                        </platform-specific>
+                        <platform-specific>
+                            <html><html-template location="component://product/webapp/facility/order/ordernotes.ftl"/></html>
+                        </platform-specific>
+                        <platform-specific>
+                            <html><html-template location="component://product/webapp/facility/order/transitions.ftl"/></html>
+                        </platform-specific>
+									</widgets>
+								<fail-widgets>
+										 <label style="h3">${uiLabelMap.DonotPermission}</label>
+							</fail-widgets>
+					  </section>		  
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="orderHeader">
+        <section>
+            <condition>
+                <not><if-empty field="orderHeader"/></not>
+            </condition>
+            <widgets>
+                <container style="lefthalf">
+                    <include-screen name="orderinfo"/>
+                    <include-screen name="orderterms"/>
+                    <include-screen name="orderpaymentinfo"/>
+                    <include-screen name="projectAssoOrder"/>
+                </container>
+                <container style="righthalf">
+                    <include-screen name="ordercontactinfo"/>
+                    <include-screen name="ordershippinginfo"/>
+                </container>
+            </widgets>
+            <fail-widgets>
+                <label style="h2" text="${uiLabelMap.OrderNoOrderFound}: [${orderId}]"></label>
+            </fail-widgets>
+        </section>
+    </screen>
+    <screen name="orderinfo">
+        <section>
+            <widgets>
+                <platform-specific>
+                    <html><html-template location="component://product/webapp/facility/order/orderinfo.ftl"/></html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="orderterms">
+        <section>
+            <widgets>
+                <platform-specific>
+                    <html><html-template location="component://product/webapp/facility/order/orderterms.ftl"/></html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="orderpaymentinfo">
+        <section>
+        	<actions>
+          			 <script location="component://product/webapp/facility/WEB-INF/actions/order/orderReference.groovy"/>
+            </actions>
+            <widgets>
+                <platform-specific>
+                    <html><html-template location="component://product/webapp/facility/order/orderpaymentinfo.ftl"/></html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="projectAssoOrder">
+        <section>
+            <condition>
+                <if-has-permission permission="PROJECTMGR" action="_VIEW"/>
+            </condition>
+            <actions>
+            <set field="orderId" from-field="parameters.orderId"/>
+            <entity-and entity-name="OrderHeaderAndWorkEffort" list="listProjectAssoOrder">
+                <field-map field-name="orderId" from-field="orderId"/>
+                <field-map field-name="workEffortTypeId" value="PROJECT"/>
+            </entity-and>
+            </actions>
+            <widgets>
+                <section>
+                    <condition>
+                        <not>
+                            <if-empty field="listProjectAssoOrder"/>
+                        </not>
+                    </condition>
+                    <widgets>
+                        <screenlet title="${uiLabelMap.PageTitleProjectInformation}">
+                            <include-form name="projectAssoOrder" location="component://projectmgr/widget/forms/ProjectForms.xml"/>
+                        </screenlet>
+                    </widgets>
+                    <fail-widgets></fail-widgets>
+                </section>
+            </widgets>
+            <fail-widgets></fail-widgets>
+        </section>
+    </screen>
+    <screen name="ordercontactinfo">
+        <section>
+            <widgets>
+                <platform-specific>
+                    <html><html-template location="component://product/webapp/facility/order/ordercontactinfo.ftl"/></html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ordershippinginfo">
+        <section>
+            <widgets>
+                <platform-specific>
+                    <html><html-template location="component://product/webapp/facility/order/ordershippinginfo.ftl"/></html>
+                </platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="OrderHeaderListView">
+        <section>
+            <actions>
+                <set field="titleProperty" value="OrderLookupOrder"/>
+                <set field="headerItem" value="orderlist"/>
+                <script location="component://product/webapp/facility/WEB-INF/actions/order/OrderList.groovy"/>
+                <script location="component://product/webapp/facility/WEB-INF/actions/order/FilterOrderList.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonOrderViewDecorator">
+                    <decorator-section name="body">
+						<section>
+                                <widgets>
+                        <platform-specific>
+                            <html><html-template location="component://product/webapp/facility/order/orderlist.ftl"/></html>
+                        </platform-specific>
+									</widgets>	
+			  <fail-widgets>
+					 <label style="h3">${uiLabelMap.DonotPermission}</label>
+			  </fail-widgets>
+							   </section> 
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="OrderItemEdit">
+        <section>
+            <actions>
+                <set field="titleProperty" value="OrderEditItems"/>
+                <set field="headerItem" value="orderlist"/>
+                <script location="component://product/webapp/facility/WEB-INF/actions/order/OrderView.groovy"/>
+                <script location="component://product/webapp/facility/WEB-INF/actions/order/OrderViewWebSecure.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonOrderViewDecorator">
+                    <decorator-section name="body">
+                        <include-screen name="orderHeader"/>
+                        <container style="clear"/>
+                        <platform-specific>
+                            <html><html-template location="component://product/webapp/facility/order/editorderitems.ftl"/></html>
+                        </platform-specific>
+                        <platform-specific>
+                            <html><html-template location="component://product/webapp/facility/order/appendorderitem.ftl"/></html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="OrderFindOrder">
+        <section>
+            <actions>
+                <set field="titleProperty" value="OrderFindOrder"/>
+                <set field="headerItem" value="findorders"/>
+                <script location="component://product/webapp/facility/WEB-INF/actions/order/FindOrders.groovy"/>
+                <script location="component://content/webapp/content/WEB-INF/actions/print/FindPrinters.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonOrderViewDecorator">
+                    <decorator-section name="body">
+						<section>
+                                <widgets>
+                        <platform-specific>
+                            <html><html-template location="component://product/webapp/facility/order/findOrders.ftl"/></html>
+                        </platform-specific>
+									</widgets>	
+					  <fail-widgets>
+							 <label style="h3">${uiLabelMap.DonotPermission}</label>
+					  </fail-widgets>
+							   </section> 
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="OrderNewNote">
+        <section>
+            <actions>
+                <set field="titleProperty" value="OrderAddNote"/>
+                <set field="headerItem" value="findorders"/>
+                <script location="component://product/webapp/facility/WEB-INF/actions/order/NewNote.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonOrderViewDecorator">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html><html-template location="component://product/webapp/facility/order/newnote.ftl"/></html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="OrderDeliveryScheduleInfo">
+        <section>
+            <actions>
+                <set field="titleProperty" value="OrderViewEditDeliveryScheduleInfo"/>
+                <set field="headerItem" value="findorders"/>
+                <property-map resource="OrderUiLabels" map-name="uiLabelMap" global="true"/>
+                <property-map resource="AccountingUiLabels" map-name="uiLabelMap" global="true"/>
+                <property-map resource="ProductUiLabels" map-name="uiLabelMap" global="true"/>
+                <property-map resource="CommonUiLabels" map-name="uiLabelMap" global="true"/>
+                <script location="component://product/webapp/facility/WEB-INF/actions/order/OrderDeliveryScheduleInfo.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonOrderViewDecorator">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html><html-template location="component://product/webapp/facility/order/OrderDeliveryScheduleInfo.ftl"/></html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="OrderStats">
+        <section>
+            <actions>
+                <set field="titleProperty" value="OrderOrderStatisticsPage"/>
+                <set field="headerItem" value="stats"/>
+                <script location="component://product/webapp/facility/WEB-INF/actions/order/OrderStats.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonOrderViewDecorator">
+                    <decorator-section name="body">
+						<section>
+                                <widgets>
+                        <platform-specific>
+                            <html><html-template location="component://product/webapp/facility/order/orderstats.ftl"/></html>
+                        </platform-specific>
+							</widgets>	
+			  <fail-widgets>
+				 <label style="h3">${uiLabelMap.DonotPermission}</label>
+			  </fail-widgets>
+							   </section> 
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="OrderReceivePayment">
+        <section>
+            <actions>
+                <set field="titleProperty" value="OrderReceiveOfflinePayments"/>
+               <set field="headerItem" value="findorders"/>
+                <script location="component://product/webapp/facility/WEB-INF/actions/order/ReceivePayment.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonOrderViewDecorator">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html><html-template location="component://product/webapp/facility/order/receivepayment.ftl"/></html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ViewImage">
+        <section>
+            <actions>
+                <set field="titleProperty" value="OrderViewImage"/>
+                <script location="component://product/webapp/facility/WEB-INF/actions/order/ViewImage.groovy"/>
+            </actions>
+            <widgets>
+                <platform-specific><html><html-template location="component://product/webapp/facility/order/viewimage.ftl"/></html></platform-specific>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="SendOrderConfirmation">
+        <section>
+            <actions>
+                <set field="titleProperty" value="OrderSendConfirmationEmail"/>
+                <set field="headerItem" value="findorders"/>
+                <script location="component://product/webapp/facility/WEB-INF/actions/order/SendConfirmationEmail.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonOrderViewDecorator">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html><html-template location="component://product/webapp/facility/order/sendconfirmationemail.ftl"/></html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    <screen name="ListOrderTerms">
+        <section>
+            <actions>
+                <set field="titleProperty" value="OrderOrderTerms"/>
+                <set field="headerItem" value="findorders"/>
+                <entity-and entity-name="OrderTerm" list="orderTerms">
+                    <field-map field-name="orderId" from-field="parameters.orderId"/>
+                </entity-and>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonOrderViewDecorator">
+                    <decorator-section name="body">
+                        <screenlet id="AddOrderTermPanel" title="${uiLabelMap.CommonAdd} ${uiLabelMap.OrderOrderTerms}" collapsible="true">
+                            <include-form name="AddOrderTerm" location="component://product/webapp/facility/order/OrderForms.xml"/>
+                        </screenlet>
+                        <include-form name="ListOrderTerms" location="component://product/webapp/facility/order/OrderForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    
+    
+    <screen name="PackOrder">
+        <section>
+            <actions>
+                <set field="titleProperty" value="ProductPackOrder"/>
+                <set field="headerItem" value="shipment"/>
+                <script location="component://product/webapp/facility/WEB-INF/actions/shipment/PackOrder.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html><html-template location="component://product/webapp/facility/shipment/PackOrder.ftl"/></html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    
+    
+       <screen name="CommonFacilityScheduleDecorator">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <widgets>
+                                <platform-specific>
+                                    <html><html-template location="component://product/webapp/facility/facility/FacilityScheduleTabBar.ftl"/></html>
+                                </platform-specific>
+                                <decorator-section-include name="schedule-body"/>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+     
+    
+    <screen name="Labels">
+        <section>
+            <actions>
+                <set field="titleProperty" value="PageTitleLabelPrinting"/>
+                <set field="headerItem" value="facility"/>
+                <set field="tabButtonItem" value="Scheduling"/>
+                <set field="scheduleTabButtonItem" value="LabelsTabButton"/>
+                <set field="facilityId" from-field="parameters.facilityId"/>
+
+                <!-- get all carrier CONFIRMED ShipmentPackageRouteDetails -->
+                <entity-condition entity-name="ShipmentPackageRouteDetail" list="shipmentPackageRouteSegments">
+                    <condition-list combine="and">
+                        <condition-expr field-name="labelPrinted" operator="not-equals" value="Y"/>
+                        <condition-expr field-name="carrierServiceStatusId" operator="equals" value="SHRSCS_CONFIRMED"/>
+                    </condition-list>
+                </entity-condition>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonFacilityScheduleDecorator">
+                    <decorator-section name="schedule-body">
+                        <container style="screenlet">
+                            <container style="screenlet-title-bar">
+                                <container style="h3">
+                                    <label text="${uiLabelMap.PageTitleLabelPrinting}"/>
+                                </container>
+                            </container>
+                            <container style="screenlet-body">
+                                <section>
+                                    <widgets>
+                                        <include-form name="Labels" location="component://product/webapp/facility/facility/FacilityForms.xml"/>
+                                        <platform-specific>
+                                            <html><html-template location="component://product/webapp/facility/facility/batchPrintMarkAsAccepted.ftl"/></html>
+                                        </platform-specific>
+                                    </widgets>
+                                </section>
+                            </container>
+                        </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+          
+    <screen name="ScheduleShipmentRouteSegment">
+        <section>
+            <actions>
+                <set field="titleProperty" value="PageTitlePackageShipmentScheduling"/>
+                <set field="headerItem" value="facility"/>
+                <set field="tabButtonItem" value="Scheduling"/>
+               
+                <set field="scheduleTabButtonItem" value="ScheduleTabButton"/>
+                <set field="facilityId" from-field="parameters.facilityId"/>
+                
+                <!-- get ShipmentRouteSegmentDetails that are PACKED and not CONFIRMED with carrier -->
+                <entity-condition entity-name="ShipmentRouteSegmentDetail" list="shipmentRouteSegments">
+                    <condition-list combine="and">
+                       <!--   <condition-expr field-name="originFacilityId" operator="equals" from-field="parameters.facilityId"/>-->
+                        <condition-expr field-name="statusId" operator="equals" value="SHIPMENT_PACKED"/>
+                        <condition-expr field-name="carrierServiceStatusId" operator="equals" value="SHRSCS_NOT_STARTED"/>
+                    </condition-list>
+                    <order-by field-name="shipmentId DESC"/>
+               
+                </entity-condition>
+                
+                
+                <!--  <script location="component://product/webapp/facility/WEB-INF/actions/shipment/FetchPackedShipments.groovy"/>-->
+                
+
+                <!-- get the default facility Uom -->
+                <entity-one entity-name="Facility" value-field="facility"/>
+                <entity-one entity-name="Uom" value-field="defaultWeightUom" use-cache="true" auto-field-map="false">
+                    <field-map from-field="facility.defaultWeightUomId" field-name="uomId"/>
+                </entity-one>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonFacilityScheduleDecorator">
+                    <decorator-section name="schedule-body">
+                        <container style="screenlet">
+                            <container style="screenlet-title-bar">
+                                <container style="h3">
+                                    <container style="createButton">
+                                    <link style="buttontext" text="Schedule All Shipment" target="scheduleJob">
+                                    <parameter param-name=""/>
+                                    </link></container>
+                                    <label text="${uiLabelMap.PageTitlePackageShipmentScheduling}"/>
+                                </container>
+                            </container>
+                            <container style="screenlet-body">
+                                <section>
+                                    <widgets>
+                                        <include-form name="SchedulingList" location="component://product/webapp/facility/facility/FacilityForms.xml"/>
+                                    </widgets>
+                                </section>
+                            </container>
+                        </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen> 
+     
+     
+     <screen name="ScheduleJob">
+        <section>
+            <actions>
+                <set field="titleProperty" value="PageTitleScheduleJob"/>
+                <set field="tabButtonItem" value="scheduleJob"/>
+                <set field="facilityId" from-field="parameters.facilityId"/>
+                <script location="component://webtools/webapp/webtools/WEB-INF/actions/service/ScheduleJob.groovy"/>
+                <script location="component://product/webapp/facility/WEB-INF/actions/shipment/FetchPackedShipments.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonServiceDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                         <container style="screenlet">
+                             <container style="screenlet-title-bar">
+                                 <container style="h3">
+                                     <label text="${uiLabelMap.WebtoolsStep1ServiceAndRecurrenceInfo}"/>
+                                 </container>
+                             </container>
+                             <container style="screenlet-body">
+                                 <section>
+                                     <widgets>
+                                         <include-form name="scheduleJobforShipment" location="component://webtools/webapp/webtools/service/ServiceForms.xml"/>
+                                     </widgets>
+                                 </section>
+                             </container>
+                         </container>
+
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+     
+     
+     
+     
+     <screen name="setServiceParameters">
+        <section>
+            <actions>
+                <set field="titleProperty" value="PageTitleScheduleJob"/>
+                <set field="tabButtonItem" value="scheduleJob"/>
+                <script location="component://webtools/webapp/webtools/WEB-INF/actions/service/ScheduleJob.groovy"/>
+               
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonServiceDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                         <container style="screenlet">
+                             <container style="screenlet-title-bar">
+                                 <label style="h3">${uiLabelMap.WebtoolsStep2ServiceParameters}</label>
+                             </container>
+                             <container style="screenlet-body">
+                                 <platform-specific>
+                                     <html><html-template location="component://webtools/webapp/webtools/service/setServiceParameter.ftl"/></html>
+                                 </platform-specific>
+                             </container>
+                         </container>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    
+     <screen name="ServiceResult">
+        <section>
+            <actions>
+                <set field="titleProperty" value="PageTitleScheduleJob"/>
+                <set field="headerItem" value="services"/>
+                <set field="tabButtonItem" value="runService"/>
+                <script location="component://webtools/webapp/webtools/WEB-INF/actions/service/ServiceResult.groovy"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonServiceDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <platform-specific>
+                            <html><html-template location="component://webtools/webapp/webtools/service/serviceResult.ftl"/></html>
+                        </platform-specific>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    
+    
+</screens>

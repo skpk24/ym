@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <SecurityPermission description="View operations in the reports Component." permissionId="reports_VIEW"/>
+    <SecurityPermission description="Create operations in the reports Component." permissionId="reports_CREATE"/>
+    <SecurityPermission description="Update operations in the reports Component." permissionId="reports_UPDATE"/>
+    <SecurityPermission description="Delete operations in the reports Component." permissionId="reports_DELETE"/>
+    <SecurityPermission description="ALL operations in the reports Component." permissionId="reports_ADMIN"/><!--
+    <SecurityGroupPermission groupId="SUPERUSER" permissionId="reports_ADMIN"/>
+    --><SecurityGroupPermission groupId="FULLADMIN" permissionId="reports_ADMIN"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="reports_CREATE"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="reports_DELETE"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="reports_UPDATE"/>
+    <SecurityGroupPermission groupId="FLEXADMIN" permissionId="reports_VIEW"/>
+    <SecurityGroupPermission groupId="VIEWADMIN" permissionId="reports_VIEW"/>
+    <SecurityGroupPermission groupId="BIZADMIN" permissionId="reports_ADMIN"/>
+	<WebSite webSiteId="REPORT" webSiteName="report" visualThemeSetId="BACKOFFICE"/>
+</entity-engine-xml>

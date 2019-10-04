@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-screen.xsd">
+
+	<screen name="CommonZoneDecorator">
+        <section>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+						<section>
+                            <widgets>
+                                <include-menu name="ZoneTabBar" location="component://order/widget/ordermgr/OrderMenus.xml"/>
+                            </widgets>
+                        </section>
+                        <section>
+                            <widgets>
+                                <section>
+                                    <widgets>
+                                        <decorator-section-include name="body"/>
+                                    </widgets>
+                                </section>
+                            </widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    <screen name="FindZone">
+        <section>
+            <actions>
+                <set field="titleProperty" value="OrderFindQuote"/>
+                <set field="headerItem" value="zone"/>
+				<set field="tabButtonItem" value="FindZone"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="10"/>
+                 <set field="zoneId" from-field="parameters.zoneId"/>
+                <entity-one entity-name="ZoneType" value-field="zone" auto-field-map="true"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonZoneDecorator" >
+                    <decorator-section name="body">
+                         <screenlet title="Zone Management">
+                         	<container>
+                                <link target="EditZone" text="Create New Zone" style="buttontext"/>
+                            </container>
+                            <include-form name="FindZone" location="component://order/widget/ordermgr/QuoteForms.xml"/>
+                            <include-form name="ListZone" location="component://order/widget/ordermgr/QuoteForms.xml"/>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+         </section>
+    </screen>
+    
+    <screen name="EditZone">
+        <section>
+            <actions>
+                <set field="titleProperty" value="PageTitleEditRequirement"/>
+                <set field="headerItem" value="zone"/>
+                <set field="tabButtonItem" value="EditZone"/>
+
+                <set field="zoneId" from-field="parameters.zoneId"/>
+                <entity-one entity-name="ZoneType" value-field="zone" auto-field-map="true"/>
+
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="Edit Zone">
+                            <include-form name="EditZone" location="component://order/widget/ordermgr/QuoteForms.xml"/>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    <screen name="FindZoneGroup">
+        <section>
+            <actions>
+                <set field="titleProperty" value="OrderFindQuote"/>
+                <set field="headerItem" value="zone"/>
+				<set field="tabButtonItem" value="ZoneGroup"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="10"/>
+                <set field="zoneGroupId" from-field="parameters.zoneGroupId"/>
+                <entity-one entity-name="ZoneGroup" value-field="zoneGroup" auto-field-map="true"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonZoneDecorator" >
+                    <decorator-section name="body">
+                         <screenlet title="Zone Group Management">
+                         	<container>
+                                <link target="EditZoneGroup" text="Create Zone Group" style="buttontext"/>
+                            </container>
+                            <include-form name="FindZoneGroup" location="component://order/widget/ordermgr/OrderForms.xml"/>
+                            <include-form name="ListZoneGroup" location="component://order/widget/ordermgr/OrderForms.xml"/>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+         </section>
+    </screen>
+    
+    <screen name="EditZoneGroup">
+        <section>
+            <actions>
+                <set field="titleProperty" value="PageTitleEditRequirement"/>
+                <set field="headerItem" value="zone"/>
+                <set field="tabButtonItem" value="ZoneGroup"/>
+                <set field="zoneGroupId" from-field="parameters.zoneGroupId"/>
+                <entity-one entity-name="ZoneGroup" value-field="zoneGroup" auto-field-map="true"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonZoneDecorator">
+                    <decorator-section name="body">
+                        <screenlet title="Edit Zone Group">
+                            <include-form name="EditZoneGroup" location="component://order/widget/ordermgr/OrderForms.xml"/>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    <screen name="FindZone">
+        <section>
+            <actions>
+                <set field="titleProperty" value="OrderFindQuote"/>
+                <set field="headerItem" value="zone"/>
+				<set field="tabButtonItem" value="FindZone"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="10"/>
+                 <set field="zoneId" from-field="parameters.zoneId"/>
+                <entity-one entity-name="ZoneType" value-field="zone" auto-field-map="true"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonZoneDecorator" >
+                    <decorator-section name="body">
+                         <screenlet title="Zone Management">
+                         	<container>
+                                <link target="EditZone" text="Create New Zone" style="buttontext"/>
+                            </container>
+                            <include-form name="FindZone" location="component://order/widget/ordermgr/OrderForms.xml"/>
+                            <include-form name="ListZone" location="component://order/widget/ordermgr/OrderForms.xml"/>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+         </section>
+    </screen>
+    
+    <screen name="EditZone">
+        <section>
+            <actions>
+                <set field="titleProperty" value="PageTitleEditRequirement"/>
+                <set field="headerItem" value="zone"/>
+                <set field="tabButtonItem" value="FindZone"/>
+
+                <set field="zoneId" from-field="parameters.zoneId"/>
+                <entity-one entity-name="ZoneType" value-field="zone" auto-field-map="true"/>
+
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonZoneDecorator">
+                    <decorator-section name="body">
+                        <screenlet title="Edit Zone">
+                        	<include-form name="EditZone" location="component://order/widget/ordermgr/OrderForms.xml"/>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+    
+    
+    
+</screens>

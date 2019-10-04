@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/widget-form.xsd">
+
+    <form name="TrackingCodeReportOptions" type="single" target="TrackingCodeReport" title="${uiLabelMap.MarketingTrackingCodeReportTitle}"
+        header-row-style="header-row" default-table-style="basic-table">
+        <field name="fromDate" title="${uiLabelMap.CommonFromDate} (${uiLabelMap.CommonDate}&gt;=)">
+            <date-time type="timestamp"/>
+        </field>
+        <field name="thruDate" title="${uiLabelMap.CommonThruDate} (${uiLabelMap.CommonDate}&lt;)">
+            <date-time type="timestamp"/>
+        </field>
+
+        <field name="trackingCodeId" title="${uiLabelMap.MarketingTrackingCode}">
+            <drop-down allow-empty="true">
+                <option key="" description="- ${uiLabelMap.CommonAny} -"/>
+                <entity-options entity-name="TrackingCode" description="${trackingCodeId}">
+                </entity-options>
+            </drop-down>
+        </field>
+
+        <field name="submitButton" title="${uiLabelMap.CommonRun} ${uiLabelMap.MarketingTrackingCodeReportTitle}" widget-style="smallSubmit">
+            <submit button-type="button"/>
+        </field>
+    </form>
+
+    <form name="MarketingCampaignOptions" type="single" target="MarketingCampaignReport"
+        header-row-style="header-row" default-table-style="basic-table">
+        <field name="fromDate" title="${uiLabelMap.CommonFromDate} (${uiLabelMap.CommonDate}&gt;=)">
+            <date-time type="timestamp"/>
+        </field>
+        <field name="thruDate" title="${uiLabelMap.CommonThruDate} (${uiLabelMap.CommonDate}&lt;)">
+            <date-time type="timestamp"/>
+        </field>
+
+         <field name="marketingCampaignId" title="${uiLabelMap.MarketingCampaign}">
+            <drop-down allow-empty="true">
+                <option key="" description="- ${uiLabelMap.CommonAny} -"/>
+                <entity-options entity-name="MarketingCampaign" description="${campaignName}">
+                </entity-options>
+            </drop-down>
+        </field>
+
+        <field name="submitButton" title="${uiLabelMap.CommonRun} ${uiLabelMap.MarketingCampaignReportTitle}" widget-style="smallSubmit">
+            <submit button-type="button"/>
+        </field>
+    </form>
+
+    <form name="EmailStatusOptions" type="single" target="EmailStatusReport" 
+            header-row-style="header-row" default-table-style="basic-table">
+        <field name="fromDate" title="${uiLabelMap.CommonFromDate} (${uiLabelMap.CommonDate}&gt;=)">
+            <date-time type="timestamp"/>
+        </field>
+        <field name="thruDate" title="${uiLabelMap.CommonThruDate} (${uiLabelMap.CommonDate}&lt;)">
+            <date-time type="timestamp"/>
+        </field>
+        <field name="partyIdTo" title="${uiLabelMap.FormFieldTitle_partyIdTo}">
+            <lookup target-form-name="LookupPartyName"/>
+        </field>
+        <field name="partyIdFrom" title="${uiLabelMap.FormFieldTitle_fromPartyId}">
+            <lookup target-form-name="LookupPartyName"/>
+        </field>
+        <field name="statusId" title="${uiLabelMap.CommonStatus}">
+            <drop-down allow-empty="true">
+                <option key="" description="- ${uiLabelMap.CommonSelectAny} -"/>
+                <entity-options entity-name="StatusItem" description="${description}" key-field-name="statusId">
+                    <entity-constraint name="statusTypeId" operator="equals" value="COM_EVENT_STATUS"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="roleStatusId" title="${uiLabelMap.MarketingSegmentGroupSegmentGroupRole} ${uiLabelMap.CommonStatus}">
+            <drop-down allow-empty="true">
+                <option key="" description="- ${uiLabelMap.CommonSelectAny} -"/>
+                <entity-options entity-name="StatusItem" description="${description}" key-field-name="statusId">
+                    <entity-constraint name="statusTypeId" operator="equals" value="COM_EVENT_ROL_STATUS"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="submitButton" title="${uiLabelMap.CommonRun} ${uiLabelMap.MarketingEmailStatusReport}" widget-style="smallSubmit">
+            <submit button-type="button"/>
+        </field>
+    </form>
+
+    <form name="PartyStatusOptions" type="single" target="PartyStatusReport" 
+            header-row-style="header-row" default-table-style="basic-table">
+        <field name="fromDate" title="${uiLabelMap.CommonFromDate} (${uiLabelMap.CommonDate}&gt;=)">
+            <date-time type="timestamp"/>
+        </field>
+        <field name="statusDate" title="${uiLabelMap.CommonStatus} (${uiLabelMap.CommonDate}&gt;=)">
+            <date-time type="timestamp"/>
+        </field>
+        <field name="thruDate" title="${uiLabelMap.CommonThruDate} (${uiLabelMap.CommonDate}&lt;)">
+            <date-time type="timestamp"/>
+        </field>
+        <field name="contactListId" title="${uiLabelMap.PartyContactLists}">
+            <drop-down allow-empty="true">
+                <option key="" description="- ${uiLabelMap.CommonAny} -"/>
+                <entity-options entity-name="ContactList" description="${contactListName}">
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="statusId" title="${uiLabelMap.CommonStatus}">
+            <drop-down allow-empty="true">
+                <option key="" description="- ${uiLabelMap.CommonSelectAny} -"/>
+                <entity-options entity-name="StatusItem" description="${description}" key-field-name="statusId">
+                    <entity-constraint name="statusTypeId" operator="equals" value="CONTACTLST_PARTY"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="submitButton" title="${uiLabelMap.CommonRun} ${uiLabelMap.MarketingPartyStatusReport}" widget-style="smallSubmit">
+            <submit button-type="button"/>
+        </field>
+    </form>
+
+    <form name="TrackingCodeReport" list-name="trackingCodeVisitAndOrders" target="" title="${uiLabelMap.MarketingTrackingCodeReportTitle}" type="list" paginate-target="TrackingCodeReport"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="trackingCodeId" title="${uiLabelMap.MarketingTrackingCode}">
+            <display-entity entity-name="TrackingCode" key-field-name="trackingCodeId" description="${description} [${trackingCodeId}]"/>
+        </field>
+        <field name="visits" title="${uiLabelMap.MarketingVisits}"><display/></field>
+        <field name="orders" title="${uiLabelMap.MarketingOrders}"><display/></field>
+        <field name="orderAmount" title="${uiLabelMap.MarketingOrderAmount}"><display/></field>
+        <field name="conversionRate" title="${uiLabelMap.MarketingConversionRate}"><display/></field>
+    </form>
+
+   <form name="MarketCampaignReport" title="${uiLabelMap.MarketingCampaignReportTitle}" type="list" list-name="marketingCampaignVisitAndOrders" target="" paginate-target="MarketCampaignReport"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <field name="marketingCampaignId" title="${uiLabelMap.MarketingCampaignName}">
+            <display-entity entity-name="MarketingCampaign" key-field-name="marketingCampaignId" description="${campaignName} [${marketingCampaignId}]"/>
+        </field>
+        <field name="visits" title="${uiLabelMap.MarketingVisits}"><display/></field>
+        <field name="orders" title="${uiLabelMap.MarketingOrders}"><display/></field>
+        <field name="orderAmount" title="${uiLabelMap.MarketingOrderAmount}"><display/></field>
+        <field name="conversionRate" title="${uiLabelMap.MarketingConversionRate}"><display/></field>
+    </form>
+
+    <form name="EmailStatusReport" title="${uiLabelMap.MarketingEmailStatusReport}" type="list" list-name="commStatausList" target="" paginate-target="EmailStatusReport"
+        odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+        <row-actions>
+            <entity-one entity-name="CommunicationEventType" value-field="communicationEventType"/>
+        </row-actions>
+        <field name="communicationEventId" title="${uiLabelMap.MarketingContactListCommEventId}"><display/></field> 
+        <field name="communicationEventTypeId" title="${uiLabelMap.MarketingContactListCommEventTypeId}"><display description="${communicationEventType.description}"/></field>
+        <field name="statusId" title="${uiLabelMap.CommonStatus}">
+            <display-entity entity-name="StatusItem" description="${description}"/>
+        </field>
+        <field name="partyIdTo" title="${uiLabelMap.FormFieldTitle_toPartyId}"><display/></field>
+        <field name="roleStatusId" title="${uiLabelMap.MarketingSegmentGroupSegmentGroupRole} ${uiLabelMap.CommonStatus}">
+            <display-entity entity-name="StatusItem" key-field-name="statusId" description="${description}"/>
+        </field>
+        <field name="partyIdFrom" title="${uiLabelMap.FormFieldTitle_fromPartyId}"><display/></field>
+        <field name="entryDate" title="${uiLabelMap.PartyEnteredDate}"><display/></field>
+        <field name="subject" title="${uiLabelMap.PartySubject}"><display/></field>
+    </form>
+
+    <form name="PartyStatusReport" title="${uiLabelMap.MarketingPartyStatusReport}" type="list" list-name="partyStatusLists" target="" paginate-target="PartyStatusReport"
+            odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+            <row-actions>
+                <entity-one entity-name="StatusItem" value-field="statusItem"/>
+            </row-actions>
+        <field name="contactListId" title="${uiLabelMap.MarketingContactList}"><display/></field>
+        <field name="partyId" title="${uiLabelMap.PartyPartyId}"><display/></field>
+        <field name="fromDate" title="${uiLabelMap.CommonFromDate}"><display/></field>
+        <field name="statusDate" title="${uiLabelMap.CommonStatus} ${uiLabelMap.CommonDate}"><display/></field>
+        <field name="statusId" title="${uiLabelMap.CommonStatus}"><display description="${statusItem.description}"/></field>
+    </form>
+    
+    <form name="sfaReportsForm" type="single" target="sfaReports" title="${uiLabelMap.MarketingTrackingCodeReportTitle}"
+        header-row-style="header-row" default-table-style="basic-table">
+        <field name="reportType" action="javascript:document.sfaReportsForm.submit();" event="onchange">
+	         <drop-down>
+	            <option key="--" description="-- Select --"/>
+	            <entity-options description="${description}" entity-name="EnumerationType" key-field-name="enumTypeId">
+	            <entity-constraint name="parentTypeId" operator="equals" value="SFA_REPORTS"/>
+	            </entity-options>
+	         </drop-down>
+        </field>
+        
+        <field name="reportType" action="javascript:document.sfaReportsForm.submit();" event="onchange">
+	         <drop-down>
+	            <option key="--" description="-- Select --"/>
+	            <entity-options description="${description}" entity-name="EnumerationType" key-field-name="enumTypeId">
+	            <entity-constraint name="parentTypeId" operator="equals" value="SFA_REPORTS"/>
+	            </entity-options>
+	         </drop-down>
+        </field>
+        
+         <field name="enumId" action="javascript:document.sfaReportsForm.submit();" event="onchange" title="Report Sub-Type">
+	       <drop-down>
+	        <option key="--" description="-- Select --"/>
+                <list-options key-name="enumId" list-name="subReports" description="${description}" />
+ 	         </drop-down>
+        </field>
+        <field name="submitButton" title="${uiLabelMap.CommonRun} REport" widget-style="smallSubmit">
+            <submit button-type="button"/>
+        </field>
+    </form>
+    
+    <form name="AccountByOpportunity" type="list" list-name="resultList"
+		paginate-target="sfaReports" view-size="20" odd-row-style="alternate-row"
+		default-table-style="basic-table hover-bar" separate-columns="true"
+		header-row-style="header-row-2">
+		<actions>
+		 <script
+					location="component://marketing/webapp/sfa/WEB-INF/action/reports/AccountsByOpportunities.groovy" />
+		</actions>
+		<row-actions>
+			<entity-one entity-name="Person" value-field="person">
+				<field-map field-name="partyId" value="${partyId}" />
+			</entity-one>
+			<entity-one entity-name="Party" value-field="Party">
+			 <field-map field-name="partyId" value="${partyId}" />
+			</entity-one>
+		</row-actions>
+		
+		<field name="companyName" title="Account Name">
+			<display description="${person.firstName}  [${partyId}]" />
+		</field>
+		<field name="createdDate"><display type="date" default-value="${Party.createdDate}"/></field>
+	    <field name="noOpp" title="No.of Opportunities"><display></display></field>
+		<field name="totalAmount"><display></display></field>
+	</form>
+    
+      <form name="AccountByProject" type="list" list-name="resultList"
+		paginate-target="sfaReports" view-size="20" odd-row-style="alternate-row"
+		default-table-style="basic-table hover-bar" separate-columns="true"
+		header-row-style="header-row-2">
+		<actions>
+		 <script
+					location="component://marketing/webapp/sfa/WEB-INF/action/reports/AccountByProject.groovy" />
+		</actions>
+				
+		<field name="accName" title="Account Name">
+			<display description="${accName}  [${partyId}]" />
+		</field>
+		<field name="createdDate"><display type="date" /></field>
+		<field name="numProjects"><display></display></field>
+		<field name="numDocuments"><display></display></field>
+		
+
+	</form>
+    
+    
+     <form name="ContactByStatus" type="list" list-name="resultList"
+		paginate-target="sfaReports" view-size="20" odd-row-style="alternate-row"
+		default-table-style="basic-table hover-bar" separate-columns="true"
+		header-row-style="header-row-2">
+		<actions>
+		 <script
+					location="component://marketing/webapp/sfa/WEB-INF/action/reports/ContactByStatus.groovy" />
+		</actions>
+		<field name="contactName" title="Contact Name">
+			<display/>
+		</field>
+		<field name="cmpnyName" title="Conpany Name">
+			<display/>
+		</field>
+		<field name="createdDate"><display type="date" default-value="${Party.createdDate}"/></field>
+		<field name="statusId" title="Status"><display></display></field>
+		<field name="noOpp" title="No.of Opportunity"><display></display></field>
+	</form>
+	
+	
+	<form name="MergeContactHistory" type="list" list-name="resultList"
+		paginate-target="sfaReports" view-size="20" odd-row-style="alternate-row"
+		default-table-style="basic-table hover-bar" separate-columns="true"
+		header-row-style="header-row-2">
+		<actions>
+		 <script
+					location="component://marketing/webapp/sfa/WEB-INF/action/reports/MergeContactHistory.groovy" />
+		</actions>
+		<row-actions>
+			<entity-one entity-name="Person" value-field="person">
+				<field-map field-name="partyId" value="${partyId}" />
+			</entity-one>
+			<entity-one entity-name="Party" value-field="Party">
+			 <field-map field-name="partyId" value="${partyId}" />
+			</entity-one>
+		</row-actions>
+		<field name="fromName" title="Contact Name">
+			<display />
+		</field>
+		<field name="toName" title="Merged With"><display/></field>
+		<field name="cmpnyName" title="Company Name"> <display /></field>
+		<field name="createdDate"><display type="date"/></field>
+	</form>
+	
+	
+	<form name="MergeContactHistory" type="list" list-name="resultList"
+		paginate-target="sfaReports" view-size="20" odd-row-style="alternate-row"
+		default-table-style="basic-table hover-bar" separate-columns="true"
+		header-row-style="header-row-2">
+		<actions>
+		 <script
+					location="component://marketing/webapp/sfa/WEB-INF/action/reports/CompaniesByStatus.groovy" />
+		</actions>
+		<row-actions>
+			<entity-one entity-name="Person" value-field="person">
+				<field-map field-name="partyId" value="${partyId}" />
+			</entity-one>
+			<entity-one entity-name="Party" value-field="Party">
+			 <field-map field-name="partyId" value="${partyId}" />
+			</entity-one>
+		</row-actions>
+		<field name="fromName" title="Contact Name">
+			<display />
+		</field>
+		<field name="toName"><display/></field>
+		<field name="cmpnyName"> <display /></field>
+		<field name="createdDate"><display type="date"/></field>
+	</form>
+	
+ <form name="CompaniesByIndustryType" type="list" list-name="resultList"
+		paginate-target="sfaReports" view-size="20" odd-row-style="alternate-row"
+		default-table-style="basic-table hover-bar" separate-columns="true"
+		header-row-style="header-row-2">
+		<actions>
+		 <script
+					location="component://marketing/webapp/sfa/WEB-INF/action/reports/CompaniesByIndustryType.groovy" />
+		</actions>
+		<field name="cmpnyName" title="Company Name">
+			<display />
+		</field>
+		<field name="industryType"><display/></field>
+		<field name="industrySubType"> <display /></field>
+		<field name="createdDate"><display type="date"/></field>
+	</form>
+	
+	 <form name="CompaniesByStatus" type="list" list-name="resultList"
+		paginate-target="sfaReports" view-size="20" odd-row-style="alternate-row"
+		default-table-style="basic-table hover-bar" separate-columns="true"
+		header-row-style="header-row-2">
+		<actions>
+		 <script
+					location="component://marketing/webapp/sfa/WEB-INF/action/reports/CompaniesByStatus.groovy" />
+		</actions>
+		
+		<field name="cmpnyName" title="Company Name">
+			<display />
+		</field>
+		<field name="status"><display/></field>
+		<field name="statusDate"> <display type="date" /></field>
+		<field name="createdDate"><display type="date"/></field>
+	</form>
+	
+   <form name="OpportunitiesByHistory" type="list" list-name="resultList"
+		paginate-target="sfaReports" view-size="20" odd-row-style="alternate-row"
+		default-table-style="basic-table hover-bar" separate-columns="true"
+		header-row-style="header-row-2">
+		<actions>
+		 <script
+					location="component://marketing/webapp/sfa/WEB-INF/action/reports/OpportunitiesByHistory.groovy" />
+		</actions>
+		
+		<field name="opportunityName">
+			<display />
+		</field>
+		<field name="projectName"><display/></field>
+		<field name="salesHead" title="Sales Head"> <display/></field>
+		<field name="estimatedProbability" title="Probability"><display/></field>
+		<field name="estimatedAmount"><display/></field>
+	</form>
+    
+    <form name="OpportunitiesByCompanies" type="list" list-name="resultList"
+		paginate-target="sfaReports" view-size="20" odd-row-style="alternate-row"
+		default-table-style="basic-table hover-bar" separate-columns="true"
+		header-row-style="header-row-2">
+		<actions>
+		 <script
+					location="component://marketing/webapp/sfa/WEB-INF/action/reports/OpportunitiesByCompanies.groovy" />
+		</actions>
+	
+	    <field name="opportunityName"><display /></field>
+	    <field name="cmpnyName"><display/></field>
+		<field name="salesHead" title="Sales Head"> <display/></field>
+	    <field name="projectName"><display/></field>
+		<field name="estimatedProbability" title="Probability"><display/></field>
+	</form>
+	 <form name="dashboardForm" type="single" target="DashboardsMain" title="Dashboard Forms"
+        header-row-style="header-row" default-table-style="basic-table">
+          <field name="dashboardType" action="javascript:document.dashboardForm.submit();" event="onchange">
+	        <drop-down>
+	            <option key="--" description="-- Select --"/>
+	            <entity-options description="${description}" entity-name="EnumerationType" key-field-name="enumTypeId">
+	            <entity-constraint name="parentTypeId" operator="equals" value="SFA_DASH_MAIN"/>
+	            </entity-options>
+	         </drop-down>
+        </field>
+        
+         <field name="enumId" action="javascript:document.dashboardForm.submit();" event="onchange" title="Report Sub-Type">
+	       <drop-down>
+	        <option key="--" description="-- Select --"/>
+                <list-options key-name="enumId" list-name="subReports" description="${description}" />
+ 	         </drop-down>
+        </field>
+        
+        </form>
+	
+</forms>
